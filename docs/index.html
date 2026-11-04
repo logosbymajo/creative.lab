@@ -1116,9 +1116,16 @@ $("#f_clave").addEventListener("submit",async e=>{
   if(p1.length<8){msgT("#c_msg","Debe tener mínimo 8 caracteres.");return}
   if(p1!==p2){msgT("#c_msg","Las dos contraseñas no coinciden.");return}
   msgT("#c_msg","Guardando…");
+  const {data:sd}=await sb.auth.getSession(); session=sd.session;
+  if(!session){$("#c_msg").innerHTML='El enlace ya venció o se abrió en otro navegador. <a href="#acceso">Pide uno nuevo</a> y ábrelo en este mismo navegador.';return}
   const {error}=await sb.auth.updateUser({password:p1});
-  if(error){msgT("#c_msg",/same|different/i.test(error.message)?"Esa ya es tu contraseña. Puedes entrar.":"No se pudo guardar. Intenta otra vez.");return}
-  history.replaceState(null,"",location.pathname); await afterLogin(); location.hash=profile.rubro?"hoy":"perfil"; route();
+  if(error){
+    if(/same|different/i.test(error.message)){msgT("#c_msg","Esa ya es tu contraseña. Entrando…")}
+    else{$("#c_msg").innerHTML="No se pudo guardar: <b>"+esc(error.message)+"</b>";console.error(error);return}
+  }
+  history.replaceState(null,"",location.pathname);
+  try{await afterLogin()}catch(err){console.error(err)}
+  location.hash=profile.rubro?"hoy":"perfil"; route();
 });
 $("#logout").addEventListener("click",async()=>{await sb.auth.signOut();session=null;me=null;isAdmin=false;location.hash="inicio";location.reload()});
 
