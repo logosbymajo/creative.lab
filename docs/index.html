@@ -45,7 +45,7 @@ header.top .wrap{display:flex;align-items:center;justify-content:space-between;g
 .nav-links a{text-decoration:none;font-weight:600;font-size:15.5px;padding:10px 14px;border-radius:999px;color:#4F0C28}
 .nav-links a.cta{background:#6B1237;color:#fff}
 .hero{padding:56px 0 80px}
-.hero h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-0.045em;font-size:clamp(44px,9vw,108px);line-height:.94;color:#fff;margin:18px 0 26px;max-width:1000px;text-wrap:balance}
+.hero h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-0.045em;font-size:clamp(44px,9vw,84px);line-height:.94;color:#fff;margin:18px 0 26px;max-width:1000px;text-wrap:balance}
 .hero h1 em{font-style:normal;color:#6B1237}
 .hero p.lead{font-size:clamp(18px,2.3vw,24px);color:#4F0C28;max-width:620px;margin:0 0 30px;line-height:1.45}
 .hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
@@ -101,6 +101,37 @@ header.top .wrap{display:flex;align-items:center;justify-content:space-between;g
 .st.ok{background:#6B1237;color:#fff}.st.wait{background:#fff;color:#6B1237;border:1.5px solid #E8B9C8}.st.off{background:#eee;color:#777}
 footer{background:#4F0C28;color:#FFD1E3;padding:30px 0 40px;font-size:14px}
 footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
+
+
+/* ---------- hero phones ---------- */
+.hero-grid{display:grid;gap:40px;align-items:center}
+@media(min-width:960px){.hero-grid{grid-template-columns:1.15fr .85fr}}
+.phones{position:relative;height:520px;max-width:440px;margin:0 auto;width:100%;pointer-events:none;user-select:none}
+.phone{position:absolute;width:236px;height:490px;border-radius:38px;background:#140810;border:7px solid #fff;box-shadow:0 26px 50px -18px rgba(79,12,40,.55);overflow:hidden}
+.phone.back{left:0;top:22px;transform:rotate(-7deg) scale(.9);opacity:.96}
+.phone.front{right:0;top:0;transform:rotate(3deg)}
+.scr{position:absolute;inset:0;overflow:hidden}
+.scr.a{background:radial-gradient(120% 70% at 50% 30%,#FFB3D3 0%,#F4579F 38%,#6B1237 85%)}
+.scr.b{background:radial-gradient(120% 70% at 50% 30%,#FFE1EC 0%,#FF8CC3 40%,#4F0C28 90%)}
+.sil{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:200px;height:300px}
+.sil i{position:absolute;left:50%;transform:translateX(-50%);background:rgba(79,12,40,.45);display:block;filter:blur(.3px)}
+.sil .h{top:30px;width:92px;height:108px;border-radius:46% 46% 44% 44%}
+.sil .hair{top:18px;width:120px;height:150px;border-radius:60px 60px 40px 40px;background:rgba(40,5,20,.55)}
+.sil .b{bottom:0;width:200px;height:150px;border-radius:100px 100px 0 0}
+.topbar{position:absolute;top:14px;left:16px;right:16px;display:flex;justify-content:space-between;color:#fff;font-weight:700;font-size:14px;text-shadow:0 1px 4px rgba(0,0,0,.35)}
+.subt{position:absolute;left:14px;right:56px;top:120px;text-align:center;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:21px;line-height:1.1;color:#fff;letter-spacing:-.02em;text-shadow:0 2px 0 #4F0C28,0 0 12px rgba(0,0,0,.35)}
+.subt span{background:#6B1237;padding:3px 8px;line-height:1.45;border-radius:8px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.side{position:absolute;right:10px;bottom:92px;display:flex;flex-direction:column;gap:14px;align-items:center;color:#fff;font-size:11px;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.4)}
+.side b{display:grid;place-items:center;width:34px;height:34px;font-size:19px}
+.cap{position:absolute;left:14px;right:56px;bottom:18px;color:#fff;font-size:12.5px;line-height:1.35;text-shadow:0 1px 3px rgba(0,0,0,.45)}
+.cap b{display:block;font-size:13.5px;margin-bottom:3px}
+.badge{position:absolute;z-index:3;background:#fff;color:#6B1237;border-radius:16px;padding:10px 14px;font-weight:700;font-size:13px;box-shadow:0 14px 26px -10px rgba(79,12,40,.5);line-height:1.3}
+.badge small{display:block;font-weight:600;color:#F4579F;font-size:11.5px;letter-spacing:.08em;text-transform:uppercase}
+.badge.b1{left:-6px;bottom:40px;transform:rotate(-3deg)}
+.badge.b2{right:-4px;top:-10px;transform:rotate(4deg);background:#6B1237;color:#fff}
+.badge.b2 small{color:#FF8CC3}
+.arrow-swap{position:absolute;z-index:3;left:44%;top:46%;width:46px;height:46px;border-radius:50%;background:#FF8CC3;border:3px solid #fff;display:grid;place-items:center;color:#4F0C28;font-weight:800;box-shadow:0 10px 20px rgba(79,12,40,.3)}
+@media(max-width:480px){.phones{height:470px}.phone{width:200px;height:420px}.subt{font-size:18px;top:100px}}
 
 /* ---------- APP ---------- */
 #app{min-height:100vh}
@@ -192,19 +223,39 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
     </nav>
   </div></header>
 
-  <section class="hero grid-hot"><div class="wrap">
+  <section class="hero grid-hot"><div class="wrap hero-grid"><div>
     <span class="eyebrow"><span>✳</span> Para creadoras y emprendedoras</span>
     <h1>Lo que ya pegó afuera, contado <em>por primera vez</em> en tu idioma.</h1>
-    <p class="lead">En español todo ya se vio. En el <b>segundo internet</b>, los videos virales en portugués, inglés, alemán o ruso, hay ideas que aquí nadie ha contado. CREATIVE.LAB te las trae todos los días, según tu rubro, y te entrega el guion con tu voz.</p>
+    <p class="lead">En español todo ya se vio. En el <b>segundo internet</b>, los videos virales en portugués, inglés, alemán, francés o ruso, hay ideas que aquí nadie ha contado. CREATIVE.LAB te las trae todos los días, según tu rubro, y te entrega el guion con tu voz.</p>
     <div class="ctas">
       <a class="btn btn-primary" href="#entrar">Iniciar sesión</a>
       <a class="btn btn-white" href="#como">Ver cómo funciona</a>
     </div>
     <div class="tag"><i style="top:-8px;left:-8px"></i><i style="top:-8px;right:-8px"></i><i style="bottom:-8px;left:-8px"></i><i style="bottom:-8px;right:-8px"></i>Adaptar, nunca copiar</div>
+  </div>
+    <div class="phones" aria-hidden="true">
+      <div class="phone back"><div class="scr b">
+        <div class="topbar"><span>Reels</span><span>🇧🇷</span></div>
+        <div class="sil"><i class="hair"></i><i class="h"></i><i class="b"></i></div>
+        <div class="subt"><span>Sua marca não vende por causa disso 👇</span></div>
+        <div class="side"><b>♥</b>2,1 M<b>💬</b>9.840<b>↗</b>41 K</div>
+        <div class="cap"><b>@marca.pessoal.br</b>3 erros que fazem sua marca parecer amadora…</div>
+      </div></div>
+      <div class="phone front"><div class="scr a">
+        <div class="topbar"><span>Reels</span><span>🇨🇴</span></div>
+        <div class="sil"><i class="hair"></i><i class="h"></i><i class="b"></i></div>
+        <div class="subt"><span>Tu marca no vende por esto 👇</span></div>
+        <div class="side"><b>♥</b>214 K<b>💬</b>3.420<b>↗</b>8.900<b>🔖</b>12 K</div>
+        <div class="cap"><b>@tuemprendimiento</b>Lo que nadie te dice de tu marca personal ✳ ♫ sonido original</div>
+      </div></div>
+      <div class="arrow-swap">→</div>
+      <div class="badge b2"><small>Original · Brasil</small>2,1 M vistas</div>
+      <div class="badge b1"><small>Tu reestreno</small>En español, con tu voz</div>
+    </div>
   </div></section>
 
   <section class="strip"><div class="wrap">
-    <div><b>6 mercados</b><span>Brasil, EE. UU., España, Alemania, Canadá y Rusia</span></div>
+    <div><b>5 mercados</b><span>Brasil, EE. UU., Alemania, Canadá y Rusia</span></div>
     <div><b>Todos los días</b><span>videos nuevos según tu rubro</span></div>
     <div><b>4 filtros</b><span>para saber si vale la pena reestrenarlo</span></div>
     <div><b>Tu voz</b><span>el guion suena a ti, no a IA</span></div>
@@ -252,11 +303,11 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
     <h2>Busco donde tu público todavía no está mirando.</h2>
     <p class="sub">Lo que ya pegó en otro idioma, contado por primera vez en el tuyo.</p>
     <div class="stats">
-      <div class="stat"><div class="n">6</div><div class="l">mercados</div></div>
-      <div class="stat"><div class="n">5</div><div class="l">idiomas</div></div>
+      <div class="stat"><div class="n">5</div><div class="l">mercados</div></div>
+      <div class="stat"><div class="n">0</div><div class="l">videos en español</div></div>
       <div class="stat"><div class="n">Diario</div><div class="l">búsqueda automática</div></div>
     </div>
-    <div class="markets"><span>🇧🇷 Brasil</span><span>🇺🇸 Estados Unidos</span><span>🇪🇸 España</span><span>🇩🇪 Alemania</span><span>🇨🇦 Canadá</span><span>🇷🇺 Rusia</span></div>
+    <div class="markets"><span>🇧🇷 Brasil</span><span>🇺🇸 Estados Unidos</span><span>🇩🇪 Alemania</span><span>🇨🇦 Canadá</span><span>🇷🇺 Rusia</span></div>
   </div></section>
 
   <section class="section grid-hot"><div class="wrap">
@@ -359,7 +410,7 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
       <p class="sub">Videos de <b id="rubroTxt">tu rubro</b> que están pegando en otros idiomas. Toca <b>Adaptar esta idea</b> y te saco el guion.</p>
       <div id="rubroWarn" class="banner hidden">Elige tu rubro en <a href="#perfil">Mi perfil</a> para que te lleguen videos de lo que haces.</div>
       <div class="pills" id="feedLang" style="margin-bottom:14px">
-        <button type="button" class="pill on" data-l="">Todos</button><button type="button" class="pill" data-l="en">Inglés</button><button type="button" class="pill" data-l="pt">Portugués</button><button type="button" class="pill" data-l="de">Alemán</button><button type="button" class="pill" data-l="ru">Ruso</button><button type="button" class="pill" data-l="es">España</button><button type="button" class="pill" data-l="otro">Otros</button>
+        <button type="button" class="pill on" data-l="">Todos</button><button type="button" class="pill" data-l="en">Inglés</button><button type="button" class="pill" data-l="pt">Portugués</button><button type="button" class="pill" data-l="de">Alemán</button><button type="button" class="pill" data-l="ru">Ruso</button><button type="button" class="pill" data-l="fr">Francés</button>
         <button type="button" class="pill" id="allRubros" style="border-style:dashed">Ver todos los rubros</button>
       </div>
       <div class="list" id="feed"><div class="card"><div class="loading"><span class="dot"></span><span class="dot"></span><span class="dot"></span> Cargando tu radar…</div></div></div>
@@ -379,7 +430,7 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
         </div>
         <div class="grid2">
           <div class="field"><label class="f" for="p_rubro">Tu rubro <small>(para tus videos diarios)</small></label>
-            <select class="in" id="p_rubro"><option value="">Elige tu rubro</option><option value="marca-marketing">Marca personal y marketing</option><option value="belleza">Belleza, uñas y estética</option><option value="moda">Moda y accesorios</option><option value="comida">Comida y repostería</option><option value="fitness">Fitness, salud y bienestar</option><option value="educacion">Cursos, coaching y educación</option><option value="hogar">Hogar, decoración y manualidades</option><option value="mascotas">Mascotas</option><option value="ventas">Emprendimiento y ventas</option><option value="otro">Otro</option></select></div>
+            <select class="in" id="p_rubro"><option value="">Elige tu rubro</option><option value="marca-marketing">Marca personal y marketing</option><option value="belleza">Belleza, uñas y estética</option><option value="moda">Moda y accesorios</option><option value="comida">Comida y repostería</option><option value="fitness">Fitness, salud y bienestar</option><option value="educacion">Cursos, coaching y educación</option><option value="hogar">Hogar, decoración y manualidades</option><option value="gatos">Gatos y criaderos de gatos</option><option value="mascotas">Mascotas (perros y otras)</option><option value="ventas">Emprendimiento y ventas</option><option value="otro">Otro</option></select></div>
           <div class="field"><label class="f" for="p_rubroOtro">Si es otro, ¿cuál? <small>(opcional)</small></label><input class="in" id="p_rubroOtro" placeholder="Ej: fotografía de bodas"></div>
         </div>
         <div class="field"><label class="f" for="p_enfoque">Cómo es tu contenido <small>(qué sí y qué no quieres mostrar)</small></label><input class="in" id="p_enfoque" placeholder="Ej: hablo a cámara, no muestro mi proceso de trabajo"></div>
@@ -431,7 +482,7 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
       <div class="card">
         <div class="field"><label class="f">Mercados</label>
           <div class="pills" id="r_mk">
-            <button type="button" class="pill on">Brasil</button><button type="button" class="pill on">Estados Unidos</button><button type="button" class="pill">España</button><button type="button" class="pill">Alemania</button><button type="button" class="pill">Canadá</button><button type="button" class="pill">Rusia</button>
+            <button type="button" class="pill on">Brasil</button><button type="button" class="pill on">Estados Unidos</button><button type="button" class="pill">Alemania</button><button type="button" class="pill">Canadá</button><button type="button" class="pill">Rusia</button>
           </div>
         </div>
         <div class="grid2">
@@ -627,7 +678,7 @@ function ctx(){
 - Muestra de cómo habla (imita su vocabulario, ritmo y muletillas, sin exagerar):
 """${(p.voz||"").slice(0,4000)}"""`;
 }
-const RUBROS={"marca-marketing":"Marca personal y marketing","belleza":"Belleza, uñas y estética","moda":"Moda y accesorios","comida":"Comida y repostería","fitness":"Fitness, salud y bienestar","educacion":"Cursos, coaching y educación","hogar":"Hogar, decoración y manualidades","mascotas":"Mascotas","ventas":"Emprendimiento y ventas","otro":"Otro"};
+const RUBROS={"marca-marketing":"Marca personal y marketing","belleza":"Belleza, uñas y estética","moda":"Moda y accesorios","comida":"Comida y repostería","fitness":"Fitness, salud y bienestar","educacion":"Cursos, coaching y educación","hogar":"Hogar, decoración y manualidades","gatos":"Gatos y criaderos de gatos","mascotas":"Mascotas","ventas":"Emprendimiento y ventas","otro":"Otro"};
 const BASE=`Eres un agente de CREATIVE.LAB, una plataforma para creadoras de contenido y emprendedoras hispanohablantes. Respeta siempre cómo es el contenido de la creadora según su perfil. Escribe SIEMPRE en español latino natural, humano y cercano, nada que suene a IA: sin frases de relleno, sin "¡Claro!", sin emojis en exceso. Nunca copies contenido ajeno palabra por palabra: adapta la idea. Usa markdown simple (### títulos, **negritas**, listas con -).`;
 
 async function saveProfile(){
@@ -777,7 +828,7 @@ function renderFeed(){
   const el=$("#feed");
   let items=feed.filter(x=>!descartados.has(x.id));
   if(profile.rubro&&!allR){const mine=profile.rubro==="otro"?("otro:"+(profile.rubroOtro||"").toLowerCase().trim()):profile.rubro;items=items.filter(x=>(x.rubro||"marca-marketing")===mine)}
-  if(feedLang==="otro") items=items.filter(x=>!["en","pt","de","ru","es"].includes(x.idioma)); else if(feedLang) items=items.filter(x=>x.idioma===feedLang);
+  if(feedLang) items=items.filter(x=>x.idioma===feedLang);
   if(!items.length){el.innerHTML=`<div class="card"><p style="margin:0">${feed.length?"No hay videos en este idioma todavía.":"Todavía no hay videos de tu rubro. La búsqueda diaria los irá trayendo desde mañana."}</p></div>`;return}
   el.innerHTML=items.map(x=>{const ratio=x.seguidores?Math.round(x.vistas/x.seguidores):0;const f=x.filtros||{};return `
   <article class="card idea" data-id="${esc(x.id)}">
@@ -1152,7 +1203,7 @@ $("#f_clave").addEventListener("submit",async e=>{
 $("#logout").addEventListener("click",async()=>{await sb.auth.signOut();session=null;me=null;isAdmin=false;location.hash="inicio";location.reload()});
 
 /* ---------- init ---------- */
-const DEFAULT_PROFILE={nombre:"María José · Logos by Majo",pais:"Medellín, Colombia",rubro:"marca-marketing",enfoque:"hablo a cámara en charla o conversación; no muestro procesos de diseño, logos ni muestras de mi trabajo",nicho:"asesorías de marca 1:1 y marketing para emprendedoras",publico:"emprendedoras y dueñas de pequeños negocios que quieren que su marca venda en Instagram",oferta:"asesorías de marca 1:1 y de contenido para Instagram, a precios económicos",hago:"Empecé Logos by Majo el 4 de octubre de 2021. Aprendí diseño sola, de forma empírica, empezando con Canva. Mi marca está registrada.",prueba:"",tono:["Cercano","Paisa / regional"],voz:""};
+const DEFAULT_PROFILE={nombre:"María José · Logos by Majo",pais:"Medellín, Colombia",rubro:"marca-marketing",enfoque:"hablo a cámara en charla o conversación; doy consejos de logo y branding hablando, no muestro procesos de diseño ni muestras de mi trabajo",nicho:"marketing, crecimiento personal, crecer en redes, estrategia de marca, consejos de logo y branding, y asesorías de marca 1:1 para emprendedoras",publico:"emprendedoras y dueñas de pequeños negocios que quieren que su marca venda en Instagram",oferta:"asesorías de marca 1:1 y de contenido para Instagram, a precios económicos",hago:"Empecé Logos by Majo el 4 de octubre de 2021. Aprendí diseño sola, de forma empírica, empezando con Canva. Mi marca está registrada.",prueba:"",tono:["Cercano","Paisa / regional"],voz:""};
 chat=lsGet("rx_chat")||[];
 async function afterLogin(){
   if(!session) return;

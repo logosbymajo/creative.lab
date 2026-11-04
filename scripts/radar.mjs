@@ -10,19 +10,22 @@ const CLAUDE = process.env.ANTHROPIC_API_KEY;        // clave de Claude (secreto
 const MODELO = process.env.MODELO_IA || "claude-sonnet-5-5";
 const RUBROS_POR_DIA = Number(process.env.RUBROS_POR_DIA || "3"); // marca-marketing + 2 rotando
 const POR_RUBRO = 5;
+const IDIOMAS = ["en", "pt", "de", "ru", "fr"]; // Estados Unidos, Canadá, Brasil, Alemania, Rusia (nada en español)
 
 for (const [k, v] of Object.entries({ SUPABASE_SECRET_KEY: SB_KEY, APIFY_TOKEN: APIFY, ANTHROPIC_API_KEY: CLAUDE }))
   if (!v) { console.error(`Falta el secreto ${k} en GitHub`); process.exit(1); }
 
 const NOMBRES = {
-  "marca-marketing": "Marca personal y marketing (charla a cámara sobre marca, asesoría de marca 1:1, marketing y ventas para emprendedoras; nunca procesos de diseño, logos ni muestras de trabajo)",
+  "marca-marketing": "Marca personal y marketing: una persona hablando a cámara (charla, consejo, opinión, mini clase) sobre marketing, crecimiento personal, cómo crecer en redes sociales, estrategia de marca, consejos de logo y branding, y asesorías de marca para emprendedoras. NO sirven videos mostrando procesos de diseño, creación de logos con nombres ni portafolios",
+  gatos: "Gatos y criaderos de gatos de raza (Ragdoll, Ragamuffin, Siberiano, Angora turco): consejos de un criador, cuidados del gatito, alimentación, salud, características de cada raza, qué preguntar antes de comprar un gatito, mitos y verdades, presentación de camadas y día a día del criadero",
   belleza: "Belleza, uñas y estética", moda: "Moda y accesorios", comida: "Comida y repostería",
   fitness: "Fitness, salud y bienestar", educacion: "Cursos, coaching y educación",
   hogar: "Hogar, decoración y manualidades", mascotas: "Mascotas", ventas: "Emprendimiento y ventas",
 };
 // Hashtags por rubro: inglés (EE. UU./Canadá), portugués (Brasil), alemán, ruso
 const TAGS = {
-  "marca-marketing": [["personalbranding", "marketingtips", "womeninbusiness", "brandstrategy", "femaleentrepreneur", "smallbusinesstips"], ["marcapessoal", "empreendedorismofeminino", "dicasdemarketing", "posicionamento"], ["marketingtipps", "personalbrand", "selbststaendig"], ["личныйбренд", "маркетинг", "бизнесдляженщин"]],
+  "marca-marketing": [["personalbranding", "marketingtips", "socialmediatips", "brandstrategy", "instagramgrowth", "brandingtips", "personalgrowth", "contentstrategy", "logotips", "femaleentrepreneur"], ["marcapessoal", "dicasdemarketing", "dicasdeinstagram", "desenvolvimentopessoal", "branding", "posicionamento"], ["marketingtipps", "instagramtipps", "persoenlichkeitsentwicklung"], ["личныйбренд", "маркетинг", "саморазвитие", "продвижение"]],
+  gatos: [["ragdollcat", "ragamuffincat", "siberiancat", "turkishangora", "catbreeder", "kittencare", "cattips"], ["gatoragdoll", "gatosiberiano", "dicasdegato", "filhotedegato"], ["ragdollkatze", "sibirischekatze", "katzenzucht"], ["рэгдолл", "сибирскаякошка", "питомниккошек"]],
   belleza: [["nailtech", "beautytips", "lashtech", "estheticianlife"], ["unhasdecoradas", "designdesobrancelhas", "dicasdebeleza"], ["nageldesign", "beautytipps"], ["маникюр", "бьюти", "бровист"]],
   moda: [["fashiontips", "outfitideas", "smallbusinessfashion", "styletips"], ["modafeminina", "dicasdemoda", "lojadeprimeira"], ["modetipps", "outfitinspo"], ["мода", "стиль", "образ"]],
   comida: [["baking", "cakedecorating", "foodbusiness", "homebaker"], ["confeitaria", "bolodepote", "receitasfaceis"], ["backen", "kuchenrezept"], ["выпечка", "торты", "рецепты"]],
@@ -106,10 +109,9 @@ async function main() {
       // 4) Filtro con números
       const cand = items.filter((v) => {
         const vis = v.playCount || 0, fans = v.authorMeta?.fans || 0, com = v.commentCount || 0;
-        const lang = v.textLanguage || "";
-        const esEspana = v.locationMeta?.countryCode === "ES";
+        const lang = (v.textLanguage || "").slice(0, 2);
         if (ya.has("tt-" + v.id)) return false;
-        if (lang === "es" && !esEspana) return false;
+        if (!IDIOMAS.includes(lang)) return false;
         if (com < 100) return false;
         return (vis >= 100000 && vis >= 3 * fans) || (vis >= 30000 && vis >= 10 * fans);
       }).sort((a, b) => (b.playCount / Math.max(1, b.authorMeta?.fans || 1)) - (a.playCount / Math.max(1, a.authorMeta?.fans || 1)))
@@ -122,13 +124,13 @@ async function main() {
         id: v.id, idioma: v.textLanguage, pais: v.locationMeta?.countryCode || null, vistas: v.playCount, comentarios: v.commentCount,
         seguidores: v.authorMeta?.fans || 0, duracion: v.videoMeta?.duration || 0, texto: String(v.text || "").slice(0, 600),
       }));
-      const prompt = `Eres el Radar de CREATIVE.LAB. Traes videos virales del "segundo internet" (otros idiomas y mercados: Brasil, Estados Unidos, España, Alemania, Canadá, Rusia) para que creadoras hispanohablantes los reestrenen en español con su voz.
+      const prompt = `Eres el Radar de CREATIVE.LAB. Traes videos virales del "segundo internet" (otros idiomas y mercados: Brasil, Estados Unidos, Alemania, Canadá, Rusia; nunca videos en español) para que creadoras hispanohablantes los reestrenen en español con su voz.
 Rubro: ${NOMBRES[rubro] || inf.otro}. ${inf.nicho ? "Nicho de referencia: " + inf.nicho + "." : ""} ${inf.enfoque ? "Cómo es el contenido de quienes lo usan: " + inf.enfoque + "." : ""}
 Método: Instagram premia la retención. Todo viral tiene ESQUELETO (gancho, promesa, orden, ritmo, giro, cierre) y PIEL (persona, idioma, tema, fondo). Se conserva el esqueleto y se cambia la piel.
-De esta lista, elige como máximo ${POR_RUBRO} videos que de verdad sean del rubro, que una sola persona pueda repetir con su celular y que respeten el enfoque. Descarta rifas, ventas puras de un producto, contenido sin relación (por ejemplo "branding" de ganado), y para marca-marketing todo lo que sea proceso de diseño, logos o portafolio.
+De esta lista, elige como máximo ${POR_RUBRO} videos que de verdad sean del rubro, que una sola persona pueda repetir con su celular y que respeten el enfoque. Descarta videos en español, rifas, ventas puras de un producto, contenido sin relación (por ejemplo "branding" de ganado), y para marca-marketing todo lo que sea proceso de diseño, logos con nombres o portafolio.
 Lista (JSON): ${JSON.stringify(lista)}
 Responde SOLO con un JSON array. Cada elemento:
-{"id":"<id>","mercado":"Brasil|Estados Unidos|España|Alemania|Canadá|Rusia|Otro","idioma":"<código real: en, pt, de, ru, es, fr...>","titulo":"<frase principal del original, corta, en su idioma; si es ruso u otro alfabeto, tradúcela al español>","formato":"<nombre corto del formato>","por_que_funciona":"<2 frases: qué del esqueleto retiene y por qué comentan>","por_que_para_ti":"<1-2 frases: cómo se lleva a este rubro para emprendedoras hispanohablantes>","gancho_adaptado":"<el gancho en español latino, cercano, para decir a cámara>","filtros":{"ya_funciono":"si|no|duda","repetible":"si|no|duda","tu_tema":"si|no|duda","espanol":"duda"}}
+{"id":"<id>","mercado":"Brasil|Estados Unidos|Alemania|Canadá|Rusia","idioma":"<código real: en, pt, de, ru o fr>","titulo":"<frase principal del original, corta, en su idioma; si es ruso u otro alfabeto, tradúcela al español>","formato":"<nombre corto del formato>","por_que_funciona":"<2 frases: qué del esqueleto retiene y por qué comentan>","por_que_para_ti":"<1-2 frases: cómo se lleva a este rubro para emprendedoras hispanohablantes>","gancho_adaptado":"<el gancho en español latino, cercano, para decir a cámara>","filtros":{"ya_funciono":"si|no|duda","repetible":"si|no|duda","tu_tema":"si|no|duda","espanol":"duda"}}
 Escribe natural, nada que suene a IA. Si ninguno sirve, responde [].`;
       const txt = await claude(prompt);
       const elegidos = JSON.parse((txt.match(/\[[\s\S]*\]/) || ["[]"])[0]);
@@ -157,11 +159,13 @@ Escribe natural, nada que suene a IA. Si ninguno sirve, responde [].`;
     }
   }
 
-  // 6) Limpieza: dejar los 600 más recientes
+  // 6) Limpieza: quitar lo que no sea de los mercados elegidos y dejar los 600 más recientes
+  await sb(`radar?datos->>idioma=not.in.(${IDIOMAS.join(",")})`, { method: "DELETE" });
   const todos = await sb("radar?select=id&order=encontrado.desc&offset=600&limit=1000");
   for (const t of todos) await sb(`radar?id=eq.${encodeURIComponent(t.id)}`, { method: "DELETE" });
 
   console.log("Resumen:", resumen.join(" · "));
+  console.log("::notice::Radar: " + resumen.join(" · "));
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });
