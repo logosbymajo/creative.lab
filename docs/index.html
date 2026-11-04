@@ -278,6 +278,20 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
 .labmentor{margin-top:14px;display:flex;gap:14px;align-items:center;background:#6B1237;border-radius:22px;padding:18px 20px;color:#fff;flex-wrap:wrap}
 .labmentor b{font-size:18px}.labmentor p{margin:2px 0 0;color:#FFD1E3}
 .labmentor .btn{margin-left:auto;background:#FF8CC3;color:#4F0C28}
+.labsteps.two{grid-template-columns:1fr}
+@media(min-width:760px){.labsteps.two{grid-template-columns:1fr 1fr}}
+.lstep.dark{background:#6B1237;border-color:#6B1237}.lstep.dark small{color:#FF8CC3}.lstep.dark b{color:#fff}.lstep.dark p{color:#FFD1E3}.lstep.dark span{color:#FF8CC3}
+.tsearch{display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #E8B9C8;border-radius:999px;padding:0 14px;height:40px;color:#9B5574}
+.tsearch input{border:0;outline:0;background:transparent;font:500 14px 'Instrument Sans',sans-serif;color:#4F0C28;width:170px}
+@media(max-width:900px){.tsearch{width:40px;padding:0;justify-content:center;overflow:hidden;transition:width .25s}.tsearch input{width:0}.tsearch:focus-within{width:min(220px,50vw);padding:0 12px;justify-content:flex-start}.tsearch:focus-within input{width:100%}}
+.rstats{display:flex;flex-wrap:wrap;gap:8px;margin:-4px 0 18px}
+.rstats span{background:#fff;border:1.5px solid #F6D3E1;border-radius:999px;padding:7px 12px;font-size:13px;font-weight:600;color:#6B1237}
+.nicho{margin:0 0 12px}.nicho small{display:block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9B5574;margin:0 0 8px}
+.nicho.hidden{display:none}
+#feedTema,#feedLang{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+#feedTema::-webkit-scrollbar,#feedLang::-webkit-scrollbar{display:none}
+#feedTema .pill,#feedLang .pill{flex:none;font-size:14px;padding:8px 14px}
+#feedTema .pill{border-width:1.5px}
 .rh{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.02em;font-size:22px;color:#4F0C28;margin:26px 0 12px}
 .rtabs{display:flex;gap:18px;border-bottom:1.5px solid #F6D3E1;margin:0 0 16px}
 .rtabs button,.rtabs a{background:none;border:0;padding:10px 2px;font-weight:700;font-size:15px;color:#9B5574;cursor:pointer;text-decoration:none;border-bottom:3px solid transparent;margin-bottom:-1.5px}
@@ -541,14 +555,16 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
       <a href="#reestrenar"><span class="si n">2</span>Reestrenar</a>
       <a href="#venta"><span class="si n">3</span>Ventas</a>
       <a href="#numeros"><span class="si n">4</span>Números</a>
-      <small>Herramientas</small>
+      <small>Complementarios</small>
+      <a href="#mentora"><span class="si">✳</span>Mentora</a>
+      <a href="#clientes"><span class="si">◎</span>Buscar clientes</a>
       <a href="#radar"><span class="si">🔗</span>Pegar un enlace</a>
       <a href="#voz"><span class="si">✎</span>Pulir un guion</a>
       <a href="#guardados"><span class="si">❒</span>Mis guiones</a>
-      <a href="#mentora"><span class="si">✳</span>Mentora</a>
       <small>Mi cuenta</small>
       <a href="#perfil"><span class="si">☺</span>Mi perfil</a>
       <a href="#soporte"><span class="si">?</span>Ayuda y soporte</a>
+      <small id="eqLbl" class="hidden">Equipo</small>
       <a href="#admin" id="tabAdmin" class="hidden"><span class="si">⛨</span>Panel</a>
     </nav>
     <button class="sidelogout" id="logout" type="button">Salir</button>
@@ -559,6 +575,7 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
     <button class="menubtn" id="menuBtn" type="button" aria-label="Abrir menú"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     <div class="ptitle"><b id="pTitle">Inicio</b><small id="pSub"></small></div>
     <div class="tbtns">
+      <form class="tsearch" id="tSearch" role="search"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="tQ" type="search" placeholder="Busca en tu nicho…" aria-label="Busca en tu nicho"></form>
       <a class="tbtn ghost" href="#soporte">Soporte</a>
       <a class="tbtn" href="#mentora">✳ Pregúntale a Mentora</a>
       <div class="bellw">
@@ -585,14 +602,18 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
     <!-- LAB (inicio interno) -->
     <section class="view" data-view="lab">
       <p class="hello">Hola, <b id="helloName">creadora</b> ✳</p>
-      <h2 class="bigq">¿Qué reestrenamos hoy?</h2>
+      <h2 class="bigq">¿Qué vamos a crear hoy?</h2>
       <div class="labsteps">
         <a class="lstep" href="#hoy"><small>Paso 1 · Detecta</small><b>Radar</b><p>Los videos de tu rubro que ya pasaron las 800 mil vistas en otros idiomas.</p><span>Ver hallazgos →</span></a>
-        <a class="lstep" href="#reestrenar"><small>Paso 2 · Reestrena</small><b>Reestrenar</b><p>El original, la traducción tal cual y tu versión lista para grabar.</p><span>Ir a reestrenar →</span></a>
-        <a class="lstep" href="#venta"><small>Paso 3 · Convierte</small><b>Ventas</b><p>Si el video pega, las historias de 3 días para vender.</p><span>Armar historias →</span></a>
-        <a class="lstep" href="#numeros"><small>Paso 4 · Mide</small><b>Números</b><p>Tu oferta, tus métricas y dónde se cae tu embudo.</p><span>Ver números →</span></a>
+        <a class="lstep" href="#reestrenar"><small>Paso 2 · Reestrena</small><b>Reestrenar</b><p>Adaptamos el guion a tu voz y lo mejoramos: el original, la traducción y tu versión lista para grabar.</p><span>Ir a reestrenar →</span></a>
+        <a class="lstep" href="#venta"><small>Paso 3 · Convierte</small><b>Ventas</b><p>Las historias para venderle a la gente nueva en las 72 horas en que más te ven.</p><span>Armar historias →</span></a>
+        <a class="lstep" href="#numeros"><small>Paso 4 · Mide</small><b>Números</b><p>Tu oferta, tus números y en qué parte se te está cayendo el contenido.</p><span>Ver números →</span></a>
       </div>
-      <div class="labmentor"><span class="dico">✳</span><div><b>Mentora</b><p>Tu guía en cada pantalla. Pregúntale qué subir hoy.</p></div><a class="btn btn-sm btn-primary" href="#mentora">Hablar con ella</a></div>
+      <h3 class="rh">Complementarios</h3>
+      <div class="labsteps two">
+        <a class="lstep dark" href="#mentora"><small>Tu guía</small><b>Mentora</b><p>Tu amiga experta en el segundo internet. Pregúntale qué subir hoy, cómo grabarlo o cómo vender.</p><span>Hablar con ella →</span></a>
+        <a class="lstep" href="#clientes"><small>Encuentra clientes</small><b>Buscar clientes</b><p>Quiénes te pueden comprar, dónde encontrarlos y qué escribirles para empezar la conversación.</p><span>Buscar ahora →</span></a>
+      </div>
       <div id="labPick"></div>
     </section>
 
@@ -629,6 +650,21 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
           <div class="out" id="rsRevOut"></div>
         </div>
       </div>
+    </section>
+
+    <!-- CLIENTES -->
+    <section class="view" data-view="clientes">
+      <span class="eyebrow">✳ Complementario · Encuentra clientes</span>
+      <h2>¿Quién te puede comprar?</h2>
+      <p class="sub">Con tu perfil te armo el mapa: qué tipo de personas o marcas necesitan lo que vendes, dónde están en redes y qué escribirles sin sonar a vendedora.</p>
+      <div class="card">
+        <div class="grid2">
+          <div class="field"><label class="f" for="c_lugar">¿Dónde quieres clientes? <small>(opcional)</small></label><input class="in" id="c_lugar" placeholder="Ej: Medellín, Colombia, o todo Latinoamérica"></div>
+          <div class="field"><label class="f" for="c_tipo">¿A quién te gustaría venderle? <small>(opcional)</small></label><input class="in" id="c_tipo" placeholder="Ej: emprendedoras de belleza que están empezando"></div>
+        </div>
+        <div class="actions"><button class="btn btn-accent" id="runClientes">Buscar mis clientes</button></div>
+      </div>
+      <div class="out" id="clientesOut"></div>
     </section>
 
     <!-- SOPORTE -->
@@ -681,10 +717,13 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
     <!-- HOY -->
     <section class="view" data-view="hoy">
       <span class="eyebrow">✳ Radar · <span id="hoyFecha">hoy</span></span>
-      <h2>Hallazgos de hoy.</h2>
-      <p class="sub">Videos de <b id="rubroTxt">tu rubro</b> que están pegando en otros idiomas. Toca <b>Reestrenar este video</b> y te saco el guion.</p>
+      <h2 id="radarH">Hallazgos de hoy.</h2>
+      <p class="sub">Videos de <b id="rubroTxt">tu rubro</b> que ya se hicieron virales en otros idiomas y todavía no llegan al español. Toca <b>Reestrenar este video</b> y te saco el guion.</p>
+      <div class="rstats"><span>🌎 Inglés · Portugués · Alemán · Ruso</span><span>👁 +800 mil vistas</span><span>💬 +200 comentarios</span></div>
       <div id="rubroWarn" class="banner hidden">Elige tu rubro en <a href="#perfil">Mi perfil</a> para que te lleguen videos de lo que haces.</div>
       <div class="rtabs" id="rTabs"><button type="button" class="on" data-t="para">Para ti</button><button type="button" data-t="fav">Guardados <span id="favN"></span></button><a href="#radar">Pegar un enlace</a></div>
+      <div class="nicho" id="nichoBox"><small>Tu nicho</small><div class="pills" id="feedTema"></div></div>
+      <div id="qInfo" class="banner hidden"></div>
       <div class="pills" id="feedLang" style="margin-bottom:16px">
         <button type="button" class="pill on" data-l="">Todos</button><button type="button" class="pill" data-l="en">🇺🇸 Inglés</button><button type="button" class="pill" data-l="pt">🇧🇷 Portugués</button><button type="button" class="pill" data-l="de">🇩🇪 Alemán</button><button type="button" class="pill" data-l="ru">🇷🇺 Ruso</button><button type="button" class="pill" data-l="fr">🇨🇦 Francés</button>
         <button type="button" class="pill hidden" id="allRubros" style="border-style:dashed">Ver todos los rubros</button>
@@ -872,8 +911,8 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
 <script>
 (function(){
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
-const VIEWS=["lab","hoy","reestrenar","perfil","radar","voz","venta","numeros","mentora","guardados","admin","soporte"];
-const PT={lab:["Inicio",""],hoy:["Radar","Paso 1 · Detecta"],reestrenar:["Reestrenar","Paso 2 · Reestrena"],venta:["Ventas","Paso 3 · Convierte"],numeros:["Números","Paso 4 · Mide"],radar:["Pegar un enlace","Herramienta"],voz:["Pulir un guion","Herramienta"],guardados:["Mis guiones","Herramienta"],mentora:["Mentora","Tu guía"],perfil:["Mi perfil","Mi cuenta"],soporte:["Ayuda y soporte","Mi cuenta"],admin:["Panel","Administradora"]};
+const VIEWS=["clientes","lab","hoy","reestrenar","perfil","radar","voz","venta","numeros","mentora","guardados","admin","soporte"];
+const PT={lab:["Inicio",""],hoy:["Radar","Paso 1 · Detecta"],reestrenar:["Reestrenar","Paso 2 · Reestrena"],venta:["Ventas","Paso 3 · Convierte"],numeros:["Números","Paso 4 · Mide"],radar:["Pegar un enlace","Complementario"],voz:["Pulir un guion","Complementario"],guardados:["Mis guiones","Complementario"],mentora:["Mentora","Tu guía"],clientes:["Buscar clientes","Complementario"],perfil:["Mi perfil","Mi cuenta"],soporte:["Ayuda y soporte","Mi cuenta"],admin:["Panel","Administradora"]};
 const AUTHV=["entrar","acceso","clave"];
 const SB_URL="https://qqwlgbcrdiyklvyjebbx.supabase.co", SB_KEY="sb_publishable_eX6R0RwPbuPkkW-7Tjk04Q_i87Pe6fH";
 const WA="https://wa.me/573011706253";
@@ -1125,6 +1164,15 @@ function renderFeed(){
   $("#favN").textContent=favs.size?"("+favs.size+")":"";
   if(profile.rubro&&!allR&&feedTab!=="fav"){const mine=profile.rubro==="otro"?("otro:"+(profile.rubroOtro||"").toLowerCase().trim()):profile.rubro;items=items.filter(x=>(x.rubro||"marca-marketing")===mine)}
   if(feedLang) items=items.filter(x=>x.idioma===feedLang);
+  if(feedTab!=="fav"){
+    if(feedTema) items=items.filter(x=>x.tema===feedTema);
+    if(feedQ){const q=fold(feedQ).split(/\s+/).filter(Boolean);items=items.filter(x=>{const h=fold([x.titulo,x.caption,x.tema,x.formato,x.por_que_funciona,x.por_que_para_ti,x.gancho_adaptado].join(" "));return q.every(w=>h.includes(w))})}
+  }
+  paintTemas();
+  $("#qInfo").classList.toggle("hidden",!feedQ);
+  $("#qInfo").innerHTML=feedQ?`Buscando <b>“${esc(feedQ)}”</b> en tu nicho · ${items.length} resultado${items.length===1?"":"s"} <button class="btn btn-sm btn-white" id="qClear">Quitar búsqueda</button>`:"";
+  const qc=$("#qClear"); if(qc) qc.onclick=()=>{feedQ="";$("#tQ").value="";renderFeed()};
+  $("#radarH").textContent=feedTab==="fav"?"Tus videos guardados.":(items.length?`Encontré ${items.length} video${items.length===1?"":"s"} que vale la pena adaptar.`:"Hallazgos de hoy.");
   if(!items.length){el.innerHTML=`<div class="card"><p style="margin:0">Todavía no hay videos de tu rubro con más de 800 mil vistas. La búsqueda diaria los va trayendo cada mañana.</p></div>`;updateLangPills();return}
   el.innerHTML=items.map(x=>{const L=LANGN[x.idioma]||{};return `
   <article class="vcard" data-id="${esc(x.id)}">
@@ -1134,7 +1182,7 @@ function renderFeed(){
         <span class="vplay">▶</span>${x.duracion?`<span class="vdur">${Math.floor(x.duracion/60)}:${String(x.duracion%60).padStart(2,"0")}</span>`:""}
       </a>
       <div class="vinfo">
-        <div class="vtags"><span>${esc(x.plataforma||"TikTok")}</span><span>${L.f||""} ${esc(L.n||String(x.idioma||"").toUpperCase())}</span></div>
+        <div class="vtags"><span>${esc(x.plataforma||"TikTok")}</span>${x.tema?`<span>${esc(x.tema)}</span>`:""}<span>${L.f||""} ${esc(L.n||String(x.idioma||"").toUpperCase())}</span></div>
         <p class="vtitle">“${esc(x.titulo)}”</p>
         <div class="vstats"><span>👁 ${nf(x.vistas)} vistas</span><span>💬 ${nf(x.comentarios)} comentarios</span></div>
       </div>
@@ -1147,6 +1195,16 @@ function renderFeed(){
   </article>`}).join("");
   updateLangPills();
 }
+const TEMAS={"marca-marketing":["Redes sociales","Marca personal","Marketing y ventas","Desarrollo personal","Mentalidad emprendedora"],gatos:["Cuidados","Razas","Criadero","Gatitos","Salud y alimentación"],belleza:["Uñas","Pestañas y cejas","Piel","Maquillaje","Negocio de belleza"],moda:["Outfits","Tendencias","Vender ropa"],comida:["Recetas","Repostería","Vender comida"],fitness:["Entrenamiento","Nutrición","Bienestar"],educacion:["Enseñar","Productividad","Vender cursos"],hogar:["Decoración","Organización","Manualidades"],mascotas:["Perros","Gatos","Cuidados","Adiestramiento"],ventas:["Ventas","Emprendimiento","Clientes"]};
+let feedTema="", feedQ="";
+const fold=t=>String(t||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+function paintTemas(){
+  const ts=TEMAS[profile.rubro]||[]; $("#nichoBox").classList.toggle("hidden",!ts.length||feedTab==="fav");
+  $("#feedTema").innerHTML=[`<button type="button" class="pill ${feedTema?"":"on"}" data-tm="">Todo</button>`].concat(ts.map(t=>`<button type="button" class="pill ${feedTema===t?"on":""}" data-tm="${esc(t)}">${esc(t)}</button>`)).join("");
+}
+$("#feedTema").addEventListener("click",e=>{const b=e.target.closest("[data-tm]");if(!b)return;feedTema=b.dataset.tm;renderFeed()});
+$("#tSearch").addEventListener("submit",e=>{e.preventDefault();feedQ=$("#tQ").value.trim();feedTab="para";$$("#rTabs [data-t]").forEach(k=>k.classList.toggle("on",k.dataset.t==="para"));if(location.hash!=="#hoy")location.hash="hoy";renderFeed();$("#tQ").blur()});
+$("#tQ").addEventListener("search",()=>{if(!$("#tQ").value){feedQ="";renderFeed()}});
 const LANGN={en:{n:"Inglés",f:"🇺🇸"},pt:{n:"Portugués",f:"🇧🇷"},de:{n:"Alemán",f:"🇩🇪"},ru:{n:"Ruso",f:"🇷🇺"},fr:{n:"Francés",f:"🇨🇦"}};
 function updateLangPills(){
   const base=feed.filter(x=>!descartados.has(x.id)&&LANGN[x.idioma]&&(+x.vistas||0)>=800000&&(!profile.rubro||allR||(x.rubro||"marca-marketing")===(profile.rubro==="otro"?("otro:"+(profile.rubroOtro||"").toLowerCase().trim()):profile.rubro)));
@@ -1412,6 +1470,30 @@ Estructura:
 En cada historia indica: **Historia N** – qué se ve (cámara, pantalla, sticker) y **Dice:** "texto a cámara". Usa encuestas, cajas de preguntas o stickers donde ayuden.
 Al final: ### Consejos (3 puntos) y una línea con la meta: cuántas ventas necesita a su precio para llegar a una cifra redonda.`;
   streamTo($("#ventaOut"),prompt,"Venta","Secuencia 3 días · "+prod.slice(0,60),$("#runVenta"));
+});
+
+/* ---------- CLIENTES ---------- */
+$("#runClientes").addEventListener("click",()=>{
+  if(!profile.oferta&&!profile.nicho){toast("Primero llena tu oferta en Mi perfil");return}
+  const prompt=`${BASE}
+
+${ctx()}
+
+TAREA (agente Clientes): Ayúdale a encontrar clientes reales para lo que vende. Lugar: ${$("#c_lugar").value||"donde tenga sentido para su negocio"}. Cliente que le gustaría: ${$("#c_tipo").value||"el que mejor encaje con su oferta"}.
+No inventes nombres de marcas, cuentas ni personas reales. Da tipos de clientes y búsquedas concretas que ella misma pueda hacer.
+Estructura:
+### Tus 4 clientes ideales
+(para cada uno: **quién es**, qué problema tiene hoy y por qué te compraría a ti)
+### Dónde encontrarlos
+- **Instagram:** hashtags y búsquedas exactas para escribir en la lupa
+- **TikTok:** búsquedas exactas
+- **Google Maps o grupos:** qué buscar, si aplica
+- **Señales de que necesitan tu ayuda:** qué mirar en su perfil
+### Qué escribirles
+2 mensajes cortos para DM, naturales, sin vender de una: primero conectas, luego ofreces. Uno para comentar en una publicación suya y uno para el mensaje directo.
+### Contenido que los atrae a ti
+3 ideas de video, pensadas desde el segundo internet, que harían que estos clientes te encuentren solos.`;
+  streamTo($("#clientesOut"),prompt,"Clientes","Mis clientes · "+($("#c_tipo").value||profile.nicho||"").slice(0,60),$("#runClientes"));
 });
 
 /* ---------- NÚMEROS ---------- */
@@ -1711,7 +1793,7 @@ async function afterLogin(){
     sb.from("descartes").select("video_id"),
     sb.from("favoritos").select("video_id")
   ]);
-  isAdmin=!!adm; $("#tabAdmin").classList.toggle("hidden",!isAdmin); $("#allRubros").classList.toggle("hidden",!isAdmin);
+  isAdmin=!!adm; $("#tabAdmin").classList.toggle("hidden",!isAdmin);$("#eqLbl").classList.toggle("hidden",!isAdmin); $("#allRubros").classList.toggle("hidden",!isAdmin);
   profile=Object.assign({nombre:"",pais:"",rubro:"",rubroOtro:"",enfoque:"",nicho:"",publico:"",oferta:"",hago:"",prueba:"",tono:[],voz:""},per&&per.datos?per.datos:(isAdmin?DEFAULT_PROFILE:{}));
   saved=(gs||[]).map(g=>({id:g.id,kind:g.tipo,title:g.titulo,content:g.contenido,ts:Date.parse(g.creado)}));
   descartados=new Set((ds||[]).map(d=>d.video_id)); favs=new Set((fv||[]).map(d=>d.video_id));

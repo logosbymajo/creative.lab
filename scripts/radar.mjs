@@ -17,6 +17,7 @@ const IDIOMAS = ["en", "pt", "de", "ru", "fr"]; // Estados Unidos, Canadá, Bras
 for (const [k, v] of Object.entries({ SUPABASE_SECRET_KEY: SB_KEY, APIFY_TOKEN: APIFY, ANTHROPIC_API_KEY: CLAUDE }))
   if (!v) { console.error(`Falta el secreto ${k} en GitHub`); process.exit(1); }
 
+const TEMAS = {"marca-marketing":["Redes sociales","Marca personal","Marketing y ventas","Desarrollo personal","Mentalidad emprendedora"],gatos:["Cuidados","Razas","Criadero","Gatitos","Salud y alimentación"],belleza:["Uñas","Pestañas y cejas","Piel","Maquillaje","Negocio de belleza"],moda:["Outfits","Tendencias","Vender ropa"],comida:["Recetas","Repostería","Vender comida"],fitness:["Entrenamiento","Nutrición","Bienestar"],educacion:["Enseñar","Productividad","Vender cursos"],hogar:["Decoración","Organización","Manualidades"],mascotas:["Perros","Gatos","Cuidados","Adiestramiento"],ventas:["Ventas","Emprendimiento","Clientes"]};
 const NOMBRES = {
   "marca-marketing": "Marca personal y marketing: una persona hablando a cámara (charla, consejo, opinión, mini clase) sobre marketing, crecimiento personal, cómo crecer en redes sociales, estrategia de marca, consejos de logo y branding, y asesorías de marca para emprendedoras. NO sirven videos mostrando procesos de diseño, creación de logos con nombres ni portafolios",
   gatos: "Gatos y criaderos de gatos de raza (Ragdoll, Ragamuffin, Siberiano, Angora turco): consejos de un criador, cuidados del gatito, alimentación, salud, características de cada raza, qué preguntar antes de comprar un gatito, mitos y verdades, presentación de camadas y día a día del criadero",
@@ -139,6 +140,22 @@ async function main() {
       console.log("Portadas recuperadas:", vids.length);
     } catch (e) { console.log("portadas viejas:", e.message); }
   }
+  // Tema (nicho) para los videos que no lo tienen
+  try {
+    const todos = await sb("radar?select=id,rubro,datos&limit=5000");
+    const porRubro = {};
+    for (const r of todos) if (!r.datos?.tema && TEMAS[r.rubro]) (porRubro[r.rubro] ||= []).push(r);
+    let puestos = 0;
+    for (const [rb, filas] of Object.entries(porRubro)) {
+      for (let i = 0; i < filas.length; i += 40) {
+        const lote = filas.slice(i, i + 40);
+        const t = await claude(`Clasifica cada video en UNO de estos temas: ${JSON.stringify(TEMAS[rb])}. Responde SOLO un JSON objeto {"<id>":"<tema exacto>"}.\n${JSON.stringify(lote.map((r) => ({ id: r.id, titulo: r.datos.titulo, texto: String(r.datos.caption || "").slice(0, 300), formato: r.datos.formato })))}`);
+        const m = JSON.parse((t.match(/\{[\s\S]*\}/) || ["{}"])[0]);
+        for (const r of lote) if (TEMAS[rb].includes(m[r.id])) { await sb(`radar?id=eq.${encodeURIComponent(r.id)}`, { method: "PATCH", body: JSON.stringify({ datos: { ...r.datos, tema: m[r.id] } }) }); puestos++; }
+      }
+    }
+    console.log("Temas asignados:", puestos);
+  } catch (e) { console.log("temas:", e.message); }
   const ya = new Set((await sb("radar?select=id&limit=5000")).map((r) => r.id));
   const resumen = [];
 
@@ -195,7 +212,7 @@ Método: Instagram premia la retención. Todo viral tiene ESQUELETO (gancho, pro
 De esta lista, elige como máximo ${POR_RUBRO} videos que de verdad sean del rubro, que una sola persona pueda repetir con su celular y que respeten el enfoque. Descarta videos en español, rifas, ventas puras de un producto, contenido sin relación (por ejemplo "branding" de ganado), y para marca-marketing todo lo que sea proceso de diseño, logos con nombres o portafolio.
 Lista (JSON): ${JSON.stringify(lista)}
 Responde SOLO con un JSON array. Cada elemento:
-{"id":"<id>","mercado":"Brasil|Estados Unidos|Alemania|Canadá|Rusia","idioma":"<código real: en, pt, de, ru o fr>","titulo":"<frase principal del original, corta, en su idioma; si es ruso u otro alfabeto, tradúcela al español>","formato":"<nombre corto del formato>","por_que_funciona":"<2 frases: qué del esqueleto retiene y por qué comentan>","por_que_para_ti":"<1-2 frases: cómo se lleva a este rubro para emprendedoras hispanohablantes>","gancho_adaptado":"<el gancho en español latino, cercano, para decir a cámara>","filtros":{"ya_funciono":"si|no|duda","repetible":"si|no|duda","tu_tema":"si|no|duda","espanol":"duda"}}
+{"id":"<id>","mercado":"Brasil|Estados Unidos|Alemania|Canadá|Rusia","idioma":"<código real: en, pt, de, ru o fr>","titulo":"<frase principal del original, corta, en su idioma; si es ruso u otro alfabeto, tradúcela al español>","formato":"<nombre corto del formato>",${TEMAS[rubro] ? `"tema":"<uno exacto de: ${TEMAS[rubro].join(" | ")}>",` : ""}"por_que_funciona":"<2 frases: qué del esqueleto retiene y por qué comentan>","por_que_para_ti":"<1-2 frases: cómo se lleva a este rubro para emprendedoras hispanohablantes>","gancho_adaptado":"<el gancho en español latino, cercano, para decir a cámara>","filtros":{"ya_funciono":"si|no|duda","repetible":"si|no|duda","tu_tema":"si|no|duda","espanol":"duda"}}
 Escribe natural, nada que suene a IA. Intenta que haya variedad de idiomas (inglés, portugués, alemán, ruso) si hay buenos candidatos en cada uno. Si ninguno sirve, responde [].`;
       const txt = await claude(prompt);
       const elegidos = JSON.parse((txt.match(/\[[\s\S]*\]/) || ["[]"])[0]);
@@ -210,7 +227,7 @@ Escribe natural, nada que suene a IA. Intenta que haya variedad de idiomas (ingl
           datos: {
             plataforma: "TikTok", url: v.webVideoUrl, caption: String(v.text || "").slice(0, 600),
             vistas: v.playCount, comentarios: v.commentCount, seguidores: v.authorMeta?.fans || 0, duracion: v.videoMeta?.duration || 0,
-            mercado: e.mercado, idioma: e.idioma || v.textLanguage, titulo: e.titulo, formato: e.formato,
+            mercado: e.mercado, idioma: e.idioma || v.textLanguage, titulo: e.titulo, formato: e.formato, tema: TEMAS[rubro]?.includes(e.tema) ? e.tema : undefined,
             por_que_funciona: e.por_que_funciona, por_que_para_ti: e.por_que_para_ti, gancho_adaptado: e.gancho_adaptado, filtros: e.filtros,
             portada,
           },
