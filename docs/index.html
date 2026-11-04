@@ -232,7 +232,18 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
 .avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#FF8CC3,#6B1237);color:#fff;display:grid;place-items:center;font-weight:800;flex:none;border:2px solid #fff;padding:0;cursor:pointer;overflow:hidden;font:800 17px 'Instrument Sans',sans-serif}
 .avatar img{width:100%;height:100%;object-fit:cover;display:block}
 .avatar.big{width:52px;height:52px;font-size:21px;cursor:default}
-.me{position:relative}
+.me,.bellw{position:relative}
+.bell{width:40px;height:40px;border-radius:50%;background:#FFD1E3;color:#6B1237;border:0;display:grid;place-items:center;cursor:pointer;position:relative}
+.bdot{position:absolute;top:-3px;right:-3px;min-width:19px;height:19px;padding:0 5px;border-radius:999px;background:#6B1237;color:#fff;font:800 11px 'Instrument Sans',sans-serif;display:grid;place-items:center;border:2px solid #fff}
+.bdot.hidden{display:none}
+.notif{width:min(330px,calc(100vw - 28px));right:-52px;max-height:70vh;overflow:auto}
+.nh{padding:10px 12px;border-bottom:1.5px solid #F6D3E1}.nh b{color:#4F0C28}
+.memenu .ni{display:flex;gap:10px;align-items:flex-start;text-decoration:none;padding:12px;border-radius:12px;color:#4F0C28}
+.memenu .ni.new{background:#FFF1F6}
+.nic{width:30px;height:30px;border-radius:50%;background:#F4579F;color:#fff;display:grid;place-items:center;flex:none;font-size:14px}
+.ni b{display:block;font-size:14px}.nt{display:block;font-weight:400;font-size:13.5px;color:#6B1237;margin:3px 0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.ni small{color:#9B5574;font-size:12px}
+.memenu .nfoot{text-align:center;color:#F4579F;border-top:1.5px solid #F6D3E1;border-radius:0}
+.resp{margin-top:8px;background:#FFF1F6;border-left:3px solid #F4579F;border-radius:10px;padding:10px 12px;color:#4F0C28}.resp b{display:block;font-size:12px;color:#F4579F;margin-bottom:3px}
 .memenu{position:absolute;right:0;top:calc(100% + 10px);width:260px;background:#fff;border:1.5px solid #FFD1E3;border-radius:20px;padding:8px;box-shadow:0 22px 44px -18px rgba(79,12,40,.55);z-index:60;display:flex;flex-direction:column}
 .memenu.hidden{display:none}
 .mehead{display:flex;gap:12px;align-items:center;padding:10px 10px 14px;border-bottom:1.5px solid #F6D3E1;margin-bottom:6px}
@@ -550,6 +561,10 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
     <div class="tbtns">
       <a class="tbtn ghost" href="#soporte">Soporte</a>
       <a class="tbtn" href="#mentora">✳ Pregúntale a Mentora</a>
+      <div class="bellw">
+        <button class="bell" id="bell" type="button" aria-label="Notificaciones" aria-expanded="false"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="bdot hidden" id="bellN"></span></button>
+        <div class="memenu notif hidden" id="bellMenu"><div class="nh"><b>Notificaciones</b></div><div id="bellList"></div><a href="#soporte" class="nfoot">Ver mis solicitudes</a></div>
+      </div>
       <div class="me">
         <button class="avatar" id="who" type="button" aria-haspopup="true" aria-expanded="false" aria-label="Mi cuenta"></button>
         <div class="memenu hidden" id="meMenu" role="menu">
@@ -1543,7 +1558,7 @@ function renderLab(){
 /* ---------- SOPORTE ---------- */
 async function loadSup(){
   const {data}=await sb.from("soporte").select("*").eq("user_id",me.id).order("creado",{ascending:false}).limit(10);
-  $("#su_list").innerHTML=(data&&data.length)?`<p class="note" style="margin:0 0 6px">Tus solicitudes</p>`+data.map(t=>`<div class="note" style="padding:8px 0;border-top:1px solid #F6D3E1"><b style="color:#4F0C28">${esc(t.tipo||"")}</b> · ${new Date(t.creado).toLocaleDateString("es-CO",{day:"numeric",month:"short"})} · ${t.estado==="resuelta"?"✅ Resuelta":"⏳ Abierta"}<br>${esc(t.mensaje)}</div>`).join(""):"";
+  $("#su_list").innerHTML=(data&&data.length)?`<p class="note" style="margin:0 0 6px">Tus solicitudes</p>`+data.map(t=>`<div class="note" style="padding:8px 0;border-top:1px solid #F6D3E1"><b style="color:#4F0C28">${esc(t.tipo||"")}</b> · ${new Date(t.creado).toLocaleDateString("es-CO",{day:"numeric",month:"short"})} · ${t.estado==="resuelta"?"✅ Resuelta":"⏳ Abierta"}<br>${esc(t.mensaje)}${t.respuesta?`<div class="resp"><b>Respuesta de soporte</b>${esc(t.respuesta)}</div>`:""}</div>`).join(""):"";
 }
 $("#su_send").addEventListener("click",async()=>{
   const m=$("#su_msg").value.trim(); if(!m){toast("Cuéntanos qué pasó");return}
@@ -1561,7 +1576,7 @@ async function loadAdmin(){
   if(!isAdmin) return;
   sb.from("soporte").select("*").order("creado",{ascending:false}).limit(50).then(({data})=>{
     const open=(data||[]).filter(t=>t.estado!=="resuelta");
-    $("#adSup").innerHTML=open.length?open.map(t=>`<div class="card adrow"><div style="min-width:0"><h4>${esc(t.tipo||"Solicitud")}</h4><div class="note">${esc(t.email||"")} · ${new Date(t.creado).toLocaleString("es-CO",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"})}</div><p style="margin:6px 0 0;color:#4F0C28">${esc(t.mensaje)}</p></div><div class="actions" style="margin:0"><a class="btn btn-sm btn-soft" target="_blank" rel="noopener" href="mailto:${esc(t.email||"")}">Responder</a><button class="btn btn-sm btn-ghost" data-ok="${esc(t.id)}">Resuelta</button></div></div>`).join(""):`<div class="card note">No hay solicitudes abiertas 🎉</div>`;
+    $("#adSup").innerHTML=open.length?open.map(t=>`<div class="card adrow"><div style="min-width:0"><h4>${esc(t.tipo||"Solicitud")}</h4><div class="note">${esc(t.email||"")} · ${new Date(t.creado).toLocaleString("es-CO",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"})}</div><p style="margin:6px 0 0;color:#4F0C28">${esc(t.mensaje)}</p><textarea class="in" data-r="${esc(t.id)}" placeholder="Escribe tu respuesta… le llega a su campanita en la página" style="margin-top:10px;min-height:80px"></textarea><div class="actions" style="margin-top:8px"><button class="btn btn-sm btn-primary" data-send="${esc(t.id)}">Enviar respuesta</button><button class="btn btn-sm btn-ghost" data-ok="${esc(t.id)}">Marcar resuelta sin responder</button></div></div></div>`).join(""):`<div class="card note">No hay solicitudes abiertas 🎉</div>`;
   });
   const el=$("#adList"); el.innerHTML=loadingHTML("Cargando accesos…");
   const [{data:acc},{data:us}]=await Promise.all([sb.from("accesos").select("*").order("creado",{ascending:false}),sb.rpc("admin_usuarias")]);
@@ -1584,7 +1599,12 @@ $("#ad_msg").addEventListener("click",()=>{
   const link=location.origin+location.pathname+"#acceso";
   copy(`¡Hola! Bienvenida a CREATIVE.LAB ✳\n\nYa activé tu acceso. Para entrar:\n1. Abre ${link}\n2. Escribe el correo con el que compraste y toca "Enviarme el enlace de acceso".\n3. Abre el correo que te llega (revisa también spam), crea tu contraseña y listo.\n\nCualquier cosa me escribes por aquí.`);
 });
-$("#adSup").addEventListener("click",async e=>{const b=e.target.closest("[data-ok]");if(!b)return;await sb.from("soporte").update({estado:"resuelta"}).eq("id",b.dataset.ok);loadAdmin()});
+$("#adSup").addEventListener("click",async e=>{
+  const sd=e.target.closest("[data-send]");
+  if(sd){const id=sd.dataset.send, txt=($(`[data-r="${id}"]`).value||"").trim(); if(!txt){toast("Escribe la respuesta");return}
+    sd.disabled=true; const {error}=await sb.from("soporte").update({respuesta:txt.slice(0,3000),respondida:new Date().toISOString(),estado:"resuelta",vista:false}).eq("id",id);
+    if(error){sd.disabled=false;toast("No se pudo enviar");return} toast("Respuesta enviada ✳"); loadAdmin(); return}
+  const b=e.target.closest("[data-ok]");if(!b)return;await sb.from("soporte").update({estado:"resuelta"}).eq("id",b.dataset.ok);loadAdmin()});
 $("#adList").addEventListener("click",async e=>{
   const row=e.target.closest("[data-em]"); if(!row) return; const email=row.dataset.em;
   const t=e.target.closest("[data-tog]"); const d=e.target.closest("[data-del]");
@@ -1625,6 +1645,23 @@ $("#f_clave").addEventListener("submit",async e=>{
   try{await afterLogin()}catch(err){console.error(err)}
   location.hash=profile.rubro?"lab":"perfil"; route();
 });
+/* ---------- NOTIFICACIONES ---------- */
+let notis=[];
+async function loadNotis(){
+  if(!me) return;
+  const {data}=await sb.from("soporte").select("id,tipo,mensaje,respuesta,respondida,vista").eq("user_id",me.id).not("respuesta","is",null).order("respondida",{ascending:false}).limit(15);
+  notis=data||[]; const n=notis.filter(x=>x.vista===false).length;
+  $("#bellN").textContent=n>9?"9+":n; $("#bellN").classList.toggle("hidden",!n);
+  $("#bellList").innerHTML=notis.length?notis.map(x=>`<a href="#soporte" class="ni ${x.vista===false?"new":""}"><span class="nic">✳</span><span style="min-width:0"><b>Soporte respondió: ${esc(x.tipo||"tu solicitud")}</b><span class="nt">${esc(x.respuesta)}</span><small>${new Date(x.respondida).toLocaleString("es-CO",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"})}</small></span></a>`).join(""):`<p class="note" style="padding:14px 12px;margin:0">No tienes notificaciones todavía.</p>`;
+}
+function bellMenu(open){$("#bellMenu").classList.toggle("hidden",!open);$("#bell").setAttribute("aria-expanded",open?"true":"false");
+  if(open&&notis.some(x=>x.vista===false)){sb.rpc("marcar_vistas").then(()=>{notis.forEach(x=>x.vista=true);$("#bellN").classList.add("hidden")})}}
+$("#bell").addEventListener("click",e=>{e.stopPropagation();meMenu(false);bellMenu($("#bellMenu").classList.contains("hidden"))});
+document.addEventListener("click",e=>{if(!e.target.closest(".bellw"))bellMenu(false)});
+$("#bellMenu").addEventListener("click",e=>{if(e.target.closest("a"))bellMenu(false)});
+setInterval(()=>{if(me&&!document.hidden)loadNotis()},60000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&me)loadNotis()});
+
 /* ---------- MI CUENTA (avatar) ---------- */
 function paintAvatar(){
   const nm=((profile.nombre||me.email||"").split(/[ ·@]/)[0]);
@@ -1678,7 +1715,7 @@ async function afterLogin(){
   profile=Object.assign({nombre:"",pais:"",rubro:"",rubroOtro:"",enfoque:"",nicho:"",publico:"",oferta:"",hago:"",prueba:"",tono:[],voz:""},per&&per.datos?per.datos:(isAdmin?DEFAULT_PROFILE:{}));
   saved=(gs||[]).map(g=>({id:g.id,kind:g.tipo,title:g.titulo,content:g.contenido,ts:Date.parse(g.creado)}));
   descartados=new Set((ds||[]).map(d=>d.video_id)); favs=new Set((fv||[]).map(d=>d.video_id));
-  const nm=((profile.nombre||me.email||"").split(/[ ·@]/)[0]); paintAvatar(); $("#helloName").textContent=nm||"creadora";
+  const nm=((profile.nombre||me.email||"").split(/[ ·@]/)[0]); paintAvatar(); loadNotis(); $("#helloName").textContent=nm||"creadora";
   $("#storeNote").textContent="Se guarda en tu cuenta.";
   fillProfile(); renderSaved(); renderChat(); startFeed(); loadConvs();
 }
