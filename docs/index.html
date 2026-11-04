@@ -133,6 +133,62 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
 .arrow-swap{position:absolute;z-index:3;left:44%;top:46%;width:46px;height:46px;border-radius:50%;background:#FF8CC3;border:3px solid #fff;display:grid;place-items:center;color:#4F0C28;font-weight:800;box-shadow:0 10px 20px rgba(79,12,40,.3)}
 @media(max-width:480px){.phones{height:470px}.phone{width:200px;height:420px}.subt{font-size:18px;top:100px}}
 
+
+/* ---------- landing despejada ---------- */
+#landing{background:#FFF7FA}
+.ltop{position:sticky;top:0;z-index:20;background:rgba(255,247,250,.92);backdrop-filter:blur(10px);border-bottom:1px solid #F6D3E1}
+.ltop .wrap{display:flex;align-items:center;justify-content:space-between;min-height:72px;gap:12px}
+.ltop .logo-pill{font-size:19px;padding:7px 16px}
+.lnav{display:flex;gap:14px;align-items:center}
+.lnav a{text-decoration:none;font-weight:600;color:#4F0C28;font-size:15px}
+.lnav .btn{color:#fff}
+.lhero{padding:60px 0 70px}
+.lhero-grid{display:grid;gap:44px;align-items:center}
+@media(min-width:960px){.lhero-grid{grid-template-columns:1fr 440px}}
+.lhero .eyebrow,.lsec .eyebrow{font-size:11.5px;color:#9B5574}
+.lhero h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.045em;font-size:clamp(44px,7vw,76px);line-height:.95;color:#4F0C28;margin:14px 0 18px;max-width:560px}
+.lhero .lead{font-size:clamp(17px,2vw,19px);color:#6B1237;max-width:500px;margin:0 0 26px;line-height:1.5}
+.ctas{display:flex;gap:10px;flex-wrap:wrap}
+.democard{background:#fff;border-radius:28px;padding:20px;box-shadow:0 24px 60px -28px rgba(79,12,40,.45);border:2px solid #FFD1E3;display:flex;flex-direction:column;gap:14px;pointer-events:none;user-select:none;max-width:440px;width:100%;margin:0 auto}
+.dhead{display:flex;align-items:center;gap:12px}
+.dhead small{display:block;font-size:11px;letter-spacing:.12em;color:#9B5574;font-weight:700}
+.dhead b{font-size:17px;color:#4F0C28}
+.dico{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#FFD1E3,#FF8CC3);display:grid;place-items:center;color:#fff;font-weight:800;flex:none}
+.ddots{margin-left:auto;display:flex;gap:5px}.ddots i{width:6px;height:6px;border-radius:50%;background:#FFD1E3}.ddots i.on{width:18px;border-radius:4px;background:#F4579F}
+.dthumb{background:radial-gradient(120% 80% at 50% 25%,#FFE1EC,#FF8CC3 45%,#6B1237 95%)}
+.dthumb .sil{width:100px;height:120px}.dthumb .sil .h{top:14px;width:40px;height:48px}.dthumb .sil .hair{top:8px;width:54px;height:66px}.dthumb .sil .b{width:96px;height:62px}
+.dsub{position:absolute;left:8px;right:8px;top:18px;color:#fff;font-weight:800;font-size:11px;line-height:1.2;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+.dstats{display:flex;flex-direction:column;gap:6px}
+.dstats span{align-self:flex-start;font-size:12.5px;font-weight:600;color:#F4579F;border:1.5px solid #FFD1E3;border-radius:999px;padding:3px 10px}
+.dwhy b{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#F4579F;margin-bottom:2px}
+.dwhy p{margin:0;font-size:14px;color:#4F0C28;line-height:1.45}
+.lsec{padding:70px 0}
+.lsec h2,.ldark h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.04em;font-size:clamp(32px,5vw,52px);line-height:1;color:#4F0C28;margin:10px 0 12px}
+.lsec .sub{color:#6B1237;max-width:560px;font-size:17px;margin:0 0 28px}
+.lsteps{display:grid;gap:14px}
+@media(min-width:800px){.lsteps{grid-template-columns:repeat(4,1fr)}}
+.lsteps>div{background:#fff;border:1.5px solid #F6D3E1;border-radius:20px;padding:18px}
+.lsteps .n{width:28px;height:28px;border-radius:50%;border:1.5px solid #FFD1E3;display:grid;place-items:center;font-size:13px;font-weight:700;color:#F4579F;margin-bottom:12px}
+.lsteps small{display:block;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#9B5574;font-weight:700}
+.lsteps b{display:block;font-size:17px;color:#4F0C28;margin:2px 0 6px}
+.lsteps p{margin:0;font-size:14px;color:#6B1237;line-height:1.45}
+.lmentor{margin-top:14px;display:flex;gap:14px;align-items:center;background:#FFF1F6;border:1.5px solid #FFD1E3;border-radius:20px;padding:18px}
+.lmentor b{color:#4F0C28;font-size:17px}.lmentor p{margin:2px 0 0;color:#6B1237;font-size:14.5px}
+.ldark{background:#2A0717;padding:70px 0;color:#fff}
+.ldark h2{color:#fff}.ldark .sub{color:#FFD1E3;font-size:17px;max-width:520px;margin:0 0 24px}
+.ldark-grid{display:grid;gap:30px;align-items:center}
+@media(min-width:900px){.ldark-grid{grid-template-columns:1fr 420px}}
+.lstats{display:flex;gap:12px;flex-wrap:wrap}
+.lstats div{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:14px 18px;min-width:120px}
+.lstats b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-size:26px;font-weight:800}
+.lstats span{font-size:12.5px;color:#FFD1E3}
+.lsearch{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);border-radius:22px;padding:20px}
+.lsearch b{font-size:16px}
+.lbar{height:4px;border-radius:4px;background:rgba(255,255,255,.12);margin:14px 0;overflow:hidden}.lbar i{display:block;height:100%;width:62%;background:#F4579F;border-radius:4px}
+.lsearch small{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#FF8CC3;margin-bottom:10px}
+.lchips{display:flex;gap:8px;flex-wrap:wrap}.lchips span{background:#6B1237;color:#fff;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600}
+#landing footer{background:#2A0717}
+
 /* ---------- APP ---------- */
 #app{min-height:100vh}
 .app-top{position:sticky;top:0;z-index:20;background:#F4579F;border-bottom:2px solid rgba(255,255,255,.35)}
@@ -232,113 +288,75 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
 
 <!-- ================= LANDING ================= -->
 <div id="landing">
-  <header class="top"><div class="wrap">
-    <a class="brand" href="#inicio"><span class="logo-pill display"><svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true" style="color:#FF8CC3;flex:none"><g stroke="currentColor" stroke-width="14" stroke-linecap="round"><path d="M50 10v80"/><path d="M15.4 30l69.3 40"/><path d="M15.4 70l69.3-40"/></g></svg><span>CREATIVE<span style="color:#FF8CC3">.</span>LAB</span><svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true" style="color:#FF8CC3;flex:none"><g stroke="currentColor" stroke-width="14" stroke-linecap="round"><path d="M50 10v80"/><path d="M15.4 30l69.3 40"/><path d="M15.4 70l69.3-40"/></g></svg></span><small>Contenido que ya funcionó, en tu voz</small></a>
-    <nav class="nav-links">
-      <a href="#como">Cómo funciona</a>
-      <a href="#mercados">Mercados</a>
-      <a class="cta" href="#entrar">Iniciar sesión</a>
-    </nav>
+  <header class="ltop"><div class="wrap">
+    <a class="brand" href="#inicio"><span class="logo-pill display"><svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true" style="color:#FF8CC3;flex:none"><g stroke="currentColor" stroke-width="14" stroke-linecap="round"><path d="M50 10v80"/><path d="M15.4 30l69.3 40"/><path d="M15.4 70l69.3-40"/></g></svg><span>CREATIVE<span style="color:#FF8CC3">.</span>LAB</span><svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true" style="color:#FF8CC3;flex:none"><g stroke="currentColor" stroke-width="14" stroke-linecap="round"><path d="M50 10v80"/><path d="M15.4 30l69.3 40"/><path d="M15.4 70l69.3-40"/></g></svg></span></a>
+    <nav class="lnav"><a href="#acceso">Crear cuenta</a><a class="btn btn-primary btn-sm" href="#entrar">Entrar</a></nav>
   </div></header>
 
-  <section class="hero grid-hot"><div class="wrap hero-grid"><div>
-    <span class="eyebrow"><span>✳</span> Para creadoras y emprendedoras</span>
-    <h1>Lo que ya pegó afuera, contado <em>por primera vez</em> en tu idioma.</h1>
-    <p class="lead">En español todo ya se vio. En el <b>segundo internet</b>, los videos virales en portugués, inglés, alemán, francés o ruso, hay ideas que aquí nadie ha contado. CREATIVE.LAB te las trae todos los días, según tu rubro, y te entrega el guion con tu voz.</p>
-    <div class="ctas">
-      <a class="btn btn-primary" href="#entrar">Iniciar sesión</a>
-      <a class="btn btn-white" href="#como">Ver cómo funciona</a>
+  <section class="lhero grid-pale"><div class="wrap lhero-grid">
+    <div>
+      <span class="eyebrow">Para creadoras y emprendedoras</span>
+      <h1>Siempre sabrás qué reestrenar.</h1>
+      <p class="lead">Encuentro el contenido que ya funciona en tu nicho en otros países e idiomas, lo reescribo con tu voz y te entrego el guion listo para grabar.</p>
+      <div class="ctas"><a class="btn btn-primary" href="#entrar">Entrar a CREATIVE.LAB →</a><a class="btn btn-ghost" href="#acceso">Crear mi cuenta</a></div>
+      <p class="note" style="margin-top:16px">Vistas y comentarios, no likes. Adaptar, nunca copiar.</p>
     </div>
-    <div class="tag"><i style="top:-8px;left:-8px"></i><i style="top:-8px;right:-8px"></i><i style="bottom:-8px;left:-8px"></i><i style="bottom:-8px;right:-8px"></i>Adaptar, nunca copiar</div>
-  </div>
-    <div class="phones" aria-hidden="true">
-      <div class="phone back"><div class="scr b">
-        <div class="topbar"><span>Reels</span><span>🇧🇷</span></div>
-        <div class="sil"><i class="hair"></i><i class="h"></i><i class="b"></i></div>
-        <div class="subt"><span>Sua marca não vende por causa disso 👇</span></div>
-        <div class="side"><b>♥</b>2,1 M<b>💬</b>9.840<b>↗</b>41 K</div>
-        <div class="cap"><b>@marca.pessoal.br</b>3 erros que fazem sua marca parecer amadora…</div>
-      </div></div>
-      <div class="phone front"><div class="scr a">
-        <div class="topbar"><span>Reels</span><span>🇨🇴</span></div>
-        <div class="sil"><i class="hair"></i><i class="h"></i><i class="b"></i></div>
-        <div class="subt"><span>Tu marca no vende por esto 👇</span></div>
-        <div class="side"><b>♥</b>214 K<b>💬</b>3.420<b>↗</b>8.900<b>🔖</b>12 K</div>
-        <div class="cap"><b>@tuemprendimiento</b>Lo que nadie te dice de tu marca personal ✳ ♫ sonido original</div>
-      </div></div>
-      <div class="arrow-swap">→</div>
-      <div class="badge b2"><small>Original · Brasil</small>2,1 M vistas</div>
-      <div class="badge b1"><small>Tu reestreno</small>En español, con tu voz</div>
-    </div>
-  </div></section>
-
-  <section class="strip"><div class="wrap">
-    <div><b>5 mercados</b><span>Brasil, EE. UU., Alemania, Canadá y Rusia</span></div>
-    <div><b>Todos los días</b><span>videos nuevos según tu rubro</span></div>
-    <div><b>4 filtros</b><span>para saber si vale la pena reestrenarlo</span></div>
-    <div><b>Tu voz</b><span>el guion suena a ti, no a IA</span></div>
-  </div></section>
-
-  <section class="section grid-pale"><div class="wrap">
-    <span class="eyebrow">✳ Radar · ejemplo</span>
-    <h2>Esto es lo que te llegaría hoy.</h2>
-    <p class="sub">Cada video llega con su porqué y con la razón por la que encaja contigo. Así se ven dos tarjetas para una cuenta de marca personal.</p>
-    <div class="picks">
-      <article class="pick">
-        <div class="meta"><span class="chip hot">EE. UU. · EN</span><span class="chip">Frase polémica + explicación</span></div>
-        <p class="orig">“Customers don’t care about you.”</p>
-        <div class="why">
-          <div><b>Por qué funciona</b>Una frase que pica abre el video y en 24 segundos da la vuelta. Se ve completo y genera debate.</div>
-          <div><b>Por qué es para ti</b>Le habla a la emprendedora que solo publica sobre su producto.</div>
+    <div class="democard" aria-hidden="true">
+      <div class="dhead"><span class="dico">✳</span><div><small>RADAR · HOY</small><b>Encontré esto para ti</b></div><span class="ddots"><i class="on"></i><i></i><i></i><i></i></span></div>
+      <div class="vtop">
+        <div class="vthumb dthumb"><div class="sil"><i class="hair"></i><i class="h"></i><i class="b"></i></div><span class="dsub">Sua marca não vende por isso</span><span class="vplay">▶</span><span class="vdur">0:42</span></div>
+        <div class="vinfo">
+          <div class="vtags"><span>TikTok</span><span>🇧🇷 Portugués</span></div>
+          <p class="vtitle">“Sua marca não vende por causa disso”</p>
+          <div class="dstats"><span>👁 2,1 M vistas</span><span>💬 9,8 K comentarios</span></div>
         </div>
-      </article>
-      <article class="pick">
-        <div class="meta"><span class="chip hot">Brasil · PT</span><span class="chip">Mini clase: 3 pilares</span></div>
-        <p class="orig">“Como construir uma marca pessoal em 3 pilares”</p>
-        <div class="why">
-          <div><b>Por qué funciona</b>Promete un método con número y la gente se queda a completar la lista.</div>
-          <div><b>Por qué es para ti</b>Te posiciona como experta hablando, sin mostrar trabajos.</div>
-        </div>
-      </article>
+      </div>
+      <div class="dwhy"><b>Por qué funciona</b><p>Abre señalando un error que casi todas cometen y promete la solución en 3 pasos: la gente se queda hasta el final.</p></div>
+      <div class="dwhy"><b>Por qué es para ti</b><p>Es una persona hablando a cámara, lo grabas hoy, y en español todavía nadie lo ha contado.</p></div>
+      <span class="btn btn-primary" style="width:100%">Adaptar esta idea →</span>
     </div>
   </div></section>
 
-  <section class="section sec-wine" id="como"><div class="wrap">
-    <span class="eyebrow">✳ El método</span>
-    <h2>Identifica. Reestrena. Cobra.</h2>
-    <p class="sub">No necesitas crear de cero un video que ya existe. Necesitas uno que ya demostró que la gente se queda viéndolo.</p>
-    <div class="steps">
-      <div class="step"><div class="agent">Radar</div><h3>Identifica</h3><p>Cada día te llegan videos de tu rubro que pegaron en otros idiomas, ya pasados por los 4 filtros.</p></div>
-      <div class="step"><div class="agent">Adaptar</div><h3>Reestrena</h3><p>Separa el esqueleto (lo que retiene) de la piel (lo que se ve) y le pone la tuya: tu voz, tu nicho, tu estilo.</p></div>
-      <div class="step"><div class="agent">Venta</div><h3>Cobra</h3><p>Si el reestreno pega, las historias de 3 días convierten esa gente nueva en ventas.</p></div>
-      <div class="step"><div class="agent">Números</div><h3>Mide</h3><p>Ves dónde se cae tu embudo y qué cambiar primero.</p></div>
+  <section class="lsec" id="como"><div class="wrap">
+    <span class="eyebrow">Cómo funciona</span>
+    <h2>Cuatro pasos, un solo recorrido.</h2>
+    <p class="sub">En orden, pero sin bloqueos: entras por el paso que te haga falta hoy.</p>
+    <div class="lsteps">
+      <div><span class="n">1</span><small>Paso 1 · Identifica</small><b>Radar</b><p>Cada mañana te trae videos de tu rubro que ya pasaron las 800 mil vistas en otros idiomas.</p></div>
+      <div><span class="n">2</span><small>Paso 2 · Reestrena</small><b>Tu guion</b><p>Lo reescribe frase por frase en español, con tu forma de hablar y tu negocio.</p></div>
+      <div><span class="n">3</span><small>Paso 3 · Cobra</small><b>Historias que venden</b><p>Si el video pega, te arma las historias de 3 días para convertir esa gente en ventas.</p></div>
+      <div><span class="n">4</span><small>Paso 4 · Mide</small><b>Números</b><p>Tu oferta, tus métricas y dónde se está cayendo tu embudo.</p></div>
     </div>
-    <div class="brain"><div class="ic">✳</div><div><h3>Los 4 filtros</h3><p>1. Ya funcionó allá (más vistas que seguidores). 2. Se puede repetir. 3. Te lo llevas a tu tema. 4. Todavía no llegó al español.</p></div></div>
+    <div class="lmentor"><span class="dico">✳</span><div><b>Mentora</b><p>Tu guía de marca, con la personalidad de María José. Pregúntale cuando quieras, desde cualquier pantalla.</p></div></div>
   </div></section>
 
-  <section class="section grid-pale" id="mercados"><div class="wrap">
-    <span class="eyebrow">✳ Mercados donde busco</span>
-    <h2>Busco donde tu público todavía no está mirando.</h2>
-    <p class="sub">Lo que ya pegó en otro idioma, contado por primera vez en el tuyo.</p>
-    <div class="stats">
-      <div class="stat"><div class="n">5</div><div class="l">mercados</div></div>
-      <div class="stat"><div class="n">0</div><div class="l">videos en español</div></div>
-      <div class="stat"><div class="n">Diario</div><div class="l">búsqueda automática</div></div>
+  <section class="ldark"><div class="wrap ldark-grid">
+    <div>
+      <span class="eyebrow" style="color:#FF8CC3">Radar</span>
+      <h2>Busco donde tu público todavía no mira.</h2>
+      <p class="sub">Cada día rastreo lo que ya pasó la prueba en tu nicho, en otros mercados y otros idiomas. Lo que a ti te llega es lo que tu audiencia no ha visto.</p>
+      <div class="lstats"><div><b>800 K</b><span>vistas mínimas</span></div><div><b>200</b><span>comentarios mínimos</span></div><div><b>Diario</b><span>videos nuevos</span></div></div>
     </div>
-    <div class="markets"><span>🇧🇷 Brasil</span><span>🇺🇸 Estados Unidos</span><span>🇩🇪 Alemania</span><span>🇨🇦 Canadá</span><span>🇷🇺 Rusia</span></div>
-  </div></section>
-
-  <section class="section grid-hot"><div class="wrap">
-    <div class="principle">
-      <span class="eyebrow">✳ Nuestro principio</span>
-      <h2>No publico por ti.</h2>
-      <p>CREATIVE.LAB prepara, adapta y revisa. Nunca programa ni sube nada a tu nombre. Lo que sale con tu cara, lo decides tú.</p>
+    <div class="lsearch">
+      <b>Estoy buscando en portugués, inglés, alemán, francés y ruso ✳</b>
+      <div class="lbar"><i></i></div>
+      <small>Mercados donde busco</small>
+      <div class="lchips"><span>Brasil</span><span>Estados Unidos</span><span>Alemania</span><span>Canadá</span><span>Rusia</span></div>
     </div>
   </div></section>
 
+  <section class="lsec" style="text-align:center"><div class="wrap">
+    <span class="eyebrow">Con una regla clara</span>
+    <h2>No publico por ti.</h2>
+    <p class="sub" style="margin:0 auto">Preparo, adapto y reviso antes de que publiques. Sin programar ni publicar en tu nombre. Lo que sale con tu cara lo decides tú.</p>
+  </div></section>
 
+  <section class="lsec grid-pale" style="text-align:center"><div class="wrap">
+    <h2>¿Qué vamos a reestrenar hoy? ✳</h2>
+    <div class="ctas" style="justify-content:center"><a class="btn btn-primary" href="#entrar">Entrar a CREATIVE.LAB →</a><a class="btn btn-ghost" href="#acceso">Todavía no tengo cuenta</a></div>
+  </div></section>
 
-  <footer><div class="wrap"><span>© 2026 CREATIVE.LAB · por Logos by Majo®</span><span><a href="#entrar">Iniciar sesión</a></span></div></footer>
+  <footer><div class="wrap"><span>© 2026 CREATIVE.LAB · por Logos by Majo®</span><span><a href="#acceso">Crear cuenta</a> · <a href="#entrar">Entrar</a></span></div></footer>
 </div>
 
 <!-- ================= ACCESO ================= -->
@@ -429,7 +447,7 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
       <div id="rubroWarn" class="banner hidden">Elige tu rubro en <a href="#perfil">Mi perfil</a> para que te lleguen videos de lo que haces.</div>
       <div class="pills" id="feedLang" style="margin-bottom:16px">
         <button type="button" class="pill on" data-l="">Todos</button><button type="button" class="pill" data-l="en">🇺🇸 Inglés</button><button type="button" class="pill" data-l="pt">🇧🇷 Portugués</button><button type="button" class="pill" data-l="de">🇩🇪 Alemán</button><button type="button" class="pill" data-l="ru">🇷🇺 Ruso</button><button type="button" class="pill" data-l="fr">🇨🇦 Francés</button>
-        <button type="button" class="pill" id="allRubros" style="border-style:dashed">Ver todos los rubros</button>
+        <button type="button" class="pill hidden" id="allRubros" style="border-style:dashed">Ver todos los rubros</button>
       </div>
       <div class="list" id="feed"><div class="card"><div class="loading"><span class="dot"></span><span class="dot"></span><span class="dot"></span> Cargando tu radar…</div></div></div>
     </section>
@@ -1067,13 +1085,14 @@ ${/sin teleprompter|Historias/.test(fmt)?"Frases muy cortas y fáciles de memori
 CONTENIDO ORIGINAL:
 """${src.slice(0,6000)}"""
 
-Entrega:
-### Tu versión
-(el guion completo listo para grabar; si es carrusel, slide por slide; si es reel, marca [GANCHO], [DESARROLLO], [CIERRE + CTA])
-### Revisión antes de grabar
-- 4 a 6 puntos concretos: fuerza del gancho en los primeros 3 segundos, claridad, CTA, si suena a ella, qué mostrar en pantalla.
-### Caption sugerido
-(corto, con una pregunta que invite a comentar)`;
+Reglas: solo el texto que se dice, palabra por palabra, en párrafos cortos de 1 o 2 frases; sin etiquetas como [GANCHO], sin indicaciones de cámara, sin comillas, sin explicaciones. Respeta el orden y las ideas del original.
+Entrega exactamente esto y nada más:
+### Tu guion
+(el texto listo para decir)
+### 3 tips para grabarlo
+- (gancho en pantalla, máximo 8 palabras)
+- (qué mostrar, 1 línea)
+- (caption corto con una pregunta)`;
   streamTo($("#vozOut"),prompt,"Voz",src.split("\n")[0].slice(0,80),$("#runVoz"));
 });
 
@@ -1237,7 +1256,7 @@ async function afterLogin(){
     sb.from("guardados").select("*").order("creado",{ascending:false}).limit(300),
     sb.from("descartes").select("video_id")
   ]);
-  isAdmin=!!adm; $("#tabAdmin").classList.toggle("hidden",!isAdmin);
+  isAdmin=!!adm; $("#tabAdmin").classList.toggle("hidden",!isAdmin); $("#allRubros").classList.toggle("hidden",!isAdmin);
   profile=Object.assign({nombre:"",pais:"",rubro:"",rubroOtro:"",enfoque:"",nicho:"",publico:"",oferta:"",hago:"",prueba:"",tono:[],voz:""},per&&per.datos?per.datos:(isAdmin?DEFAULT_PROFILE:{}));
   saved=(gs||[]).map(g=>({id:g.id,kind:g.tipo,title:g.titulo,content:g.contenido,ts:Date.parse(g.creado)}));
   descartados=new Set((ds||[]).map(d=>d.video_id));
