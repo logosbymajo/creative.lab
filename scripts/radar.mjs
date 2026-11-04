@@ -84,6 +84,10 @@ async function subirPortada(id, url) {
     return `${SB_URL}/storage/v1/object/public/portadas/${id}.${ext}`;
   } catch { return null; }
 }
+const BUSQUEDAS = {
+  "marca-marketing": ["personal branding tips", "marketing tips for small business", "how to grow on instagram", "brand strategy", "como crescer no instagram", "marketing pessoal dicas", "marketing tipps selbstständig", "личный бренд советы"],
+  gatos: ["ragdoll cat", "siberian cat", "ragamuffin cat", "cat breeder tips", "gato ragdoll", "ragdoll katze", "сибирская кошка"],
+};
 const portadaDe = (v) => v.videoMeta?.coverUrl || v.videoMeta?.originalCoverUrl || null;
 
 function elegirTags(rubro, extra) {
@@ -154,7 +158,18 @@ async function main() {
         body: JSON.stringify({ hashtags: tags, resultsPerPage: 15, leastDiggs: MIN_LIKES, downloadSubtitlesOptions: "NEVER_DOWNLOAD_SUBTITLES" }),
       });
       if (!r.ok) throw new Error("Apify " + r.status + " " + (await r.text()).slice(0, 200));
-      const items = await r.json();
+      let items = await r.json();
+      const bastan = items.filter((v) => (v.playCount || 0) >= MIN_VISTAS && IDIOMAS.includes((v.textLanguage || "").slice(0, 2)) && !ya.has("tt-" + v.id)).length;
+      const qs = BUSQUEDAS[rubro] || (inf.otro ? [inf.otro] : []);
+      if (bastan < 8 && qs.length) {
+        const pick = [0, 1, 2, 3].map((k) => qs[(diaDelAnio + k) % qs.length]);
+        console.log(`[${rubro}] pocos videos grandes (${bastan}); busco también:`, pick.join(", "));
+        const r2 = await fetch(`https://api.apify.com/v2/acts/clockworks~tiktok-scraper/run-sync-get-dataset-items?token=${APIFY}&timeout=290&maxTotalChargeUsd=0.5`, {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ searchQueries: pick, searchSection: "/video", videoSearchSorting: "MOST_LIKED", resultsPerPage: 10, downloadSubtitlesOptions: "NEVER_DOWNLOAD_SUBTITLES" }),
+        });
+        if (r2.ok) items = items.concat(await r2.json());
+      }
 
       // 4) Filtro con números
       const cand = items.filter((v) => {
@@ -203,8 +218,8 @@ Escribe natural, nada que suene a IA. Intenta que haya variedad de idiomas (ingl
         ya.add("tt-" + v.id);
       }
       if (filas.length) await sb("radar", { method: "POST", body: JSON.stringify(filas), headers: { Prefer: "resolution=ignore-duplicates,return=minimal" } });
-      console.log(`[${rubro}] guardados: ${filas.length}`);
-      resumen.push(`${rubro}: ${filas.length}`);
+      console.log(`[${rubro}] guardados: ${filas.length} (${filas.map((f) => f.datos.idioma).join(",")})`);
+      resumen.push(`${rubro}: ${filas.length} [${filas.map((f) => f.datos.idioma).join(",")}]`);
     } catch (e) {
       console.error(`[${rubro}] error:`, e.message);
       resumen.push(`${rubro}: error`);
@@ -216,7 +231,10 @@ Escribe natural, nada que suene a IA. Intenta que haya variedad de idiomas (ingl
   for (const t of todos) await sb(`radar?id=eq.${encodeURIComponent(t.id)}`, { method: "DELETE" });
 
   console.log("Resumen:", resumen.join(" · "));
-  console.log("::notice::Radar: " + resumen.join(" · "));
+  const total = await sb("radar?select=rubro,datos&limit=5000");
+  const cuentaIdiomas = {};
+  for (const t of total) { const k = t.rubro + ":" + t.datos?.idioma; cuentaIdiomas[k] = (cuentaIdiomas[k] || 0) + 1; }
+  console.log("::notice::Radar: " + resumen.join(" · ") + " | En total: " + JSON.stringify(cuentaIdiomas) + " | con portada: " + total.filter((t) => t.datos?.portada).length + "/" + total.length);
 }
 
 main().catch((e) => { console.error(e); process.exit(1); });
