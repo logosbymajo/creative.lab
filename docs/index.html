@@ -1549,6 +1549,7 @@ $("#su_send").addEventListener("click",async()=>{
   const m=$("#su_msg").value.trim(); if(!m){toast("Cuéntanos qué pasó");return}
   const {error}=await sb.from("soporte").insert({tipo:$("#su_tipo").value,mensaje:m.slice(0,2000)});
   if(error){toast("No se pudo enviar. Escríbenos por WhatsApp.");return}
+  try{await fetch("https://formsubmit.co/ajax/logosbymajo.studiocreativo@gmail.com",{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify({_subject:"Soporte CREATIVE.LAB · "+$("#su_tipo").value,_template:"table",_captcha:"false",_replyto:me.email||"",Nombre:profile.nombre||"",Correo:me.email||"",Tema:$("#su_tipo").value,Mensaje:m.slice(0,2000),Fecha:new Date().toLocaleString("es-CO")})})}catch(err){}
   $("#su_msg").value=""; toast("¡Recibido! Te respondemos pronto ✳"); loadSup();
 });
 $("#menuBtn").addEventListener("click",()=>document.body.classList.toggle("navopen"));
