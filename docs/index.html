@@ -285,6 +285,10 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
 .chatbar{position:sticky;bottom:0;padding:10px 0 14px;display:flex;gap:8px}
 .chatbar textarea{min-height:52px;max-height:160px}
 .suggest{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.mic{width:52px;padding:0;flex:none}
+.mic.rec{background:#F4579F;color:#fff;animation:pulse 1.2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(244,87,159,.55)}50%{box-shadow:0 0 0 10px rgba(244,87,159,0)}}
+.speak{background:none;border:0;cursor:pointer;font-size:13px;color:#9B5574;padding:4px 0 0;text-decoration:underline}
 .convbar{display:flex;gap:8px;align-items:center;margin-bottom:14px;overflow:hidden}
 .convlist{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:1}
 .convlist::-webkit-scrollbar{display:none}
@@ -637,9 +641,11 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
       <div class="chat" id="chat"></div>
       <div class="chatbar">
         <textarea class="in" id="chatIn" placeholder="Escribe tu pregunta…" rows="1"></textarea>
+        <button class="btn btn-soft mic" id="chatMic" type="button" aria-label="Hablar con Mentora" title="Habla y Mentora te escucha"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button>
         <button class="btn btn-accent" id="chatSend" aria-label="Enviar">Enviar</button>
       </div>
-      <p class="note" style="margin:4px 2px 0">Tus conversaciones se guardan en tu cuenta y solo tú las ves.</p>
+      <p class="note" id="micNote" style="margin:4px 2px 0">Toca el 🎤 y háblale, o escríbele. Tus conversaciones se guardan en tu cuenta y solo tú las ves.</p>
+      <label class="note" style="display:flex;gap:8px;align-items:center;margin:8px 2px 0;cursor:pointer"><input type="checkbox" id="voiceOn" style="width:18px;height:18px;accent-color:#6B1237"> Que Mentora me responda en voz alta</label>
     </section>
 
     <!-- GUARDADOS -->
@@ -1186,7 +1192,7 @@ Sé honesta: si los números son buenos, dilo.`;
 /* ---------- MENTORA ---------- */
 function renderChat(streamText){
   const el=$("#chat");
-  el.innerHTML=chat.map(m=>m.role==="user"?`<div class="msg u">${esc(m.content)}</div>`:`<div class="msg a md">${md(m.content)}</div>`).join("")+
+  el.innerHTML=chat.map((m,i)=>m.role==="user"?`<div class="msg u">${esc(m.content)}</div>`:`<div class="msg a md">${md(m.content)}${"speechSynthesis" in window?`<button class="speak" type="button" data-say="${i}">🔊 Escuchar</button>`:""}</div>`).join("")+
     (streamText!==undefined?`<div class="msg a md">${streamText?md(streamText):'<div class="loading"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>'}</div>`:"");
   $("#sugg").classList.toggle("hidden",chat.length>0);
 }
@@ -1230,10 +1236,36 @@ CÓMO RESPONDES: concreta y práctica, con pasos en orden y un ejemplo aplicado 
   try{
     const r=await sample(msgs,{modelTier:"default",cache:false,onText:({text:t})=>renderChat(t)});
     chat.push({role:"assistant",content:r.text});
+    if($("#voiceOn").checked||mentoraHablada) decir(r.text); mentoraHablada=false;
   }catch(e){ chat.push({role:"assistant",content:aiErr(e)}) }
   renderChat(); $("#chatSend").disabled=false; saveConv();
 }
 $("#chatSend").addEventListener("click",()=>sendChat($("#chatIn").value));
+/* ---------- voz ---------- */
+function decir(t){
+  try{
+    speechSynthesis.cancel();
+    const limpio=String(t).replace(/[#*_>`]/g,"").replace(/\p{Extended_Pictographic}/gu,"").slice(0,2500);
+    const u=new SpeechSynthesisUtterance(limpio); u.lang="es-CO"; u.rate=1.03;
+    const v=speechSynthesis.getVoices().find(v=>/es[-_](CO|MX|US|419)/i.test(v.lang))||speechSynthesis.getVoices().find(v=>/^es/i.test(v.lang)); if(v) u.voice=v;
+    speechSynthesis.speak(u);
+  }catch(e){}
+}
+$("#chat").addEventListener("click",e=>{const b=e.target.closest("[data-say]");if(b){const m=chat[+b.dataset.say];if(m)decir(m.content)}});
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition; let rec=null, escuchando=false, dictado="";
+if(!SR){$("#chatMic").classList.add("hidden");$("#micNote").textContent="Escríbele, o usa el micrófono del teclado de tu celular para dictar. Tus conversaciones se guardan en tu cuenta y solo tú las ves."}
+$("#chatMic").addEventListener("click",()=>{
+  if(!SR) return;
+  if(escuchando){rec&&rec.stop();return}
+  try{speechSynthesis.cancel()}catch(e){}
+  rec=new SR(); rec.lang="es-CO"; rec.interimResults=true; rec.continuous=false; dictado="";
+  rec.onstart=()=>{escuchando=true;$("#chatMic").classList.add("rec");$("#chatIn").placeholder="Te escucho… habla tranquila"};
+  rec.onresult=ev=>{let t="";for(const r of ev.results) t+=r[0].transcript; dictado=t; $("#chatIn").value=t};
+  rec.onerror=ev=>{toast(ev.error==="not-allowed"?"Dale permiso al micrófono en tu navegador":"No te escuché bien, intenta otra vez")};
+  rec.onend=()=>{escuchando=false;$("#chatMic").classList.remove("rec");$("#chatIn").placeholder="Escribe tu pregunta…";if(dictado.trim()){mentoraHablada=true;sendChat(dictado)}};
+  rec.start();
+});
+let mentoraHablada=false;
 $("#chatIn").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey&&window.innerWidth>700){e.preventDefault();sendChat($("#chatIn").value)}});
 $("#sugg").addEventListener("click",e=>{const b=e.target.closest(".pill");if(b)sendChat(b.textContent)});
 
