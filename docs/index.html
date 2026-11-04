@@ -209,6 +209,82 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
 
 
 /* ---------- APP ---------- */
+/* ---------- app shell ---------- */
+#app{display:block}
+.side{position:fixed;left:0;top:0;bottom:0;width:250px;background:#FFF7FA;border-right:1.5px solid #F6D3E1;padding:20px 16px;display:flex;flex-direction:column;z-index:40;overflow-y:auto;transition:transform .3s cubic-bezier(.23,1,.32,1)}
+.side .logo-pill{font-size:18px;padding:7px 14px}
+#sidenav{display:flex;flex-direction:column;gap:2px;flex:1}
+#sidenav small{font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9B5574;margin:16px 10px 6px}
+#sidenav a{display:flex;align-items:center;gap:10px;text-decoration:none;color:#4F0C28;font-weight:600;font-size:15px;padding:10px 12px;border-radius:12px}
+#sidenav a:hover{background:#FFE8F0}
+#sidenav a.on{background:#fff;color:#6B1237;box-shadow:0 6px 16px -10px rgba(79,12,40,.4)}
+#sidenav a.on .si{background:#F4579F;color:#fff;border-color:#F4579F}
+.si{width:26px;height:26px;border-radius:8px;border:1.5px solid #FFD1E3;display:grid;place-items:center;font-size:13px;flex:none;color:#F4579F}
+.si.n{font-family:'Bricolage Grotesque',sans-serif;font-weight:800}
+.sidelogout{background:none;border:0;color:#9B5574;text-decoration:underline;cursor:pointer;padding:12px;text-align:left;font-weight:600}
+.main{margin-left:250px;min-height:100vh}
+.app-top{position:sticky;top:0;z-index:30;background:rgba(255,247,250,.92);backdrop-filter:blur(10px);border-bottom:1.5px solid #F6D3E1;display:flex;align-items:center;gap:12px;padding:12px 24px;min-height:68px}
+.ptitle{display:flex;flex-direction:column;min-width:0}
+.ptitle b{font-size:17px;color:#4F0C28}.ptitle small{font-size:12px;color:#9B5574}
+.tbtns{margin-left:auto;display:flex;gap:8px;align-items:center}
+.tbtn{text-decoration:none;font-weight:600;font-size:14px;padding:9px 14px;border-radius:999px;background:#FFD1E3;color:#6B1237;white-space:nowrap}
+.tbtn.ghost{background:transparent;border:1.5px solid #E8B9C8}
+.avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#FF8CC3,#6B1237);color:#fff;display:grid;place-items:center;font-weight:800;flex:none}
+.menubtn{display:none;background:none;border:0;color:#4F0C28;cursor:pointer;padding:6px}
+.scrim{display:none}
+@media(max-width:900px){
+  .side{transform:translateX(-100%);box-shadow:0 0 40px rgba(79,12,40,.3)}
+  body.navopen .side{transform:none}
+  body.navopen .scrim{display:block;position:fixed;inset:0;background:rgba(79,12,40,.35);z-index:35}
+  .main{margin-left:0}.menubtn{display:block}
+  .app-top{padding:10px 14px}
+  .tbtn.ghost{display:none}
+  .tbtn{font-size:13px;padding:8px 12px}
+}
+@media(max-width:480px){.tbtn{display:none}}
+.hello{margin:6px 0 0;color:#9B5574;font-size:16px}
+.bigq{font-size:clamp(34px,6vw,54px)!important;margin:4px 0 22px!important}
+.labsteps{display:grid;gap:14px}
+@media(min-width:760px){.labsteps{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1200px){.labsteps{grid-template-columns:repeat(4,1fr)}}
+.lstep{display:flex;flex-direction:column;gap:6px;text-decoration:none;background:#fff;border:1.5px solid #F6D3E1;border-radius:22px;padding:20px;transition:transform .2s,box-shadow .2s}
+.lstep:hover{transform:translateY(-3px);box-shadow:0 14px 30px -18px rgba(79,12,40,.45)}
+.lstep small{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9B5574}
+.lstep b{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:26px;letter-spacing:-.03em;color:#6B1237}
+.lstep p{margin:0;color:#4F0C28;font-size:14.5px;flex:1}
+.lstep span{color:#F4579F;font-weight:700;font-size:14px}
+.labmentor{margin-top:14px;display:flex;gap:14px;align-items:center;background:#6B1237;border-radius:22px;padding:18px 20px;color:#fff;flex-wrap:wrap}
+.labmentor b{font-size:18px}.labmentor p{margin:2px 0 0;color:#FFD1E3}
+.labmentor .btn{margin-left:auto;background:#FF8CC3;color:#4F0C28}
+.rh{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.02em;font-size:22px;color:#4F0C28;margin:26px 0 12px}
+.rtabs{display:flex;gap:18px;border-bottom:1.5px solid #F6D3E1;margin:0 0 16px}
+.rtabs button,.rtabs a{background:none;border:0;padding:10px 2px;font-weight:700;font-size:15px;color:#9B5574;cursor:pointer;text-decoration:none;border-bottom:3px solid transparent;margin-bottom:-1.5px}
+.rtabs .on{color:#4F0C28;border-bottom-color:#F4579F}
+.vfoot{display:flex;justify-content:space-between;align-items:center}
+.vsave{background:none;border:1.5px solid #FFD1E3;color:#6B1237;border-radius:999px;padding:6px 12px;font-weight:700;font-size:13px;cursor:pointer}
+.vsave.on{background:#FFD1E3}
+.rcols{display:grid;gap:14px;margin-top:16px}
+@media(min-width:900px){.rcols{grid-template-columns:1fr 1fr}}
+.rcol{background:#fff;border:1.5px solid #F6D3E1;border-radius:20px;padding:18px;max-height:380px;overflow:auto}
+.rcol small,.rmh small{display:block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#9B5574;margin-bottom:10px}
+.rtext p{margin:0 0 10px;color:#4F0C28;font-size:15px;line-height:1.55}
+.rmine{margin-top:14px;background:#FFF1F6;border:2px solid #FF8CC3;border-radius:22px;padding:18px}
+.rmh{display:flex;justify-content:space-between;align-items:center}.rmh small{color:#F4579F;margin:0}.rmh span{font-size:13px;color:#9B5574;font-weight:600}
+.rver{width:100%;border:0;background:transparent;resize:none;font:inherit;font-size:17px;line-height:1.6;color:#4F0C28;min-height:200px;outline:none;margin-top:8px}
+.rtips{display:grid;gap:10px}
+.rtip{background:#fff;border:1.5px solid #F6D3E1;border-radius:16px;padding:14px 16px}
+.rtip b{color:#4F0C28}.rtip p{margin:4px 0 0;color:#6B1237;font-size:14.5px}
+.supc{text-decoration:none;display:block}.supc b{font-size:18px;color:#4F0C28}.supc p{margin:6px 0;color:#6B1237}
+.faq details{background:#fff;border:1.5px solid #F6D3E1;border-radius:16px;padding:14px 16px;margin-bottom:8px}
+.faq summary{cursor:pointer;font-weight:700;color:#4F0C28}
+.faq p{margin:8px 0 0;color:#6B1237}
+.fab{position:fixed;right:20px;bottom:calc(20px + env(safe-area-inset-bottom,0px));width:58px;height:58px;border-radius:50%;background:#F4579F;color:#fff;display:grid;place-items:center;box-shadow:0 14px 28px -10px rgba(79,12,40,.55);z-index:45;border:3px solid #fff}
+.nudge{position:fixed;right:20px;bottom:92px;width:min(300px,calc(100vw - 40px));background:#fff;border-radius:20px;padding:16px;box-shadow:0 18px 40px -16px rgba(79,12,40,.5);z-index:44;border:1.5px solid #FFD1E3}
+.nudge p{margin:0 0 12px;color:#4F0C28;font-size:14.5px}
+.nudge div{display:flex;justify-content:space-between;align-items:center}
+.nudge button{background:none;border:0;color:#9B5574;cursor:pointer;font-weight:600}
+#app .view{padding-top:20px}
+
 #app{min-height:100vh}
 .app-top{position:sticky;top:0;z-index:20;background:#F4579F;border-bottom:2px solid rgba(255,255,255,.35)}
 .app-top .wrap{display:flex;align-items:center;justify-content:space-between;min-height:76px;gap:10px}
@@ -434,26 +510,116 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
 
 <!-- ================= APP ================= -->
 <div id="app" class="hidden">
-  <div class="app-top">
-    <div class="wrap">
-      <a class="brand" href="#hoy" style="text-decoration:none"><span class="logo-pill display"><svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true" style="color:#FF8CC3;flex:none"><g stroke="currentColor" stroke-width="14" stroke-linecap="round"><path d="M50 10v80"/><path d="M15.4 30l69.3 40"/><path d="M15.4 70l69.3-40"/></g></svg><span>CREATIVE<span style="color:#FF8CC3">.</span>LAB</span><svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true" style="color:#FF8CC3;flex:none"><g stroke="currentColor" stroke-width="14" stroke-linecap="round"><path d="M50 10v80"/><path d="M15.4 30l69.3 40"/><path d="M15.4 70l69.3-40"/></g></svg></span></a>
-      <span style="display:flex;flex-direction:column;align-items:flex-end;gap:2px"><span class="who" id="who"></span><button class="who" id="logout" style="background:none;border:0;cursor:pointer;text-decoration:underline;padding:0">Salir</button></span>
-    </div>
-    <nav class="tabs" id="tabs">
-      <a class="tab" href="#hoy">✳ Para ti hoy</a>
-      <a class="tab" href="#radar">Analizar video</a>
-      <a class="tab" href="#guardados">Mis guiones</a>
-      <a class="tab" href="#perfil">Mi perfil</a>
-      <a class="tab" href="#voz">Pulir guion</a>
-      <a class="tab" href="#mentora">Mentora</a>
-      <a class="tab" href="#venta">Si se hizo viral</a>
-      <a class="tab" href="#numeros">Números</a>
-      <a class="tab hidden" href="#admin" id="tabAdmin">✳ Panel</a>
+  <aside class="side" id="side">
+    <a class="brand" href="#lab" style="text-decoration:none;margin:4px 0 18px"><span class="logo-pill display"><svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true" style="color:#FF8CC3;flex:none"><g stroke="currentColor" stroke-width="14" stroke-linecap="round"><path d="M50 10v80"/><path d="M15.4 30l69.3 40"/><path d="M15.4 70l69.3-40"/></g></svg><span>CREATIVE<span style="color:#FF8CC3">.</span>LAB</span><svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true" style="color:#FF8CC3;flex:none"><g stroke="currentColor" stroke-width="14" stroke-linecap="round"><path d="M50 10v80"/><path d="M15.4 30l69.3 40"/><path d="M15.4 70l69.3-40"/></g></svg></span></a>
+    <nav id="sidenav">
+      <a href="#lab"><span class="si">⌂</span>Inicio</a>
+      <small>El método</small>
+      <a href="#hoy"><span class="si n">1</span>Radar</a>
+      <a href="#reestrenar"><span class="si n">2</span>Reestrenar</a>
+      <a href="#venta"><span class="si n">3</span>Ventas</a>
+      <a href="#numeros"><span class="si n">4</span>Números</a>
+      <small>Herramientas</small>
+      <a href="#radar"><span class="si">🔗</span>Pegar un enlace</a>
+      <a href="#voz"><span class="si">✎</span>Pulir un guion</a>
+      <a href="#guardados"><span class="si">❒</span>Mis guiones</a>
+      <a href="#mentora"><span class="si">✳</span>Mentora</a>
+      <small>Mi cuenta</small>
+      <a href="#perfil"><span class="si">☺</span>Mi perfil</a>
+      <a href="#soporte"><span class="si">?</span>Ayuda y soporte</a>
+      <a href="#admin" id="tabAdmin" class="hidden"><span class="si">⛨</span>Panel</a>
     </nav>
-  </div>
-
+    <button class="sidelogout" id="logout" type="button">Salir</button>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+  <div class="main">
+  <header class="app-top">
+    <button class="menubtn" id="menuBtn" type="button" aria-label="Abrir menú"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <div class="ptitle"><b id="pTitle">Inicio</b><small id="pSub"></small></div>
+    <div class="tbtns">
+      <a class="tbtn ghost" href="#soporte">Soporte</a>
+      <a class="tbtn" href="#mentora">✳ Pregúntale a Mentora</a>
+      <span class="avatar" id="who" title=""></span>
+    </div>
+  </header>
   <div class="wrap">
     <div id="aiWarn" class="banner warn hidden" style="margin-top:14px"></div>
+
+    <!-- LAB (inicio interno) -->
+    <section class="view" data-view="lab">
+      <p class="hello">Hola, <b id="helloName">creadora</b> ✳</p>
+      <h2 class="bigq">¿Qué reestrenamos hoy?</h2>
+      <div class="labsteps">
+        <a class="lstep" href="#hoy"><small>Paso 1 · Detecta</small><b>Radar</b><p>Los videos de tu rubro que ya pasaron las 800 mil vistas en otros idiomas.</p><span>Ver hallazgos →</span></a>
+        <a class="lstep" href="#reestrenar"><small>Paso 2 · Reestrena</small><b>Reestrenar</b><p>El original, la traducción tal cual y tu versión lista para grabar.</p><span>Ir a reestrenar →</span></a>
+        <a class="lstep" href="#venta"><small>Paso 3 · Convierte</small><b>Ventas</b><p>Si el video pega, las historias de 3 días para vender.</p><span>Armar historias →</span></a>
+        <a class="lstep" href="#numeros"><small>Paso 4 · Mide</small><b>Números</b><p>Tu oferta, tus métricas y dónde se cae tu embudo.</p><span>Ver números →</span></a>
+      </div>
+      <div class="labmentor"><span class="dico">✳</span><div><b>Mentora</b><p>Tu guía en cada pantalla. Pregúntale qué subir hoy.</p></div><a class="btn btn-sm btn-primary" href="#mentora">Hablar con ella</a></div>
+      <div id="labPick"></div>
+    </section>
+
+    <!-- REESTRENAR -->
+    <section class="view" data-view="reestrenar">
+      <div id="rsEmpty" class="card" style="text-align:center;padding:34px 22px">
+        <h2 style="font-size:32px">Elige un video para reestrenar</h2>
+        <p class="sub" style="margin:0 auto 18px">Ve al Radar y toca <b>"Reestrenar este video"</b> en el que te guste, o pega un enlace.</p>
+        <div class="actions" style="justify-content:center"><a class="btn btn-primary" href="#hoy">Ir al Radar</a><a class="btn btn-ghost" href="#radar">Pegar un enlace</a></div>
+      </div>
+      <div id="rsBox" class="hidden">
+        <div class="vtags" id="rsTags"></div>
+        <h2 id="rsTitle" style="margin-top:10px"></h2>
+        <p class="note" id="rsFrom"></p>
+        <div id="rsLoad"></div>
+        <div id="rsBody" class="hidden">
+          <div class="rcols">
+            <div class="rcol"><small>Original · <span id="rsLang"></span></small><div id="rsOrig" class="rtext"></div></div>
+            <div class="rcol"><small>En español · tal cual</small><div id="rsTrad" class="rtext"></div></div>
+          </div>
+          <div class="rmine">
+            <div class="rmh"><small>Tu versión</small><span id="rsDur"></span></div>
+            <textarea id="rsVer" class="rver" spellcheck="false"></textarea>
+            <div class="actions"><button class="btn btn-sm btn-primary" id="rsCopy">Copiar guion</button><button class="btn btn-sm btn-soft" id="rsSave">Guardar en Mis guiones</button><button class="btn btn-sm btn-ghost" id="rsAgain">Otra versión</button></div>
+          </div>
+          <h3 class="rh">Cómo hacerlo tuyo</h3>
+          <div id="rsTips" class="rtips"></div>
+          <h3 class="rh">Grábalo y lo reviso</h3>
+          <p class="sub" style="margin-bottom:12px">Cuando lo tengas grabado, súbelo aquí. Lo comparo con el original y te digo qué ajustar en lo que se ve: encuadre, gestos, texto en pantalla y ritmo. Tu video no se guarda.</p>
+          <div class="card">
+            <input class="in" id="rsFile" type="file" accept="video/*">
+            <div class="actions" style="margin-top:10px"><button class="btn btn-primary" id="rsReview" style="width:100%">Revisar mi video →</button></div>
+          </div>
+          <div class="out" id="rsRevOut"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOPORTE -->
+    <section class="view" data-view="soporte">
+      <span class="eyebrow">✳ Ayuda y soporte</span>
+      <h2>¿Te ayudamos con algo?</h2>
+      <p class="sub">Si algo no funciona o tienes una duda, escríbenos. Te respondemos lo antes posible.</p>
+      <div class="grid2">
+        <a class="card supc" href="https://wa.me/573011706253?text=Hola%20Majo%2C%20necesito%20ayuda%20con%20CREATIVE.LAB" target="_blank" rel="noopener"><b>💬 WhatsApp</b><p>La forma más rápida. Escríbenos y te ayudamos.</p><span class="note">301 170 6253</span></a>
+        <div class="card supc"><b>✉️ Correo</b><p>Para temas de pagos y accesos.</p><span class="note">logosbymajo.studiocreativo@gmail.com</span></div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <h3 class="rh" style="margin-top:0">Reportar un problema</h3>
+        <div class="field"><label class="f" for="su_tipo">¿Sobre qué es?</label><select class="in" id="su_tipo"><option>No me llega el correo para entrar</option><option>Un video no abre o no carga</option><option>El guion salió raro</option><option>Mentora no responde</option><option>Pagos y acceso</option><option>Otra cosa</option></select></div>
+        <div class="field"><label class="f" for="su_msg">Cuéntanos qué pasó</label><textarea class="in" id="su_msg" placeholder="Ej: le di Reestrenar a un video y se quedó cargando"></textarea></div>
+        <button class="btn btn-primary" id="su_send">Enviar a soporte</button>
+        <div id="su_list" style="margin-top:14px"></div>
+      </div>
+      <h3 class="rh">Preguntas frecuentes</h3>
+      <div class="faq">
+        <details><summary>¿Cada cuánto llegan videos nuevos?</summary><p>Todos los días, temprano en la mañana. Los ves en Radar, filtrados por tu rubro y con más de 800 mil vistas.</p></details>
+        <details><summary>¿Por qué no hay videos en español?</summary><p>Porque la idea es traer lo que ya funcionó afuera y todavía no llegó al español. Así tu video es el primero en tu idioma.</p></details>
+        <details><summary>¿Cómo hago para que el guion suene a mí?</summary><p>En Mi perfil, pega 2 o 3 textos o transcripciones tuyas en "Así hablo yo". Entre más reales, mejor te imita.</p></details>
+        <details><summary>¿Cuántos análisis puedo hacer?</summary><p>Hasta 15 al día entre reestrenos, enlaces y Mentora. Al día siguiente se renuevan.</p></details>
+        <details><summary>¿CREATIVE.LAB publica por mí?</summary><p>No. Prepara, traduce y revisa; tú grabas y publicas cuando quieras.</p></details>
+        <details><summary>Olvidé mi contraseña</summary><p>En la pantalla de entrar toca "Olvidé mi contraseña", escribe tu correo y te llega un enlace para crear una nueva.</p></details>
+      </div>
+    </section>
 
     <!-- ADMIN -->
     <section class="view" data-view="admin">
@@ -468,7 +634,10 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
         <div class="field"><label class="f" for="ad_nota">Nota <small>(opcional: fecha de pago, plan, etc.)</small></label><input class="in" id="ad_nota" placeholder="Ej: pagó por Wompi el 4 nov"></div>
         <div class="actions"><button class="btn btn-primary" id="ad_add">Dar acceso</button><button class="btn btn-soft" id="ad_msg">Copiar mensaje de bienvenida</button></div>
       </div>
-      <p class="note" id="ad_stats" style="margin:16px 4px 8px"></p>
+      <h3 class="rh">Solicitudes de soporte</h3>
+      <div class="list" id="adSup"></div>
+      <h3 class="rh">Accesos</h3>
+      <p class="note" id="ad_stats" style="margin:6px 4px 8px"></p>
       <div class="list" id="adList"></div>
     </section>
 
@@ -478,6 +647,7 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
       <h2>Hallazgos de hoy.</h2>
       <p class="sub">Videos de <b id="rubroTxt">tu rubro</b> que están pegando en otros idiomas. Toca <b>Reestrenar este video</b> y te saco el guion.</p>
       <div id="rubroWarn" class="banner hidden">Elige tu rubro en <a href="#perfil">Mi perfil</a> para que te lleguen videos de lo que haces.</div>
+      <div class="rtabs" id="rTabs"><button type="button" class="on" data-t="para">Para ti</button><button type="button" data-t="fav">Guardados <span id="favN"></span></button><a href="#radar">Pegar un enlace</a></div>
       <div class="pills" id="feedLang" style="margin-bottom:16px">
         <button type="button" class="pill on" data-l="">Todos</button><button type="button" class="pill" data-l="en">🇺🇸 Inglés</button><button type="button" class="pill" data-l="pt">🇧🇷 Portugués</button><button type="button" class="pill" data-l="de">🇩🇪 Alemán</button><button type="button" class="pill" data-l="ru">🇷🇺 Ruso</button><button type="button" class="pill" data-l="fr">🇨🇦 Francés</button>
         <button type="button" class="pill hidden" id="allRubros" style="border-style:dashed">Ver todos los rubros</button>
@@ -655,14 +825,18 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
       <div class="list" id="savedList"></div>
     </section>
   </div>
+  </div>
 </div>
 
+<a class="fab hidden" id="fab" href="#mentora" aria-label="Hablar con Mentora"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg></a>
+<div class="nudge hidden" id="nudge"><p>¿No sabes cuál elegir? Mentora te ayuda a escoger el que más te sirve.</p><div><a href="#mentora" class="btn btn-sm btn-primary">Ayúdame</a><button type="button" id="nudgeNo">Ahora no</button></div></div>
 <div class="toast" id="toast"></div>
 
 <script>
 (function(){
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
-const VIEWS=["hoy","perfil","radar","voz","venta","numeros","mentora","guardados","admin"];
+const VIEWS=["lab","hoy","reestrenar","perfil","radar","voz","venta","numeros","mentora","guardados","admin","soporte"];
+const PT={lab:["Inicio",""],hoy:["Radar","Paso 1 · Detecta"],reestrenar:["Reestrenar","Paso 2 · Reestrena"],venta:["Ventas","Paso 3 · Convierte"],numeros:["Números","Paso 4 · Mide"],radar:["Pegar un enlace","Herramienta"],voz:["Pulir un guion","Herramienta"],guardados:["Mis guiones","Herramienta"],mentora:["Mentora","Tu guía"],perfil:["Mi perfil","Mi cuenta"],soporte:["Ayuda y soporte","Mi cuenta"],admin:["Panel","Administradora"]};
 const AUTHV=["entrar","acceso","clave"];
 const SB_URL="https://qqwlgbcrdiyklvyjebbx.supabase.co", SB_KEY="sb_publishable_eX6R0RwPbuPkkW-7Tjk04Q_i87Pe6fH";
 const WA="https://wa.me/573011706253";
@@ -701,7 +875,7 @@ function route(){
   if(VIEWS.includes(h) && !session){ location.hash="entrar"; return }
   if(h==="admin" && !isAdmin){ location.hash="hoy"; return }
   if(h==="clave" && !session){ location.hash="acceso"; return }
-  if((h==="entrar"||h==="acceso") && session){ location.hash=profile.rubro?"hoy":"perfil"; return }
+  if((h==="entrar"||h==="acceso") && session){ location.hash=profile.rubro?"lab":"perfil"; return }
   const inApp=VIEWS.includes(h), inAuth=AUTHV.includes(h);
   $("#landing").classList.toggle("hidden",inApp||inAuth);
   $("#auth").classList.toggle("hidden",!inAuth);
@@ -709,8 +883,14 @@ function route(){
   if(inAuth){ $$(".av").forEach(v=>v.classList.toggle("hidden",v.dataset.av!==h)); window.scrollTo(0,0); return }
   if(inApp){
     $$(".view").forEach(v=>v.classList.toggle("hidden",v.dataset.view!==h));
-    $$("#tabs .tab").forEach(t=>t.classList.toggle("on",t.getAttribute("href")==="#"+h));
-    const on=$("#tabs .tab.on"); if(on) on.scrollIntoView({inline:"center",block:"nearest"});
+    $$("#sidenav a").forEach(t=>t.classList.toggle("on",t.getAttribute("href")==="#"+h));
+    $("#pTitle").textContent=(PT[h]||[""])[0]; $("#pSub").textContent=(PT[h]||["",""])[1];
+    document.body.classList.remove("navopen");
+    $("#fab").classList.toggle("hidden",h==="mentora");
+    $("#nudge").classList.toggle("hidden",!(h==="hoy"&&!sessionStorage.getItem("nudgeOff")));
+    if(h==="lab") renderLab();
+    if(h==="soporte") loadSup();
+    if(h==="reestrenar"&&!currentRS){$("#rsEmpty").classList.remove("hidden");$("#rsBox").classList.add("hidden")}
     if(h==="venta"&&!$("#s_prod").value) $("#s_prod").value=profile.oferta||"";
     if(h==="venta"&&!$("#s_prueba").value) $("#s_prueba").value=profile.prueba||"";
     if(h==="numeros"&&!$("#n_oferta").value) $("#n_oferta").value=profile.oferta||"";
@@ -754,6 +934,7 @@ function ctx(){
 - Muestra de cómo habla (imita su vocabulario, ritmo y muletillas, sin exagerar):
 """${(p.voz||"").slice(0,4000)}"""`;
 }
+const GUION_R=`REGLAS DEL GUION: es el texto EXACTO que la persona va a decir a cámara, palabra por palabra. Sigue el original frase por frase: mismo orden, mismas ideas, mismo ritmo y misma cantidad de puntos. Tradúcelo y adáptalo al español latino y a SU forma de hablar (su vocabulario, muletillas y tono del perfil) y a SU negocio (sus ejemplos, sus clientes, su producto). No inventes datos ni testimonios. Sin etiquetas, sin indicaciones de cámara, sin comillas: solo lo que se dice, en párrafos cortos. Termina invitando a comentar, como lo diría ella.`;
 const RUBROS={"marca-marketing":"Marca personal y marketing","belleza":"Belleza, uñas y estética","moda":"Moda y accesorios","comida":"Comida y repostería","fitness":"Fitness, salud y bienestar","educacion":"Cursos, coaching y educación","hogar":"Hogar, decoración y manualidades","gatos":"Gatos y criaderos de gatos","mascotas":"Mascotas","ventas":"Emprendimiento y ventas","otro":"Otro"};
 const BASE=`Eres un agente de CREATIVE.LAB, una plataforma para creadoras de contenido y emprendedoras hispanohablantes. Respeta siempre cómo es el contenido de la creadora según su perfil. Escribe SIEMPRE en español latino natural, humano y cercano, nada que suene a IA: sin frases de relleno, sin "¡Claro!", sin emojis en exceso. Nunca copies contenido ajeno palabra por palabra: adapta la idea. Usa markdown simple (### títulos, **negritas**, listas con -).`;
 
@@ -895,7 +1076,7 @@ Responde SOLO con JSON válido, sin texto extra, con esta forma exacta:
 });
 
 /* ---------- FEED HOY ---------- */
-let feed=[], feedLang="", allR=false;
+let feed=[], feedLang="", allR=false, feedTab="para", favs=new Set(), currentRS=null, rsCache={};
 function updateRubroUI(){const r=profile.rubro;const t=$("#rubroTxt");if(t)t.textContent=r?(r==="otro"?(profile.rubroOtro||"tu rubro"):RUBROS[r]):"tu rubro";const w=$("#rubroWarn");if(w)w.classList.toggle("hidden",!!r)}
 const nf=n=>{n=+n||0;return n>=1e6?(n/1e6).toFixed(1).replace(".",",")+" M":n>=1e3?(n/1e3).toFixed(n>=1e4?0:1).replace(".",",")+" K":String(n)};
 const LANG={en:"EN",pt:"PT",de:"DE",es:"ES",ru:"RU",vi:"VI",fr:"FR",it:"IT",ur:"UR"};
@@ -903,7 +1084,9 @@ const fi=v=>v==="si"?"✅":v==="no"?"❌":"⚠️";
 function renderFeed(){
   const el=$("#feed");
   let items=feed.filter(x=>!descartados.has(x.id)&&LANGN[x.idioma]&&(+x.vistas||0)>=800000);
-  if(profile.rubro&&!allR){const mine=profile.rubro==="otro"?("otro:"+(profile.rubroOtro||"").toLowerCase().trim()):profile.rubro;items=items.filter(x=>(x.rubro||"marca-marketing")===mine)}
+  if(feedTab==="fav") items=feed.filter(x=>favs.has(x.id));
+  $("#favN").textContent=favs.size?"("+favs.size+")":"";
+  if(profile.rubro&&!allR&&feedTab!=="fav"){const mine=profile.rubro==="otro"?("otro:"+(profile.rubroOtro||"").toLowerCase().trim()):profile.rubro;items=items.filter(x=>(x.rubro||"marca-marketing")===mine)}
   if(feedLang) items=items.filter(x=>x.idioma===feedLang);
   if(!items.length){el.innerHTML=`<div class="card"><p style="margin:0">Todavía no hay videos de tu rubro con más de 800 mil vistas. La búsqueda diaria los va trayendo cada mañana.</p></div>`;updateLangPills();return}
   el.innerHTML=items.map(x=>{const L=LANGN[x.idioma]||{};return `
@@ -922,7 +1105,7 @@ function renderFeed(){
     <div class="vwhy"><b>Por qué pegó</b><p>${esc(x.por_que_funciona)}</p></div>
     <div class="vwhy"><b>Cómo lo usas tú</b><p>${esc(x.por_que_para_ti)}</p></div>
     <button class="btn btn-primary vcta" data-adapt>Reestrenar este video →</button>
-    <button class="vhide" data-hide>No me interesa</button>
+    <div class="vfoot"><button class="vsave ${favs.has(x.id)?"on":""}" data-fav type="button">${favs.has(x.id)?"♥ Guardado":"♡ Guardar"}</button><button class="vhide" data-hide>No me interesa</button></div>
     <div class="out" data-out></div>
   </article>`}).join("");
   updateLangPills();
@@ -937,51 +1120,91 @@ $("#feedLang").addEventListener("click",e=>{const b=e.target.closest(".pill");if
 $("#feed").addEventListener("click",async e=>{
   const card=e.target.closest("[data-id]"); if(!card) return; const x=feed.find(i=>i.id===card.dataset.id); if(!x) return;
   if(e.target.closest("[data-hide]")){descartados.add(x.id);renderFeed();await sb.from("descartes").insert({video_id:x.id});return}
-  const btn=e.target.closest("[data-adapt]"); if(!btn) return;
-  const out=card.querySelector("[data-out]"); if(!needAI(out)) return;
-  btn.disabled=true; out.innerHTML=loadingHTML("Abriendo el video para escuchar lo que dice…");
-  let extra={dice:"",comentarios:[]}, portada=[];
-  try{const {data}=await sb.functions.invoke("video",{body:{url:x.url}}); if(data&&!data.error){extra=data; if(data.portada){const bin=atob(data.portada.data);const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);portada=[new Blob([u],{type:data.portada.type})]}}}catch(err){}
-  out.innerHTML=loadingHTML("Leyendo el esqueleto y poniéndole tu piel…");
+  if(e.target.closest("[data-fav]")){
+    if(favs.has(x.id)){favs.delete(x.id);await sb.from("favoritos").delete().eq("video_id",x.id)}else{favs.add(x.id);await sb.from("favoritos").insert({video_id:x.id});toast("Guardado ✳")}
+    renderFeed();return}
+  if(e.target.closest("[data-adapt]")){currentRS=x;location.hash="reestrenar";runReestreno(x);}
+});
+$("#rTabs").addEventListener("click",e=>{const b=e.target.closest("[data-t]");if(!b)return;feedTab=b.dataset.t;$$("#rTabs [data-t]").forEach(k=>k.classList.toggle("on",k===b));renderFeed()});
+
+/* ---------- REESTRENAR ---------- */
+function blobFrom(p){const bin=atob(p.data);const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return new Blob([u],{type:p.type})}
+const paras=t=>esc(String(t||"")).split(/\n{2,}|\n/).filter(Boolean).map(x=>`<p>${x}</p>`).join("");
+async function runReestreno(x,otra){
+  $("#rsEmpty").classList.add("hidden"); $("#rsBox").classList.remove("hidden");
+  const L=LANGN[x.idioma]||{};
+  $("#rsTags").innerHTML=`<span>✳ Reestreno</span><span>${esc(x.plataforma||"TikTok")}</span><span>${L.f||""} ${esc(L.n||x.idioma||"")}</span><span>👁 ${nf(x.vistas)}</span>`;
+  $("#rsTitle").textContent=x.titulo||"Tu reestreno"; $("#rsFrom").innerHTML=`A partir de <a href="${esc(x.url)}" target="_blank" rel="noopener">este video</a>`;
+  $("#rsRevOut").innerHTML="";
+  if(rsCache[x.id]&&!otra){paintRS(rsCache[x.id]);return}
+  $("#rsBody").classList.add("hidden");
+  if(!needAI($("#rsLoad"))) return;
+  $("#rsLoad").innerHTML=loadingHTML("Abriendo el video y escuchando lo que dice…");
+  let vd={};
+  try{const {data}=await sb.functions.invoke("video",{body:{url:x.url}}); if(data&&!data.error) vd=data}catch(err){}
+  $("#rsLoad").innerHTML=loadingHTML("Escribiendo tu versión, frase por frase…");
   const prompt=`${BASE}
 
 ${ctx()}
 
-TAREA (Radar · Segundo internet · Adaptar esta idea): Este video está funcionando en otro idioma. Reestrénalo en español para esta creadora.
-Método: Instagram premia la retención. Todo viral tiene ESQUELETO (gancho, promesa, orden, ritmo, giro, cierre: lo que hace que la gente se quede) y PIEL (persona, tema, fondo, idioma, ejemplos). Se conserva el esqueleto y se le pone SU piel. Traducir tal cual lo daña.
-No tienes el video, solo estos datos; si algo visual es incierto, dilo y dile qué mirar en el original.
-- Plataforma/idioma: ${x.plataforma} · ${x.idioma} · ${x.duracion||"?"} s
-- Vistas ${x.vistas}, comentarios ${x.comentarios}, seguidores de la cuenta ${x.seguidores||"?"}
-- Texto/caption original: """${String(x.caption||x.titulo).slice(0,3000)}"""
-- Lo que dice (transcripción, si se tiene): """${String(extra.dice||x.transcripcion||"").slice(0,8000)}"""
-- Comentarios destacados: ${(extra.comentarios||[]).slice(0,10).join(" | ")||"-"}
-${portada.length?"- Te adjunto la portada del video.":""}
-- Análisis previo: funciona porque ${x.por_que_funciona}. Para ella: ${x.por_que_para_ti}. Formato: ${x.formato||"-"}.
+TAREA: Reestrena este video viral de otro idioma para esta creadora.
+Datos del video: ${x.plataforma||"TikTok"}, idioma ${x.idioma}, ${x.duracion||vd.duracion||"?"} s, ${x.vistas} vistas, ${x.comentarios} comentarios.
+Caption: """${String(vd.caption||x.caption||x.titulo||"").slice(0,1500)}"""
+Transcripción de lo que dice: """${String(vd.dice||"").slice(0,8000)||"(no disponible)"}"""
+Por qué pegó: ${x.por_que_funciona||"-"}
+${otra?"Haz una versión distinta a la anterior, con otras palabras.":""}
 
-REGLAS DEL GUION (lo más importante):
-- Es el texto EXACTO que la persona va a decir a cámara, palabra por palabra, listo para leer en teleprompter.
-- Sigue el video original frase por frase: mismo orden, mismas ideas, mismo ritmo y misma cantidad de puntos. Si el original dice 3 errores, tú dices 3 errores; si abre con una pregunta, tú abres con una pregunta.
-- Tradúcelo y adáptalo al español latino y a SU forma de hablar (usa su vocabulario, muletillas y tono del perfil) y a SU negocio (sus ejemplos, sus clientes, su producto). No inventes datos, resultados ni testimonios que no estén en su perfil.
-- Sin etiquetas como [GANCHO] o [CIERRE], sin indicaciones de cámara, sin comillas: solo lo que se dice, en párrafos cortos de 1 o 2 frases.
-- Termina con un cierre que invite a comentar o seguir, natural, como lo diría ella.
-Si no tienes la transcripción, básate en el caption, la portada y el formato, y dilo en una línea al final.
+${GUION_R}
 
-Entrega exactamente esto, en este orden:
-### Tu guion
-(el guion exacto, siguiendo las reglas)
-### Antes de grabar
-- **Texto en pantalla:** (máximo 8 palabras, para los primeros 3 segundos)
-- **Qué mostrar:** (1 línea)
-- **Caption:** (corto, con una pregunta)
-### Por qué va a funcionar
-(2 frases: qué del esqueleto del original retiene a la gente)`;
-  let text="";
+Responde SOLO con JSON válido con esta forma:
+{"titulo":"<la primera frase de su versión, como título>","original":"<la transcripción limpia en el idioma original, en párrafos separados por \\n\\n; si no hay transcripción, deja vacío>","traduccion":"<traducción literal y fiel al español, en los mismos párrafos; vacío si no hay transcripción>","version":"<SU guion, siguiendo las reglas, en párrafos separados por \\n\\n>","duracion":"<duración aproximada al decirlo, ej. ≈ 0:45>","tips":[{"t":"<consejo corto, ej. Di el gancho mirando a cámara>","d":"<1 frase: por qué y cómo>"},{"t":"","d":""},{"t":"","d":""}]}`;
   try{
-    const r=await sample(prompt,{modelTier:"default",images:portada.length?portada:undefined,onText:({text:t})=>{text=t;out.innerHTML=`<div class="md" style="margin-top:8px">${md(t)}</div>`}});
-    text=r.text||text;
-    out.innerHTML=`<div class="md" style="margin-top:8px">${md(text)}</div><div class="actions"><button class="btn btn-sm btn-primary" data-c>Copiar</button><button class="btn btn-sm btn-soft" data-s>Guardar en Mis guiones</button></div>`;
-    out.querySelector("[data-c]").onclick=()=>copy(text);
-    out.querySelector("[data-s]").onclick=ev=>{saveItem("Reestreno",x.gancho_adaptado||x.titulo,text+"\n\n- **Original:** "+x.url);ev.target.disabled=true;ev.target.textContent="Guardado"};
+    const r=await sample.json(prompt,{});
+    if(!r||!r.version) throw {code:"ia"};
+    if(vd.portada) r._portada=vd.portada;
+    rsCache[x.id]=r; paintRS(r);
+  }catch(err){$("#rsLoad").innerHTML=`<div class="banner warn">${esc(aiErr(err))} <button class="btn btn-sm btn-white" onclick="location.reload()">Reintentar</button></div>`}
+}
+function paintRS(r){
+  $("#rsLoad").innerHTML=""; $("#rsBody").classList.remove("hidden");
+  $("#rsTitle").textContent=r.titulo||$("#rsTitle").textContent;
+  const L=LANGN[currentRS&&currentRS.idioma]||{}; $("#rsLang").textContent=L.n||"";
+  $("#rsOrig").innerHTML=r.original?paras(r.original):`<p class="note">No pude escuchar el audio de este video; tu versión está basada en su texto y su formato.</p>`;
+  $("#rsTrad").innerHTML=r.traduccion?paras(r.traduccion):`<p class="note">—</p>`;
+  $("#rsVer").value=String(r.version||"").replace(/\n{3,}/g,"\n\n"); $("#rsDur").textContent=r.duracion?("⏱ "+r.duracion):"";
+  setTimeout(()=>{const t=$("#rsVer");t.style.height="auto";t.style.height=(t.scrollHeight+6)+"px"},0);
+  $("#rsTips").innerHTML=(r.tips||[]).filter(t=>t&&t.t).map(t=>`<div class="rtip"><b>${esc(t.t)}</b><p>${esc(t.d)}</p></div>`).join("");
+}
+$("#rsVer").addEventListener("input",e=>{e.target.style.height="auto";e.target.style.height=(e.target.scrollHeight+6)+"px"});
+$("#rsCopy").addEventListener("click",()=>copy($("#rsVer").value));
+$("#rsSave").addEventListener("click",e=>{if(!currentRS)return;saveItem("Reestreno",$("#rsTitle").textContent,"### Tu guion\n"+$("#rsVer").value+"\n\n- **Original:** "+currentRS.url);e.target.textContent="Guardado ✓"});
+$("#rsAgain").addEventListener("click",()=>{if(currentRS)runReestreno(currentRS,true)});
+$("#rsReview").addEventListener("click",async()=>{
+  const f=($("#rsFile").files||[])[0], out=$("#rsRevOut"), btn=$("#rsReview");
+  if(!f){toast("Primero elige tu video");return}
+  if(!needAI(out)) return; btn.disabled=true; out.innerHTML=loadingHTML("Mirando tu video…");
+  try{
+    const fr=await grabFrames(f,10);
+    if(!fr.length) throw {code:"muy_grande"};
+    out.innerHTML=loadingHTML("Comparándolo con el original…");
+    const prompt=`${BASE}
+
+${ctx()}
+
+TAREA: La creadora grabó su reestreno. Te adjunto ${fr.length} fotogramas de SU video en orden (dura unos ${Math.round(fr.duration||0)} s). No puedes escuchar el audio: revisa solo lo que se ve.
+El guion que iba a decir: """${$("#rsVer").value.slice(0,4000)}"""
+Por qué pegó el original: ${currentRS&&currentRS.por_que_funciona||"-"}
+Entrega, corto y con cariño pero directo, en este formato:
+### ¿Está lista para subir?
+(Sí / Casi / Todavía no, y por qué en 1 frase)
+### Lo que está muy bien
+- (2 puntos)
+### Qué ajustar antes de subir
+- **Comunicación:** (gesto, mirada, energía en el gancho)
+- **Visual:** (encuadre, luz, fondo, texto en pantalla)
+- **Edición:** (ritmo, cortes, duración, subtítulos)`;
+    const r=await sample(prompt,{images:fr});
+    out.innerHTML=`<div class="card md">${md(r.text)}</div>`;
   }catch(err){out.innerHTML=`<div class="banner warn">${esc(aiErr(err))}</div>`}
   finally{btn.disabled=false}
 });
@@ -1288,9 +1511,35 @@ $("#demoTabs").innerHTML=DEMOS.map((_,k)=>`<button type="button" role="tab" aria
 $("#demoTabs").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;showDemo([...$("#demoTabs").children].indexOf(b));clearInterval(demoT);demoT=setInterval(()=>showDemo(demoI+1),6000)});
 showDemo(0); demoT=setInterval(()=>showDemo(demoI+1),6000);
 
+/* ---------- LAB ---------- */
+function renderLab(){
+  const mine=profile.rubro==="otro"?("otro:"+(profile.rubroOtro||"").toLowerCase().trim()):profile.rubro;
+  const x=feed.find(v=>!descartados.has(v.id)&&LANGN[v.idioma]&&(+v.vistas||0)>=800000&&(!mine||(v.rubro||"marca-marketing")===mine));
+  $("#labPick").innerHTML=x?`<h3 class="rh">Tu hallazgo destacado de hoy</h3><div class="card" style="display:flex;gap:14px;align-items:center"><div class="vthumb" style="width:72px;height:102px">${x.portada?`<img src="${esc(x.portada)}" alt="" onerror="this.remove()">`:""}</div><div style="min-width:0;flex:1"><div class="vtags"><span>${(LANGN[x.idioma]||{}).f||""} ${(LANGN[x.idioma]||{}).n||""}</span><span>👁 ${nf(x.vistas)}</span></div><p class="vtitle" style="margin:8px 0">“${esc(x.titulo)}”</p><button class="btn btn-sm btn-primary" id="labGo">Reestrenar este video →</button></div></div>`:"";
+  const g=$("#labGo"); if(g) g.onclick=()=>{currentRS=x;location.hash="reestrenar";runReestreno(x)};
+}
+/* ---------- SOPORTE ---------- */
+async function loadSup(){
+  const {data}=await sb.from("soporte").select("*").eq("user_id",me.id).order("creado",{ascending:false}).limit(10);
+  $("#su_list").innerHTML=(data&&data.length)?`<p class="note" style="margin:0 0 6px">Tus solicitudes</p>`+data.map(t=>`<div class="note" style="padding:8px 0;border-top:1px solid #F6D3E1"><b style="color:#4F0C28">${esc(t.tipo||"")}</b> · ${new Date(t.creado).toLocaleDateString("es-CO",{day:"numeric",month:"short"})} · ${t.estado==="resuelta"?"✅ Resuelta":"⏳ Abierta"}<br>${esc(t.mensaje)}</div>`).join(""):"";
+}
+$("#su_send").addEventListener("click",async()=>{
+  const m=$("#su_msg").value.trim(); if(!m){toast("Cuéntanos qué pasó");return}
+  const {error}=await sb.from("soporte").insert({tipo:$("#su_tipo").value,mensaje:m.slice(0,2000)});
+  if(error){toast("No se pudo enviar. Escríbenos por WhatsApp.");return}
+  $("#su_msg").value=""; toast("¡Recibido! Te respondemos pronto ✳"); loadSup();
+});
+$("#menuBtn").addEventListener("click",()=>document.body.classList.toggle("navopen"));
+$("#scrim").addEventListener("click",()=>document.body.classList.remove("navopen"));
+$("#nudgeNo").addEventListener("click",()=>{sessionStorage.setItem("nudgeOff","1");$("#nudge").classList.add("hidden")});
+
 /* ---------- ADMIN ---------- */
 async function loadAdmin(){
   if(!isAdmin) return;
+  sb.from("soporte").select("*").order("creado",{ascending:false}).limit(50).then(({data})=>{
+    const open=(data||[]).filter(t=>t.estado!=="resuelta");
+    $("#adSup").innerHTML=open.length?open.map(t=>`<div class="card adrow"><div style="min-width:0"><h4>${esc(t.tipo||"Solicitud")}</h4><div class="note">${esc(t.email||"")} · ${new Date(t.creado).toLocaleString("es-CO",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"})}</div><p style="margin:6px 0 0;color:#4F0C28">${esc(t.mensaje)}</p></div><div class="actions" style="margin:0"><a class="btn btn-sm btn-soft" target="_blank" rel="noopener" href="mailto:${esc(t.email||"")}">Responder</a><button class="btn btn-sm btn-ghost" data-ok="${esc(t.id)}">Resuelta</button></div></div>`).join(""):`<div class="card note">No hay solicitudes abiertas 🎉</div>`;
+  });
   const el=$("#adList"); el.innerHTML=loadingHTML("Cargando accesos…");
   const [{data:acc},{data:us}]=await Promise.all([sb.from("accesos").select("*").order("creado",{ascending:false}),sb.rpc("admin_usuarias")]);
   const cuentas=new Map((us||[]).map(u=>[u.email,u]));
@@ -1312,6 +1561,7 @@ $("#ad_msg").addEventListener("click",()=>{
   const link=location.origin+location.pathname+"#acceso";
   copy(`¡Hola! Bienvenida a CREATIVE.LAB ✳\n\nYa activé tu acceso. Para entrar:\n1. Abre ${link}\n2. Escribe el correo con el que compraste y toca "Enviarme el enlace de acceso".\n3. Abre el correo que te llega (revisa también spam), crea tu contraseña y listo.\n\nCualquier cosa me escribes por aquí.`);
 });
+$("#adSup").addEventListener("click",async e=>{const b=e.target.closest("[data-ok]");if(!b)return;await sb.from("soporte").update({estado:"resuelta"}).eq("id",b.dataset.ok);loadAdmin()});
 $("#adList").addEventListener("click",async e=>{
   const row=e.target.closest("[data-em]"); if(!row) return; const email=row.dataset.em;
   const t=e.target.closest("[data-tog]"); const d=e.target.closest("[data-del]");
@@ -1325,7 +1575,7 @@ $("#f_entrar").addEventListener("submit",async e=>{
   e.preventDefault(); msgT("#l_msg","Entrando…");
   const {data,error}=await sb.auth.signInWithPassword({email:$("#l_email").value.trim().toLowerCase(),password:$("#l_pass").value});
   if(error){msgT("#l_msg",/confirm/i.test(error.message)?"Primero abre el enlace que te llegó al correo.":"Correo o contraseña incorrectos.");return}
-  session=data.session; msgT("#l_msg",""); await afterLogin(); location.hash=profile.rubro?"hoy":"perfil";
+  session=data.session; msgT("#l_msg",""); await afterLogin(); location.hash=profile.rubro?"lab":"perfil";
 });
 $("#f_acceso").addEventListener("submit",async e=>{
   e.preventDefault(); const email=$("#k_email").value.trim().toLowerCase(); msgT("#k_msg","Revisando…");
@@ -1350,7 +1600,7 @@ $("#f_clave").addEventListener("submit",async e=>{
   }
   history.replaceState(null,"",location.pathname);
   try{await afterLogin()}catch(err){console.error(err)}
-  location.hash=profile.rubro?"hoy":"perfil"; route();
+  location.hash=profile.rubro?"lab":"perfil"; route();
 });
 $("#logout").addEventListener("click",async()=>{await sb.auth.signOut();session=null;me=null;isAdmin=false;location.hash="inicio";location.reload()});
 
@@ -1360,17 +1610,18 @@ chat=[];
 async function afterLogin(){
   if(!session) return;
   me=session.user;
-  const [{data:adm},{data:per},{data:gs},{data:ds}]=await Promise.all([
+  const [{data:adm},{data:per},{data:gs},{data:ds},{data:fv}]=await Promise.all([
     sb.rpc("es_admin"),
     sb.from("perfiles").select("datos").eq("user_id",me.id).maybeSingle(),
     sb.from("guardados").select("*").order("creado",{ascending:false}).limit(300),
-    sb.from("descartes").select("video_id")
+    sb.from("descartes").select("video_id"),
+    sb.from("favoritos").select("video_id")
   ]);
   isAdmin=!!adm; $("#tabAdmin").classList.toggle("hidden",!isAdmin); $("#allRubros").classList.toggle("hidden",!isAdmin);
   profile=Object.assign({nombre:"",pais:"",rubro:"",rubroOtro:"",enfoque:"",nicho:"",publico:"",oferta:"",hago:"",prueba:"",tono:[],voz:""},per&&per.datos?per.datos:(isAdmin?DEFAULT_PROFILE:{}));
   saved=(gs||[]).map(g=>({id:g.id,kind:g.tipo,title:g.titulo,content:g.contenido,ts:Date.parse(g.creado)}));
-  descartados=new Set((ds||[]).map(d=>d.video_id));
-  $("#who").textContent="Hola, "+((profile.nombre||me.email||"").split(/[ ·@]/)[0]);
+  descartados=new Set((ds||[]).map(d=>d.video_id)); favs=new Set((fv||[]).map(d=>d.video_id));
+  const nm=((profile.nombre||me.email||"").split(/[ ·@]/)[0]); $("#who").textContent=(nm[0]||"✳").toUpperCase(); $("#who").title=nm; $("#helloName").textContent=nm||"creadora";
   $("#storeNote").textContent="Se guarda en tu cuenta.";
   fillProfile(); renderSaved(); renderChat(); startFeed(); loadConvs();
 }
