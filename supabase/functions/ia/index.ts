@@ -8,7 +8,7 @@ const cors = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
-const LIMITE = Number(Deno.env.get("LIMITE_DIARIO") ?? "40"); // análisis por persona por día
+const LIMITE = Number(Deno.env.get("LIMITE_DIARIO") ?? "15"); // análisis por persona por día
 const MODELO = Deno.env.get("MODELO_IA") ?? "claude-sonnet-5-5";
 
 const json = (b: unknown, status = 200) =>

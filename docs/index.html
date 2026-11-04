@@ -179,7 +179,25 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
 .idea .hook{background:#6B1237;color:#fff;border-radius:16px;padding:12px 14px;font-size:15px;margin:10px 0}
 .idea .hook b{color:#FF8CC3;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;display:block}
 .list{display:grid;gap:16px}
-@media(min-width:900px){#feed{grid-template-columns:1fr 1fr}}
+#feed{max-width:720px}
+#feedLang .pill{min-height:36px;padding:0 13px;font-size:13.5px}
+@media(max-width:480px){.vtitle{font-size:17px}.vthumb{width:92px;height:132px}}
+.vcard{background:#fff;border-radius:26px;padding:16px;box-shadow:0 12px 30px -18px rgba(79,12,40,.4);display:flex;flex-direction:column;gap:12px}
+.vtop{display:flex;gap:14px;align-items:flex-start}
+.vthumb{position:relative;flex:none;width:104px;height:148px;border-radius:16px;overflow:hidden;background:linear-gradient(160deg,#FF8CC3,#6B1237);display:block}
+.vthumb img{width:100%;height:100%;object-fit:cover;display:block}
+.vplay{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.88);color:#6B1237;display:grid;place-items:center;font-size:13px}
+.vdur{position:absolute;right:6px;bottom:6px;background:rgba(0,0,0,.6);color:#fff;font-size:11px;font-weight:700;padding:2px 6px;border-radius:6px}
+.vinfo{min-width:0;display:flex;flex-direction:column;gap:8px}
+.vtags{display:flex;gap:6px;flex-wrap:wrap}
+.vtags span{font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:#FFF1F6;color:#6B1237}
+.vtitle{margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.02em;font-size:19px;line-height:1.18;color:#4F0C28}
+.vstats{display:flex;gap:12px;flex-wrap:wrap;font-size:13.5px;font-weight:600;color:#9B5574}
+.vwhy{background:#FFF1F6;border-radius:16px;padding:12px 14px}
+.vwhy b{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#F4579F;margin-bottom:3px}
+.vwhy p{margin:0;font-size:14.5px;color:#4F0C28;line-height:1.45}
+.vcta{width:100%}
+.vhide{background:none;border:0;color:#9B5574;font-size:13px;cursor:pointer;padding:0;align-self:center;text-decoration:underline}
 .funnel{display:grid;gap:8px;margin:12px 0 4px}
 .frow{display:grid;grid-template-columns:110px 1fr 64px;gap:10px;align-items:center;font-size:14px}
 .fbar{height:14px;background:#fff;border-radius:999px;overflow:hidden}
@@ -409,8 +427,8 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
       <h2>Encontré esto para ti.</h2>
       <p class="sub">Videos de <b id="rubroTxt">tu rubro</b> que están pegando en otros idiomas. Toca <b>Adaptar esta idea</b> y te saco el guion.</p>
       <div id="rubroWarn" class="banner hidden">Elige tu rubro en <a href="#perfil">Mi perfil</a> para que te lleguen videos de lo que haces.</div>
-      <div class="pills" id="feedLang" style="margin-bottom:14px">
-        <button type="button" class="pill on" data-l="">Todos</button><button type="button" class="pill" data-l="en">Inglés</button><button type="button" class="pill" data-l="pt">Portugués</button><button type="button" class="pill" data-l="de">Alemán</button><button type="button" class="pill" data-l="ru">Ruso</button><button type="button" class="pill" data-l="fr">Francés</button>
+      <div class="pills" id="feedLang" style="margin-bottom:16px">
+        <button type="button" class="pill on" data-l="">Todos</button><button type="button" class="pill" data-l="en">🇺🇸 Inglés</button><button type="button" class="pill" data-l="pt">🇧🇷 Portugués</button><button type="button" class="pill" data-l="de">🇩🇪 Alemán</button><button type="button" class="pill" data-l="ru">🇷🇺 Ruso</button><button type="button" class="pill" data-l="fr">🇨🇦 Francés</button>
         <button type="button" class="pill" id="allRubros" style="border-style:dashed">Ver todos los rubros</button>
       </div>
       <div class="list" id="feed"><div class="card"><div class="loading"><span class="dot"></span><span class="dot"></span><span class="dot"></span> Cargando tu radar…</div></div></div>
@@ -556,10 +574,14 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
     <!-- MENTORA -->
     <section class="view" data-view="mentora">
       <span class="eyebrow">✳ Mentora</span>
-      <h2>Tu asesora de marca personal.</h2>
-      <p class="sub">Pregúntale lo que quieras sobre tu contenido, tu marca o tu oferta.</p>
+      <h2>Tu guía de CREATIVE.LAB.</h2>
+      <div class="card" style="margin-bottom:16px;background:#6B1237;color:#fff">
+        <p style="margin:0 0 6px;font-weight:700;font-size:17px">Hola, soy tu Mentora ✳</p>
+        <p style="margin:0;color:#FFD1E3">Soy la inteligencia artificial de CREATIVE.LAB, creada por María José de Logos by Majo. Te hablo como te hablaría ella: como amigas, sin rodeos. Si algo no te sirve, te lo digo, y te digo qué hacer en su lugar. Pregúntame sobre tu contenido, tu marca, tus precios o cómo vender más.</p>
+      </div>
       <div class="suggest" id="sugg">
         <button class="pill" type="button">¿Qué publico esta semana?</button>
+        <button class="pill" type="button">¿Por qué no me compran?</button>
         <button class="pill" type="button">¿Cómo subo mis precios sin perder clientes?</button>
         <button class="pill" type="button">Revisa mi bio de Instagram</button>
       </div>
@@ -826,26 +848,36 @@ const LANG={en:"EN",pt:"PT",de:"DE",es:"ES",ru:"RU",vi:"VI",fr:"FR",it:"IT",ur:"
 const fi=v=>v==="si"?"✅":v==="no"?"❌":"⚠️";
 function renderFeed(){
   const el=$("#feed");
-  let items=feed.filter(x=>!descartados.has(x.id));
+  let items=feed.filter(x=>!descartados.has(x.id)&&LANGN[x.idioma]&&(+x.vistas||0)>=800000);
   if(profile.rubro&&!allR){const mine=profile.rubro==="otro"?("otro:"+(profile.rubroOtro||"").toLowerCase().trim()):profile.rubro;items=items.filter(x=>(x.rubro||"marca-marketing")===mine)}
   if(feedLang) items=items.filter(x=>x.idioma===feedLang);
-  if(!items.length){el.innerHTML=`<div class="card"><p style="margin:0">${feed.length?"No hay videos en este idioma todavía.":"Todavía no hay videos de tu rubro. La búsqueda diaria los irá trayendo desde mañana."}</p></div>`;return}
-  el.innerHTML=items.map(x=>{const ratio=x.seguidores?Math.round(x.vistas/x.seguidores):0;const f=x.filtros||{};return `
-  <article class="card idea" data-id="${esc(x.id)}">
-    <div style="display:flex;gap:12px">
-      <a class="thumb" href="${esc(x.url)}" target="_blank" rel="noopener"><span class="pl">▶</span><span>${esc(x.plataforma||"TikTok")}</span><span style="opacity:.75">${x.duracion?Math.floor(x.duracion/60)+":"+String(x.duracion%60).padStart(2,"0"):""}</span></a>
-      <div style="min-width:0">
-        <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip hot">${esc(x.plataforma||"TikTok")} · ${esc(LANG[x.idioma]||String(x.idioma||"").toUpperCase())}</span>${x.formato?`<span class="chip">${esc(x.formato)}</span>`:""}</div>
-        <p class="orig" style="margin:8px 0">“${esc(x.titulo)}”</p>
-        <div class="stats-line"><span>👁 ${nf(x.vistas)} vistas</span><span>💬 ${nf(x.comentarios)} comentarios</span>${x.seguidores?`<span>👤 ${nf(x.seguidores)} seguidores</span>`:""}${ratio>=2?`<span class="x">×${ratio} sus seguidores</span>`:""}</div>
+  if(!items.length){el.innerHTML=`<div class="card"><p style="margin:0">Todavía no hay videos de tu rubro con más de 800 mil vistas. La búsqueda diaria los va trayendo cada mañana.</p></div>`;updateLangPills();return}
+  el.innerHTML=items.map(x=>{const L=LANGN[x.idioma]||{};return `
+  <article class="vcard" data-id="${esc(x.id)}">
+    <div class="vtop">
+      <a class="vthumb" href="${esc(x.url)}" target="_blank" rel="noopener" aria-label="Ver original">
+        ${x.portada?`<img src="${esc(x.portada)}" alt="" loading="lazy" onerror="this.remove()">`:""}
+        <span class="vplay">▶</span>${x.duracion?`<span class="vdur">${Math.floor(x.duracion/60)}:${String(x.duracion%60).padStart(2,"0")}</span>`:""}
+      </a>
+      <div class="vinfo">
+        <div class="vtags"><span>${esc(x.plataforma||"TikTok")}</span><span>${L.f||""} ${esc(L.n||String(x.idioma||"").toUpperCase())}</span></div>
+        <p class="vtitle">“${esc(x.titulo)}”</p>
+        <div class="vstats"><span>👁 ${nf(x.vistas)} vistas</span><span>💬 ${nf(x.comentarios)} comentarios</span></div>
       </div>
     </div>
-    <div class="why"><div><b>Por qué funciona</b>${esc(x.por_que_funciona)}</div><div><b>Por qué es para ti</b>${esc(x.por_que_para_ti)}</div></div>
-    <div class="filt"><span>${fi(f.ya_funciono)} Ya funcionó</span><span>${fi(f.repetible)} Repetible</span><span>${fi(f.tu_tema)} Tu tema</span><span>${fi(f.espanol)} ¿Ya en español?</span></div>
-    ${x.gancho_adaptado?`<div class="hook"><b>Tu gancho</b>${esc(x.gancho_adaptado)}</div>`:""}
-    <div class="actions"><button class="btn btn-sm btn-accent" data-adapt>Adaptar esta idea →</button><a class="btn btn-sm btn-ghost" href="${esc(x.url)}" target="_blank" rel="noopener">Ver original</a><button class="btn btn-sm" style="color:var(--ink3)" data-hide>Descartar</button></div>
+    <div class="vwhy"><b>Por qué funciona</b><p>${esc(x.por_que_funciona)}</p></div>
+    <div class="vwhy"><b>Por qué es para ti</b><p>${esc(x.por_que_para_ti)}</p></div>
+    <button class="btn btn-primary vcta" data-adapt>Adaptar esta idea →</button>
+    <button class="vhide" data-hide>No me interesa</button>
     <div class="out" data-out></div>
   </article>`}).join("");
+  updateLangPills();
+}
+const LANGN={en:{n:"Inglés",f:"🇺🇸"},pt:{n:"Portugués",f:"🇧🇷"},de:{n:"Alemán",f:"🇩🇪"},ru:{n:"Ruso",f:"🇷🇺"},fr:{n:"Francés",f:"🇨🇦"}};
+function updateLangPills(){
+  const base=feed.filter(x=>!descartados.has(x.id)&&LANGN[x.idioma]&&(+x.vistas||0)>=800000&&(!profile.rubro||allR||(x.rubro||"marca-marketing")===(profile.rubro==="otro"?("otro:"+(profile.rubroOtro||"").toLowerCase().trim()):profile.rubro)));
+  const has=new Set(base.map(x=>x.idioma));
+  $$("#feedLang .pill[data-l]").forEach(p=>{const l=p.dataset.l;p.classList.toggle("hidden",!!l&&!has.has(l))});
 }
 $("#feedLang").addEventListener("click",e=>{const b=e.target.closest(".pill");if(!b)return;if(b.id==="allRubros"){allR=!allR;b.classList.toggle("on",allR);renderFeed();return}$$("#feedLang .pill[data-l]").forEach(p=>p.classList.toggle("on",p===b));feedLang=b.dataset.l;renderFeed()});
 $("#feed").addEventListener("click",async e=>{
@@ -872,22 +904,23 @@ No tienes el video, solo estos datos; si algo visual es incierto, dilo y dile qu
 ${portada.length?"- Te adjunto la portada del video.":""}
 - Análisis previo: funciona porque ${x.por_que_funciona}. Para ella: ${x.por_que_para_ti}. Formato: ${x.formato||"-"}.
 
-Entrega:
-### El esqueleto (lo que retuvo)
-- **Segundo 0-3 · Gancho**
-- **Promesa**
-- **Orden y ritmo**
-- **Giro o sorpresa**
-- **Cierre y por qué comentan**
-### La piel que vas a cambiar
-### Qué no copiar
-### Tu reestreno · guion para teleprompter
-(mismo esqueleto, su voz y su nicho; [GANCHO 0-3 s], [PROMESA], [DESARROLLO], [GIRO], [CIERRE + CTA]; entre paréntesis qué se ve)
-### Versión corta para decir sin leer
-### Texto en pantalla y caption
-### Cómo grabarlo
+REGLAS DEL GUION (lo más importante):
+- Es el texto EXACTO que la persona va a decir a cámara, palabra por palabra, listo para leer en teleprompter.
+- Sigue el video original frase por frase: mismo orden, mismas ideas, mismo ritmo y misma cantidad de puntos. Si el original dice 3 errores, tú dices 3 errores; si abre con una pregunta, tú abres con una pregunta.
+- Tradúcelo y adáptalo al español latino y a SU forma de hablar (usa su vocabulario, muletillas y tono del perfil) y a SU negocio (sus ejemplos, sus clientes, su producto). No inventes datos, resultados ni testimonios que no estén en su perfil.
+- Sin etiquetas como [GANCHO] o [CIERRE], sin indicaciones de cámara, sin comillas: solo lo que se dice, en párrafos cortos de 1 o 2 frases.
+- Termina con un cierre que invite a comentar o seguir, natural, como lo diría ella.
+Si no tienes la transcripción, básate en el caption, la portada y el formato, y dilo en una línea al final.
+
+Entrega exactamente esto, en este orden:
+### Tu guion
+(el guion exacto, siguiendo las reglas)
 ### Antes de grabar
-(2 búsquedas exactas en español para confirmar que todavía no llegó)`;
+- **Texto en pantalla:** (máximo 8 palabras, para los primeros 3 segundos)
+- **Qué mostrar:** (1 línea)
+- **Caption:** (corto, con una pregunta)
+### Por qué va a funcionar
+(2 frases: qué del esqueleto del original retiene a la gente)`;
   let text="";
   try{
     const r=await sample(prompt,{modelTier:"default",images:portada.length?portada:undefined,onText:({text:t})=>{text=t;out.innerHTML=`<div class="md" style="margin-top:8px">${md(t)}</div>`}});
@@ -986,43 +1019,33 @@ Datos: vistas ${$("#a_views").value||"no indicadas"}, comentarios ${$("#a_com").
 Lo que dice el video / caption:
 """${txt.slice(0,12000)||"(no se tiene; dedúcelo de las imágenes y el texto en pantalla)"}"""
 
-Entrega exactamente esto, en español:
-### Qué dice el video
-(2-3 frases; tradúcelo si viene en otro idioma)
+REGLAS DEL GUION (lo más importante):
+- Es el texto EXACTO que la persona va a decir a cámara, palabra por palabra, listo para leer en teleprompter.
+- Sigue el video original frase por frase: mismo orden, mismas ideas, mismo ritmo y misma cantidad de puntos. Si el original dice 3 errores, tú dices 3 errores; si abre con una pregunta, tú abres con una pregunta.
+- Tradúcelo y adáptalo al español latino y a SU forma de hablar (usa su vocabulario, muletillas y tono del perfil) y a SU negocio (sus ejemplos, sus clientes, su producto). No inventes datos, resultados ni testimonios que no estén en su perfil.
+- Sin etiquetas como [GANCHO] o [CIERRE], sin indicaciones de cámara, sin comillas: solo lo que se dice, en párrafos cortos de 1 o 2 frases.
+- Termina con un cierre que invite a comentar o seguir, natural, como lo diría ella.
+
+Entrega exactamente esto, en este orden y sin agregar más secciones:
+### Tu guion
+(el guion exacto, siguiendo las reglas; si el video no sirve para su marca, adapta el ángulo más cercano que sí sirva)
+### Antes de grabar
+- **Texto en pantalla:** (máximo 8 palabras)
+- **Qué mostrar:** (1 línea)
+- **Caption:** (corto, con una pregunta)
+### Por qué funcionó
+- **Gancho:** (1 línea)
+- **Lo que retiene:** (1 línea)
+- **Por qué comentan:** (1 línea)
 ### Los 4 filtros
-- ✅/⚠️/❌ **Ya funcionó allá:** compara vistas contra seguidores si los tienes
-- ✅/⚠️/❌ **Se puede repetir:** ¿lo puede grabar ella con lo que tiene?
-- ✅/⚠️/❌ **Se lleva a tu tema:** cómo encaja con su nicho
-- ⚠️ **¿Ya llegó al español?:** no lo puedes verificar; dile qué buscar en Instagram/TikTok en español (2-3 búsquedas exactas) para confirmarlo
-**Veredicto:** Reestrénalo / Reestrénalo con cambios / Busca otro, en una frase.
-### El esqueleto (lo que retuvo a millones)
-- **Segundo 0-3 · Gancho:** qué pasa y por qué detiene el scroll
-- **Promesa:** qué se queda esperando ver la gente
-- **Orden y ritmo:** los pasos del video y cada cuánto cambia algo
-- **Giro o sorpresa:** dónde está
-- **Cierre:** cómo termina y por qué la gente lo ve completo, lo repite o comenta
-### La piel (lo que vas a cambiar)
-(qué es superficial del original y no se debe copiar: persona, idioma, ejemplos, fondo, chistes locales)
-### Qué no copiar
-(lo que no va a funcionar en Latinoamérica o con su audiencia, y por qué)
-### Por qué va a funcionar con tu audiencia
-(2-3 frases conectadas con su público y su oferta)
-### Tu reestreno · guion para teleprompter
-(MISMO esqueleto, SU piel: su voz, sus palabras y muletillas, su nicho, sus ejemplos reales. Marca [GANCHO 0-3 s], [PROMESA], [DESARROLLO], [GIRO], [CIERRE + CTA]. Indica entre paréntesis qué se ve en pantalla. Que suene a ella hablando, no a IA.)
-### Versión corta para decir sin leer
-(3 a 5 frases cortas, fáciles de memorizar)
-### Texto en pantalla y caption
-- Texto del gancho en pantalla (máximo 8 palabras)
-- Caption con una pregunta que invite a comentar
-### Cómo grabarlo
-(3 puntos concretos: plano, ritmo de cortes, qué mostrar)
+✅/⚠️/❌ Ya funcionó allá · ✅/⚠️/❌ Se puede repetir · ✅/⚠️/❌ Se lleva a tu tema · ⚠️ ¿Ya llegó al español? (en 1 línea cada uno, muy corto)
 `;
     let text="";
     const r=await sample(prompt,{modelTier:"default",images:imgs.length?imgs:undefined,onText:({text:t})=>{text=t;out.innerHTML=`<div class="card md">${md(t)}</div>`}});
     text=r.text||text;
     out.innerHTML=`<div class="card"><div class="md">${md(text)}</div><div class="actions" style="margin-top:12px"><button class="btn btn-sm btn-primary" data-c>Copiar</button><button class="btn btn-sm btn-soft" data-s>Guardar</button><button class="btn btn-sm btn-ghost" data-v>Pulir en Voz</button></div></div>`;
     out.querySelector("[data-c]").onclick=()=>copy(text);
-    out.querySelector("[data-s]").onclick=e=>{saveItem("Reestreno",((text.match(/### Qué dice el video\s*\n+([^\n]+)/)||[])[1]||link||"Video").slice(0,90),text);e.target.disabled=true;e.target.textContent="Guardado"};
+    out.querySelector("[data-s]").onclick=e=>{saveItem("Reestreno",((text.match(/### Tu guion\s*\n+([^\n]+)/)||[])[1]||link||"Video").slice(0,90),text);e.target.disabled=true;e.target.textContent="Guardado"};
     out.querySelector("[data-v]").onclick=()=>{$("#v_src").value=text.slice(0,6000);location.hash="voz"};
   }catch(e){
     const m=e&&e.code==="image_rejected"?"No pude usar ese archivo. Prueba con capturas de pantalla.":aiErr(e);
@@ -1122,7 +1145,7 @@ async function sendChat(text){
   if(!session){location.hash="entrar";return}
   chat.push({role:"user",content:text}); $("#chatIn").value=""; renderChat(""); $("#chatSend").disabled=true;
   window.scrollTo(0,document.body.scrollHeight);
-  const sys=`${BASE}\n\n${ctx()}\n\nERES "Mentora", su asesora de marca personal en Instagram. Respuestas concretas y prácticas, máximo 200 palabras salvo que pida más. Haz una pregunta de vuelta solo si de verdad la necesitas.`;
+  const sys=`${BASE}\n\n${ctx()}\n\nERES "Mentora", la guía de CREATIVE.LAB, una IA creada por María José (Logos by Majo, Medellín). Hablas con SU personalidad: paisa, cálida y cercana, como una amiga que sabe mucho de marca y marketing; le hablas de tú; eres directa y honesta ("mira, esto no te sirve por esto; haz esto otro"), con buen humor y sin regaños. Das respuestas concretas: qué hacer, en qué orden y un ejemplo aplicado a su negocio. Máximo 180 palabras salvo que pida más, frases cortas, nada que suene a robot ni a texto de IA, sin listas eternas. Si necesitas un dato para ayudarla, pregúntalo al final en una sola pregunta. Si te preguntan quién eres, di que eres la Mentora de CREATIVE.LAB, creada por María José.`;
   const msgs=chat.slice(-12).map((m,i)=>i===0&&m.role==="user"?{role:"user",content:sys+"\n\nPREGUNTA: "+m.content}:m);
   if(msgs[0].role!=="user") msgs.unshift({role:"user",content:sys});
   try{

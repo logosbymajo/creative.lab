@@ -9,7 +9,9 @@ const APIFY = process.env.APIFY_TOKEN;               // token de Apify (secreto 
 const CLAUDE = process.env.ANTHROPIC_API_KEY;        // clave de Claude (secreto de GitHub)
 const MODELO = process.env.MODELO_IA || "claude-sonnet-5-5";
 const RUBROS_POR_DIA = Number(process.env.RUBROS_POR_DIA || "3"); // marca-marketing + 2 rotando
-const POR_RUBRO = 5;
+const POR_RUBRO = 6;
+const MIN_VISTAS = 800000;
+const MIN_LIKES = 25000; // filtro de popularidad de Apify (un video de 800 mil vistas suele tener más de 25 mil me gusta)
 const IDIOMAS = ["en", "pt", "de", "ru", "fr"]; // Estados Unidos, Canadá, Brasil, Alemania, Rusia (nada en español)
 
 for (const [k, v] of Object.entries({ SUPABASE_SECRET_KEY: SB_KEY, APIFY_TOKEN: APIFY, ANTHROPIC_API_KEY: CLAUDE }))
@@ -59,12 +61,37 @@ async function claude(prompt) {
   return j.content.filter((c) => c.type === "text").map((c) => c.text).join("");
 }
 
+async function asegurarBucket() {
+  const r = await fetch(`${SB_URL}/storage/v1/bucket`, {
+    method: "POST", headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ id: "portadas", name: "portadas", public: true }),
+  });
+  if (!r.ok) { const t = await r.text(); if (!/exist|duplicate/i.test(t)) console.log("bucket:", r.status, t.slice(0, 200)); }
+}
+async function subirPortada(id, url) {
+  if (!url) return null;
+  try {
+    const img = await fetch(url);
+    if (!img.ok) return null;
+    const type = (img.headers.get("content-type") || "image/jpeg").split(";")[0];
+    const buf = Buffer.from(await img.arrayBuffer());
+    if (buf.length < 1000 || buf.length > 3_000_000) return null;
+    const ext = type.includes("png") ? "png" : type.includes("webp") ? "webp" : "jpg";
+    const up = await fetch(`${SB_URL}/storage/v1/object/portadas/${id}.${ext}`, {
+      method: "POST", headers: { apikey: SB_KEY, Authorization: `Bearer ${SB_KEY}`, "Content-Type": type, "x-upsert": "true" }, body: buf,
+    });
+    if (!up.ok) { console.log("portada:", up.status, (await up.text()).slice(0, 150)); return null; }
+    return `${SB_URL}/storage/v1/object/public/portadas/${id}.${ext}`;
+  } catch { return null; }
+}
+const portadaDe = (v) => v.videoMeta?.coverUrl || v.videoMeta?.originalCoverUrl || null;
+
 function elegirTags(rubro, extra) {
   const grupos = TAGS[rubro];
   if (!grupos) return extra;
-  // 2 de inglés + 1 de portugués + 1 rotando entre alemán y ruso; cambia cada día
+  // 2 de inglés + 1 de portugués + 1 de alemán + 1 de ruso; cambian cada día
   const pick = (arr, k) => arr[(diaDelAnio + k) % arr.length];
-  return [pick(grupos[0], 0), pick(grupos[0], 1), pick(grupos[1], 0), pick(diaDelAnio % 2 ? grupos[2] : grupos[3], 0)];
+  return [pick(grupos[0], 0), pick(grupos[0], 1), pick(grupos[1], 0), pick(grupos[2], 0), pick(grupos[3], 0)];
 }
 
 async function main() {
@@ -84,7 +111,30 @@ async function main() {
   const rubros = ["marca-marketing", ...new Set(rot)];
   console.log("Rubros de hoy:", rubros.join(", "));
 
-  // 2) Videos que ya tenemos
+  await asegurarBucket();
+
+  // 2) Videos que ya tenemos (y limpieza: menos de 800 mil vistas o en otros idiomas)
+  const actuales = await sb("radar?select=id,datos&limit=5000");
+  for (const r of actuales) {
+    const vis = Number(r.datos?.vistas || 0), lang = String(r.datos?.idioma || "").slice(0, 2);
+    if (vis < MIN_VISTAS || !IDIOMAS.includes(lang)) await sb(`radar?id=eq.${encodeURIComponent(r.id)}`, { method: "DELETE" });
+  }
+  const sinPortada = actuales.filter((r) => Number(r.datos?.vistas || 0) >= MIN_VISTAS && IDIOMAS.includes(String(r.datos?.idioma || "").slice(0, 2)) && !r.datos?.portada && r.datos?.url);
+  if (sinPortada.length) {
+    try {
+      const rr = await fetch(`https://api.apify.com/v2/acts/clockworks~tiktok-scraper/run-sync-get-dataset-items?token=${APIFY}&timeout=200&maxTotalChargeUsd=0.5`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ postURLs: sinPortada.slice(0, 40).map((r) => r.datos.url), resultsPerPage: 1 }),
+      });
+      const vids = rr.ok ? await rr.json() : [];
+      for (const v of vids) {
+        const fila = sinPortada.find((r) => r.id === "tt-" + v.id); if (!fila) continue;
+        const pu = await subirPortada(fila.id, portadaDe(v));
+        if (pu) await sb(`radar?id=eq.${encodeURIComponent(fila.id)}`, { method: "PATCH", body: JSON.stringify({ datos: { ...fila.datos, portada: pu } }) });
+      }
+      console.log("Portadas recuperadas:", vids.length);
+    } catch (e) { console.log("portadas viejas:", e.message); }
+  }
   const ya = new Set((await sb("radar?select=id&limit=5000")).map((r) => r.id));
   const resumen = [];
 
@@ -101,7 +151,7 @@ async function main() {
       // 3) Apify
       const r = await fetch(`https://api.apify.com/v2/acts/clockworks~tiktok-scraper/run-sync-get-dataset-items?token=${APIFY}&timeout=290&maxTotalChargeUsd=0.5`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ hashtags: tags, resultsPerPage: 12, downloadSubtitlesOptions: "NEVER_DOWNLOAD_SUBTITLES" }),
+        body: JSON.stringify({ hashtags: tags, resultsPerPage: 15, leastDiggs: MIN_LIKES, downloadSubtitlesOptions: "NEVER_DOWNLOAD_SUBTITLES" }),
       });
       if (!r.ok) throw new Error("Apify " + r.status + " " + (await r.text()).slice(0, 200));
       const items = await r.json();
@@ -112,8 +162,8 @@ async function main() {
         const lang = (v.textLanguage || "").slice(0, 2);
         if (ya.has("tt-" + v.id)) return false;
         if (!IDIOMAS.includes(lang)) return false;
-        if (com < 100) return false;
-        return (vis >= 100000 && vis >= 3 * fans) || (vis >= 30000 && vis >= 10 * fans);
+        if (com < 200) return false;
+        return vis >= MIN_VISTAS && vis >= 1.5 * fans;
       }).sort((a, b) => (b.playCount / Math.max(1, b.authorMeta?.fans || 1)) - (a.playCount / Math.max(1, a.authorMeta?.fans || 1)))
         .slice(0, 25);
       console.log(`[${rubro}] ${items.length} encontrados, ${cand.length} pasan los números`);
@@ -131,13 +181,14 @@ De esta lista, elige como máximo ${POR_RUBRO} videos que de verdad sean del rub
 Lista (JSON): ${JSON.stringify(lista)}
 Responde SOLO con un JSON array. Cada elemento:
 {"id":"<id>","mercado":"Brasil|Estados Unidos|Alemania|Canadá|Rusia","idioma":"<código real: en, pt, de, ru o fr>","titulo":"<frase principal del original, corta, en su idioma; si es ruso u otro alfabeto, tradúcela al español>","formato":"<nombre corto del formato>","por_que_funciona":"<2 frases: qué del esqueleto retiene y por qué comentan>","por_que_para_ti":"<1-2 frases: cómo se lleva a este rubro para emprendedoras hispanohablantes>","gancho_adaptado":"<el gancho en español latino, cercano, para decir a cámara>","filtros":{"ya_funciono":"si|no|duda","repetible":"si|no|duda","tu_tema":"si|no|duda","espanol":"duda"}}
-Escribe natural, nada que suene a IA. Si ninguno sirve, responde [].`;
+Escribe natural, nada que suene a IA. Intenta que haya variedad de idiomas (inglés, portugués, alemán, ruso) si hay buenos candidatos en cada uno. Si ninguno sirve, responde [].`;
       const txt = await claude(prompt);
       const elegidos = JSON.parse((txt.match(/\[[\s\S]*\]/) || ["[]"])[0]);
       const porId = new Map(cand.map((v) => [String(v.id), v]));
       const filas = [];
-      elegidos.slice(0, POR_RUBRO).forEach((e, i) => {
-        const v = porId.get(String(e.id)); if (!v) return;
+      for (const [i, e] of elegidos.slice(0, POR_RUBRO).entries()) {
+        const v = porId.get(String(e.id)); if (!v) continue;
+        const portada = await subirPortada("tt-" + v.id, portadaDe(v));
         filas.push({
           id: "tt-" + v.id, rubro,
           encontrado: new Date(Date.now() - i * 10000).toISOString(),
@@ -146,10 +197,11 @@ Escribe natural, nada que suene a IA. Si ninguno sirve, responde [].`;
             vistas: v.playCount, comentarios: v.commentCount, seguidores: v.authorMeta?.fans || 0, duracion: v.videoMeta?.duration || 0,
             mercado: e.mercado, idioma: e.idioma || v.textLanguage, titulo: e.titulo, formato: e.formato,
             por_que_funciona: e.por_que_funciona, por_que_para_ti: e.por_que_para_ti, gancho_adaptado: e.gancho_adaptado, filtros: e.filtros,
+            portada,
           },
         });
         ya.add("tt-" + v.id);
-      });
+      }
       if (filas.length) await sb("radar", { method: "POST", body: JSON.stringify(filas), headers: { Prefer: "resolution=ignore-duplicates,return=minimal" } });
       console.log(`[${rubro}] guardados: ${filas.length}`);
       resumen.push(`${rubro}: ${filas.length}`);
@@ -160,7 +212,6 @@ Escribe natural, nada que suene a IA. Si ninguno sirve, responde [].`;
   }
 
   // 6) Limpieza: quitar lo que no sea de los mercados elegidos y dejar los 600 más recientes
-  await sb(`radar?datos->>idioma=not.in.(${IDIOMAS.join(",")})`, { method: "DELETE" });
   const todos = await sb("radar?select=id&order=encontrado.desc&offset=600&limit=1000");
   for (const t of todos) await sb(`radar?id=eq.${encodeURIComponent(t.id)}`, { method: "DELETE" });
 
