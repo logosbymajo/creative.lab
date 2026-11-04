@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#F4579F">
+<title>CREATIVE.LAB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#F4579F; --pale:#FFD1E3; --wine:#6B1237; --deep:#4F0C28; --soft:#FF8CC3; --card:#FFF1F6; --line:#E8B9C8;
+  --bg:#FFD1E3; --paper:#FFF1F6; --ink:#4F0C28; --ink2:#6B1237; --ink3:#9B5574; --accent:#F4579F; --accent-ink:#6B1237; --peach:#FFD1E3;
+  --r:24px; --shadow:0 10px 24px -14px rgba(79,12,40,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0;color:var(--ink);font-family:'Instrument Sans',system-ui,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body{background-color:#FFD1E3;background-image:linear-gradient(rgba(255,255,255,.55) 1.5px,transparent 1.5px),linear-gradient(90deg,rgba(255,255,255,.55) 1.5px,transparent 1.5px);background-size:56px 56px}
+a{color:inherit}
+button,input,textarea,select{font:inherit;color:inherit}
+.display,.serif{font-family:'Bricolage Grotesque','Arial Rounded MT Bold',system-ui,sans-serif;font-weight:800;letter-spacing:-0.04em}
+.grid-hot{background-color:#F4579F;background-image:linear-gradient(rgba(255,255,255,.22) 1.5px,transparent 1.5px),linear-gradient(90deg,rgba(255,255,255,.22) 1.5px,transparent 1.5px);background-size:56px 56px}
+.grid-pale{background-color:#FFD1E3;background-image:linear-gradient(rgba(255,255,255,.55) 1.5px,transparent 1.5px),linear-gradient(90deg,rgba(255,255,255,.55) 1.5px,transparent 1.5px);background-size:56px 56px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+.star{color:var(--soft)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;min-height:48px;padding:0 24px;font-weight:600;font-size:16px;cursor:pointer;text-decoration:none;transition:transform 160ms cubic-bezier(.23,1,.32,1),background-color 160ms ease,color 160ms ease,box-shadow 200ms ease}
+.btn:active{transform:scale(.97)}
+.btn-primary,.btn-accent{background:#6B1237;color:#fff}
+.btn-white{background:#fff;color:#6B1237}
+.btn-ghost{background:transparent;border:2px solid #4F0C28;color:#4F0C28}
+.btn-soft{background:#FF8CC3;color:#4F0C28}
+.btn-sm{min-height:40px;padding:0 16px;font-size:14.5px}
+.btn[disabled]{opacity:.45;pointer-events:none}
+@media (hover:hover) and (pointer:fine){.btn-primary:hover,.btn-accent:hover{background:#4F0C28;transform:translateY(-2px);box-shadow:0 10px 20px rgba(79,12,40,.28)}.btn-white:hover{background:#FFD1E3}.btn-soft:hover{background:#fff}}
+.eyebrow{display:inline-flex;gap:8px;align-items:center;font-family:'Bricolage Grotesque',sans-serif;font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--wine)}
+.hidden{display:none!important}
+.logo-pill{display:inline-flex;align-items:center;gap:10px;background:#6B1237;color:#fff;border:2.5px solid #fff;border-radius:999px;padding:9px 20px;font-size:clamp(20px,3vw,26px);line-height:1;transform:rotate(-2deg);box-shadow:0 10px 20px rgba(79,12,40,.22);white-space:nowrap;text-decoration:none}
+.brand{display:flex;flex-direction:column;gap:4px;text-decoration:none}
+.brand small{font-family:'Bricolage Grotesque',sans-serif;font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#fff;padding-left:6px}
+
+/* ---------- LANDING ---------- */
+header.top{position:sticky;top:0;z-index:20;background:#F4579F;border-bottom:2px solid rgba(255,255,255,.35)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:84px;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
+.nav-links{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.nav-links a{text-decoration:none;font-weight:600;font-size:15.5px;padding:10px 14px;border-radius:999px;color:#4F0C28}
+.nav-links a.cta{background:#6B1237;color:#fff}
+.hero{padding:56px 0 80px}
+.hero h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-0.045em;font-size:clamp(44px,9vw,108px);line-height:.94;color:#fff;margin:18px 0 26px;max-width:1000px;text-wrap:balance}
+.hero h1 em{font-style:normal;color:#6B1237}
+.hero p.lead{font-size:clamp(18px,2.3vw,24px);color:#4F0C28;max-width:620px;margin:0 0 30px;line-height:1.45}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap}
+.hero .eyebrow{color:#fff}
+.tag{position:relative;display:inline-block;margin:34px 0 0 8px;transform:rotate(-1.4deg);background:#6B1237;border:2px solid #fff;padding:14px 24px;color:#fff;font-size:17px;font-weight:600}
+.tag i{position:absolute;width:12px;height:12px;background:#fff}
+.strip{background:#4F0C28;color:#fff}
+.strip .wrap{display:flex;flex-wrap:wrap;gap:24px 32px;padding-top:36px;padding-bottom:36px}
+.strip div{flex:1 1 200px;display:flex;flex-direction:column;gap:4px}
+.strip b{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.04em;font-size:clamp(26px,3.4vw,38px);line-height:1;color:#FF8CC3}
+.section{padding:80px 0}
+.section h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-0.04em;font-size:clamp(36px,6vw,72px);line-height:.96;margin:12px 0 16px;color:#6B1237;text-wrap:balance}
+.section p.sub{color:#4F0C28;max-width:620px;margin:0 0 30px;font-size:19px}
+.sec-wine{background:#6B1237}
+.sec-wine h2{color:#fff}.sec-wine p.sub{color:#FFD1E3}.sec-wine .eyebrow{color:#FF8CC3}
+.picks{display:grid;gap:18px}
+@media(min-width:800px){.picks{grid-template-columns:1fr 1fr}}
+.pick{background:#FFF1F6;border-radius:24px;padding:24px;box-shadow:var(--shadow)}
+.pick .meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chip{font-size:12.5px;font-weight:700;padding:5px 11px;border-radius:999px;background:#fff;border:1.5px solid var(--line);color:#6B1237}
+.chip.hot{background:#6B1237;border-color:#6B1237;color:#fff}
+.pick .orig{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.03em;font-size:23px;line-height:1.12;margin:0 0 14px;color:#4F0C28}
+.why{display:grid;gap:8px;margin-top:10px}
+.why div{background:#fff;border-radius:16px;padding:12px 14px;font-size:14.5px;color:#4F0C28}
+.why b{display:block;color:#6B1237;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:3px}
+.steps{display:grid;gap:18px;counter-reset:s}
+@media(min-width:800px){.steps{grid-template-columns:repeat(2,1fr)}}
+.step{position:relative;background:#FFF1F6;border-radius:24px;padding:26px 24px 24px 84px}
+.step::before{counter-increment:s;content:counter(s,decimal-leading-zero);position:absolute;left:24px;top:22px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:32px;letter-spacing:-.04em;color:#F4579F}
+.step h3{margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.03em;font-size:26px;color:#6B1237}
+.step .agent{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#F4579F;margin-bottom:4px}
+.step p{margin:6px 0 0;color:#4F0C28;font-size:16px}
+.brain{margin-top:18px;background:#F4579F;color:#fff;border-radius:24px;padding:26px 24px;display:flex;gap:16px;align-items:flex-start;border:3px solid #fff}
+.brain .ic{font-size:28px;color:#6B1237}
+.brain h3{margin:0 0 4px;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.03em;font-size:28px;color:#fff}
+.brain p{margin:0;color:#4F0C28;font-size:16.5px}
+.markets{display:flex;flex-wrap:wrap;gap:10px}
+.markets span{background:#FFF1F6;border:2px solid #6B1237;border-radius:999px;padding:12px 20px;font-weight:700;font-size:16px;color:#6B1237}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 24px}
+.stat{background:#6B1237;border-radius:24px;padding:20px 16px;color:#fff}
+.stat .n{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.04em;font-size:clamp(30px,6vw,48px);line-height:1;color:#FF8CC3}
+.stat .l{font-size:14px;color:#FFD1E3;margin-top:6px}
+.principle{background:#6B1237;border-radius:32px;padding:44px 26px;text-align:center;border:3px solid #fff}
+.principle h2{margin-top:6px;color:#fff}.principle p{margin:0 auto;max-width:560px;color:#FFD1E3;font-size:18px}.principle .eyebrow{color:#FF8CC3}
+.login-card{background:#FFF1F6;border-radius:32px;padding:34px 26px;max-width:560px;margin:0 auto;text-align:center;box-shadow:0 18px 40px rgba(79,12,40,.25);border:3px solid #fff}
+.login-card h2{margin-top:6px}
+.final{text-align:center;padding:80px 0}
+.login-card hr{border:0;border-top:1.5px solid #E8B9C8;margin:18px 0}
+.login-card a{color:#F4579F;font-weight:700}
+.adrow{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}
+.adrow h4{margin:0;font-size:16.5px;color:#4F0C28;word-break:break-all}
+.st{font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;display:inline-block;margin-top:6px}
+.st.ok{background:#6B1237;color:#fff}.st.wait{background:#fff;color:#6B1237;border:1.5px solid #E8B9C8}.st.off{background:#eee;color:#777}
+footer{background:#4F0C28;color:#FFD1E3;padding:30px 0 40px;font-size:14px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
+
+/* ---------- APP ---------- */
+#app{min-height:100vh}
+.app-top{position:sticky;top:0;z-index:20;background:#F4579F;border-bottom:2px solid rgba(255,255,255,.35)}
+.app-top .wrap{display:flex;align-items:center;justify-content:space-between;min-height:76px;gap:10px}
+.who{font-size:13.5px;font-weight:600;color:#4F0C28;text-align:right;text-decoration:none}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:4px 20px 12px;scrollbar-width:none;max-width:1180px;margin:0 auto}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;background:rgba(255,255,255,.55);border-radius:999px;padding:9px 15px;font-weight:600;font-size:14.5px;cursor:pointer;text-decoration:none;white-space:nowrap;color:#4F0C28}
+.tab.on{background:#6B1237;color:#fff;box-shadow:0 6px 14px rgba(79,12,40,.28)}
+.view{padding:26px 0 80px}
+.view h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-0.04em;font-size:clamp(34px,7vw,58px);line-height:.96;margin:8px 0 10px;color:#6B1237;text-wrap:balance}
+.view p.sub{color:#4F0C28;margin:0 0 20px;max-width:640px;font-size:17px}
+.card{background:#FFF1F6;border-radius:24px;padding:22px;box-shadow:var(--shadow)}
+.grid2{display:grid;gap:12px}
+@media(min-width:760px){.grid2{grid-template-columns:1fr 1fr}}
+label.f{display:block;font-weight:600;font-size:16px;margin:0 0 7px;color:#4F0C28}
+label.f small{font-weight:500;color:var(--ink3)}
+.field{margin-bottom:16px}
+input.in,textarea.in,select.in{width:100%;background:#fff;border:2px solid #E8B9C8;border-radius:14px;padding:12px 15px;min-height:50px;outline:none;color:#4F0C28;transition:border-color 160ms ease,box-shadow 160ms ease}
+input.in:focus,textarea.in:focus,select.in:focus{border-color:#6B1237;box-shadow:0 0 0 4px rgba(244,87,159,.28)}
+textarea.in{min-height:110px;resize:vertical;line-height:1.5}
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{border:2px solid #4F0C28;background:transparent;border-radius:999px;min-height:42px;padding:0 16px;font-weight:600;font-size:14.5px;cursor:pointer;color:#4F0C28;transition:transform 160ms cubic-bezier(.23,1,.32,1),background-color 160ms ease,color 160ms ease}
+.pill:active{transform:scale(.97)}
+.pill.on{background:#6B1237;border-color:#6B1237;color:#fff}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:8px}
+.note{font-size:13.5px;color:var(--ink3)}
+.out{margin-top:16px}
+.md{font-size:16px;color:#4F0C28}
+.md h3,.md h4{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.03em;margin:20px 0 6px;font-size:22px;color:#6B1237}
+.md h4{font-size:18px}
+.md p{margin:0 0 10px}
+.md ul{margin:0 0 12px;padding-left:20px}
+.md li{margin:3px 0}
+.md strong{font-weight:700}
+.loading{display:flex;gap:10px;align-items:center;color:#6B1237;font-weight:600}
+.dot{width:9px;height:9px;border-radius:50%;background:#F4579F;animation:p 1s infinite ease-in-out}
+.dot:nth-child(2){animation-delay:.15s}.dot:nth-child(3){animation-delay:.3s}
+@keyframes p{0%,100%{opacity:.25;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
+.banner{background:#6B1237;color:#fff;border-radius:16px;padding:13px 16px;font-size:14.5px;font-weight:600;margin-bottom:14px}
+.banner a{color:#FF8CC3}
+.banner.warn{background:#fff;color:#6B1237;border:2px solid #6B1237}
+.idea .orig{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;letter-spacing:-.03em;font-size:21px;margin:6px 0 10px;line-height:1.15;color:#4F0C28}
+.idea .hook{background:#6B1237;color:#fff;border-radius:16px;padding:12px 14px;font-size:15px;margin:10px 0}
+.idea .hook b{color:#FF8CC3;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;display:block}
+.list{display:grid;gap:16px}
+@media(min-width:900px){#feed{grid-template-columns:1fr 1fr}}
+.funnel{display:grid;gap:8px;margin:12px 0 4px}
+.frow{display:grid;grid-template-columns:110px 1fr 64px;gap:10px;align-items:center;font-size:14px}
+.fbar{height:14px;background:#fff;border-radius:999px;overflow:hidden}
+.fbar i{display:block;height:100%;background:#F4579F;border-radius:999px}
+.fpct{text-align:right;font-weight:700;color:#6B1237}
+.chat{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.msg{max-width:88%;padding:12px 15px;border-radius:18px;font-size:15.5px}
+.msg.u{align-self:flex-end;background:#6B1237;color:#fff;border-bottom-right-radius:6px;white-space:pre-wrap}
+.msg.a{align-self:flex-start;background:#FFF1F6;border-bottom-left-radius:6px}
+.chatbar{position:sticky;bottom:0;padding:10px 0 14px;display:flex;gap:8px}
+.chatbar textarea{min-height:52px;max-height:160px}
+.suggest{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.saved-item{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.saved-item h4{margin:0 0 2px;font-size:17px;color:#4F0C28}
+.thumb{flex:none;width:86px;height:124px;border-radius:16px;background:#6B1237;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-decoration:none;font-weight:700;font-size:12px;border:2.5px solid #fff;box-shadow:0 8px 16px rgba(79,12,40,.25);transform:rotate(-2deg)}
+.thumb .pl{width:36px;height:36px;border-radius:50%;background:#FF8CC3;color:#4F0C28;display:flex;align-items:center;justify-content:center;font-size:14px}
+.stats-line{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:13.5px;color:#4F0C28;font-weight:600}
+.stats-line .x{color:#F4579F}
+.filt{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 2px}
+.filt span{font-size:12px;font-weight:700;padding:5px 10px;border-radius:999px;background:#fff;color:#4F0C28}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:#6B1237;color:#fff;padding:11px 18px;border-radius:999px;font-weight:600;font-size:14.5px;opacity:0;transition:.25s;z-index:99;pointer-events:none;border:2px solid #fff}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.overlay{position:fixed;inset:0;background:rgba(79,12,40,.5);display:flex;align-items:flex-end;justify-content:center;z-index:60;padding:12px}
+.sheet{background:#FFF1F6;border-radius:24px;max-width:640px;width:100%;max-height:85vh;overflow:auto;padding:22px}
+@media(min-width:700px){.overlay{align-items:center}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle cx=%2250%22 cy=%2250%22 r=%2250%22 fill=%22%236B1237%22/%3E%3Cg stroke=%22%23FF8CC3%22 stroke-width=%2214%22 stroke-linecap=%22round%22%3E%3Cpath d=%22M50 18v64%22/%3E%3Cpath d=%22M22 34l56 32%22/%3E%3Cpath d=%22M22 66l56-32%22/%3E%3C/g%3E%3C/svg%3E">
+</head>
+<body>
+
+<!-- ================= LANDING ================= -->
+<div id="landing">
+  <header class="top"><div class="wrap">
+    <a class="brand" href="#inicio"><span class="logo-pill display"><svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true" style="color:#FF8CC3;flex:none"><g stroke="currentColor" stroke-width="14" stroke-linecap="round"><path d="M50 10v80"/><path d="M15.4 30l69.3 40"/><path d="M15.4 70l69.3-40"/></g></svg><span>CREATIVE<span style="color:#FF8CC3">.</span>LAB</span><svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true" style="color:#FF8CC3;flex:none"><g stroke="currentColor" stroke-width="14" stroke-linecap="round"><path d="M50 10v80"/><path d="M15.4 30l69.3 40"/><path d="M15.4 70l69.3-40"/></g></svg></span><small>Contenido que ya funcionó, en tu voz</small></a>
+    <nav class="nav-links">
+      <a href="#como">Cómo funciona</a>
+      <a href="#mercados">Mercados</a>
+      <a class="cta" href="#entrar">Iniciar sesión</a>
+    </nav>
+  </div></header>
+
+  <section class="hero grid-hot"><div class="wrap">
+    <span class="eyebrow"><span>✳</span> Para creadoras y emprendedoras</span>
+    <h1>Lo que ya pegó afuera, contado <em>por primera vez</em> en tu idioma.</h1>
+    <p class="lead">En español todo ya se vio. En el <b>segundo internet</b>, los videos virales en portugués, inglés, alemán o ruso, hay ideas que aquí nadie ha contado. CREATIVE.LAB te las trae todos los días, según tu rubro, y te entrega el guion con tu voz.</p>
+    <div class="ctas">
+      <a class="btn btn-primary" href="#entrar">Iniciar sesión</a>
+      <a class="btn btn-white" href="#como">Ver cómo funciona</a>
+    </div>
+    <div class="tag"><i style="top:-8px;left:-8px"></i><i style="top:-8px;right:-8px"></i><i style="bottom:-8px;left:-8px"></i><i style="bottom:-8px;right:-8px"></i>Adaptar, nunca copiar</div>
+  </div></section>
+
+  <section class="strip"><div class="wrap">
+    <div><b>6 mercados</b><span>Brasil, EE. UU., España, Alemania, Canadá y Rusia</span></div>
+    <div><b>Todos los días</b><span>videos nuevos según tu rubro</span></div>
+    <div><b>4 filtros</b><span>para saber si vale la pena reestrenarlo</span></div>
+    <div><b>Tu voz</b><span>el guion suena a ti, no a IA</span></div>
+  </div></section>
+
+  <section class="section grid-pale"><div class="wrap">
+    <span class="eyebrow">✳ Radar · ejemplo</span>
+    <h2>Esto es lo que te llegaría hoy.</h2>
+    <p class="sub">Cada video llega con su porqué y con la razón por la que encaja contigo. Así se ven dos tarjetas para una cuenta de marca personal.</p>
+    <div class="picks">
+      <article class="pick">
+        <div class="meta"><span class="chip hot">EE. UU. · EN</span><span class="chip">Frase polémica + explicación</span></div>
+        <p class="orig">“Customers don’t care about you.”</p>
+        <div class="why">
+          <div><b>Por qué funciona</b>Una frase que pica abre el video y en 24 segundos da la vuelta. Se ve completo y genera debate.</div>
+          <div><b>Por qué es para ti</b>Le habla a la emprendedora que solo publica sobre su producto.</div>
+        </div>
+      </article>
+      <article class="pick">
+        <div class="meta"><span class="chip hot">Brasil · PT</span><span class="chip">Mini clase: 3 pilares</span></div>
+        <p class="orig">“Como construir uma marca pessoal em 3 pilares”</p>
+        <div class="why">
+          <div><b>Por qué funciona</b>Promete un método con número y la gente se queda a completar la lista.</div>
+          <div><b>Por qué es para ti</b>Te posiciona como experta hablando, sin mostrar trabajos.</div>
+        </div>
+      </article>
+    </div>
+  </div></section>
+
+  <section class="section sec-wine" id="como"><div class="wrap">
+    <span class="eyebrow">✳ El método</span>
+    <h2>Identifica. Reestrena. Cobra.</h2>
+    <p class="sub">No necesitas crear de cero un video que ya existe. Necesitas uno que ya demostró que la gente se queda viéndolo.</p>
+    <div class="steps">
+      <div class="step"><div class="agent">Radar</div><h3>Identifica</h3><p>Cada día te llegan videos de tu rubro que pegaron en otros idiomas, ya pasados por los 4 filtros.</p></div>
+      <div class="step"><div class="agent">Adaptar</div><h3>Reestrena</h3><p>Separa el esqueleto (lo que retiene) de la piel (lo que se ve) y le pone la tuya: tu voz, tu nicho, tu estilo.</p></div>
+      <div class="step"><div class="agent">Venta</div><h3>Cobra</h3><p>Si el reestreno pega, las historias de 3 días convierten esa gente nueva en ventas.</p></div>
+      <div class="step"><div class="agent">Números</div><h3>Mide</h3><p>Ves dónde se cae tu embudo y qué cambiar primero.</p></div>
+    </div>
+    <div class="brain"><div class="ic">✳</div><div><h3>Los 4 filtros</h3><p>1. Ya funcionó allá (más vistas que seguidores). 2. Se puede repetir. 3. Te lo llevas a tu tema. 4. Todavía no llegó al español.</p></div></div>
+  </div></section>
+
+  <section class="section grid-pale" id="mercados"><div class="wrap">
+    <span class="eyebrow">✳ Mercados donde busco</span>
+    <h2>Busco donde tu público todavía no está mirando.</h2>
+    <p class="sub">Lo que ya pegó en otro idioma, contado por primera vez en el tuyo.</p>
+    <div class="stats">
+      <div class="stat"><div class="n">6</div><div class="l">mercados</div></div>
+      <div class="stat"><div class="n">5</div><div class="l">idiomas</div></div>
+      <div class="stat"><div class="n">Diario</div><div class="l">búsqueda automática</div></div>
+    </div>
+    <div class="markets"><span>🇧🇷 Brasil</span><span>🇺🇸 Estados Unidos</span><span>🇪🇸 España</span><span>🇩🇪 Alemania</span><span>🇨🇦 Canadá</span><span>🇷🇺 Rusia</span></div>
+  </div></section>
+
+  <section class="section grid-hot"><div class="wrap">
+    <div class="principle">
+      <span class="eyebrow">✳ Nuestro principio</span>
+      <h2>No publico por ti.</h2>
+      <p>CREATIVE.LAB prepara, adapta y revisa. Nunca programa ni sube nada a tu nombre. Lo que sale con tu cara, lo decides tú.</p>
+    </div>
+  </div></section>
+
+
+
+  <footer><div class="wrap"><span>© 2026 CREATIVE.LAB · por Logos by Majo®</span><span><a href="#entrar">Iniciar sesión</a></span></div></footer>
+</div>
+
+<!-- ================= ACCESO ================= -->
+<div id="auth" class="hidden">
+  <div class="wrap" style="padding:36px 20px 70px;display:flex;flex-direction:column;align-items:center;gap:10px">
+    <a class="brand" href="#inicio" style="align-items:center;margin-bottom:6px"><span class="logo-pill display"><svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true" style="color:#FF8CC3;flex:none"><g stroke="currentColor" stroke-width="14" stroke-linecap="round"><path d="M50 10v80"/><path d="M15.4 30l69.3 40"/><path d="M15.4 70l69.3-40"/></g></svg><span>CREATIVE<span style="color:#FF8CC3">.</span>LAB</span><svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true" style="color:#FF8CC3;flex:none"><g stroke="currentColor" stroke-width="14" stroke-linecap="round"><path d="M50 10v80"/><path d="M15.4 30l69.3 40"/><path d="M15.4 70l69.3-40"/></g></svg></span></a>
+    <p style="text-align:center;max-width:420px;margin:6px 0 16px;color:#6B1237;font-size:17px">Siempre sabrás qué crear, cómo adaptarlo y cómo aprovecharlo.</p>
+
+    <form class="login-card av" data-av="entrar" style="text-align:left;width:100%" id="f_entrar">
+      <h2 class="display" style="font-size:34px;color:#4F0C28;margin:0 0 20px">Entra a tu cuenta</h2>
+      <div class="field"><label class="f" for="l_email">Tu correo</label><input class="in" id="l_email" type="email" autocomplete="email" required></div>
+      <div class="field"><label class="f" for="l_pass">Tu contraseña</label><input class="in" id="l_pass" type="password" autocomplete="current-password" required></div>
+      <button class="btn btn-primary" type="submit" style="width:100%">Entrar</button>
+      <p id="l_msg" class="note" style="min-height:20px;margin:10px 0 0;text-align:center"></p>
+      <p style="text-align:center;margin:8px 0 4px"><a href="#acceso">¿Olvidaste tu contraseña? ¿Compraste y no la tienes?</a></p>
+      <p style="text-align:center;margin:10px 0 0;color:#6B1237">¿Todavía no tienes cuenta? <a href="#acceso">Créala aquí</a></p>
+    </form>
+
+    <form class="login-card av" data-av="acceso" style="text-align:left;width:100%" id="f_acceso">
+      <div style="width:54px;height:54px;border-radius:50%;background:#FFD1E3;display:grid;place-items:center;margin-bottom:14px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F4579F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+      <h2 class="display" style="font-size:32px;line-height:1.02;color:#4F0C28;margin:0 0 10px">Esta es una IA privada de María José</h2>
+      <p style="font-size:18px;color:#6B1237;margin:0">Solo ella decide quién puede entrar y quién no.</p>
+      <hr>
+      <p style="color:#4F0C28;margin:0 0 14px">¿Ya compraste? Escribe el correo de tu compra y te mando el enlace para crear tu contraseña.</p>
+      <div class="field"><label class="f" for="k_email">El correo de tu compra</label><input class="in" id="k_email" type="email" autocomplete="email" required></div>
+      <button class="btn btn-primary" type="submit" style="width:100%">Mandarme el enlace</button>
+      <p id="k_msg" class="note" style="min-height:20px;margin:10px 0 0;text-align:center"></p>
+      <p style="text-align:center;margin:8px 0 4px;color:#6B1237">¿Ya tienes tu contraseña? <a href="#entrar">Entra aquí</a></p>
+      <p style="text-align:center;margin:10px 0 0;color:#6B1237">¿Todavía no compras? <a href="https://wa.me/573011706253?text=Hola%20Majo%2C%20quiero%20mi%20cupo%20en%20CREATIVE.LAB" target="_blank" rel="noopener">Escríbeme por WhatsApp</a></p>
+    </form>
+
+    <form class="login-card av" data-av="clave" style="text-align:left;width:100%" id="f_clave">
+      <h2 class="display" style="font-size:34px;color:#4F0C28;margin:0 0 8px">Crea tu contraseña</h2>
+      <p style="color:#6B1237;margin:0 0 18px">Mínimo 8 caracteres. Con ella vas a entrar las próximas veces.</p>
+      <div class="field"><label class="f" for="c_pass">Contraseña nueva</label><input class="in" id="c_pass" type="password" autocomplete="new-password" minlength="8" required></div>
+      <div class="field"><label class="f" for="c_pass2">Repítela</label><input class="in" id="c_pass2" type="password" autocomplete="new-password" minlength="8" required></div>
+      <button class="btn btn-primary" type="submit" style="width:100%">Guardar y entrar</button>
+      <p id="c_msg" class="note" style="min-height:20px;margin:10px 0 0;text-align:center"></p>
+    </form>
+  </div>
+</div>
+
+<!-- ================= APP ================= -->
+<div id="app" class="hidden">
+  <div class="app-top">
+    <div class="wrap">
+      <a class="brand" href="#hoy" style="text-decoration:none"><span class="logo-pill display"><svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true" style="color:#FF8CC3;flex:none"><g stroke="currentColor" stroke-width="14" stroke-linecap="round"><path d="M50 10v80"/><path d="M15.4 30l69.3 40"/><path d="M15.4 70l69.3-40"/></g></svg><span>CREATIVE<span style="color:#FF8CC3">.</span>LAB</span><svg width="18" height="18" viewBox="0 0 100 100" aria-hidden="true" style="color:#FF8CC3;flex:none"><g stroke="currentColor" stroke-width="14" stroke-linecap="round"><path d="M50 10v80"/><path d="M15.4 30l69.3 40"/><path d="M15.4 70l69.3-40"/></g></svg></span></a>
+      <span style="display:flex;flex-direction:column;align-items:flex-end;gap:2px"><span class="who" id="who"></span><button class="who" id="logout" style="background:none;border:0;cursor:pointer;text-decoration:underline;padding:0">Salir</button></span>
+    </div>
+    <nav class="tabs" id="tabs">
+      <a class="tab" href="#hoy">✳ Para ti hoy</a>
+      <a class="tab" href="#radar">Analizar video</a>
+      <a class="tab" href="#guardados">Mis guiones</a>
+      <a class="tab" href="#perfil">Mi perfil</a>
+      <a class="tab" href="#voz">Pulir guion</a>
+      <a class="tab" href="#mentora">Mentora</a>
+      <a class="tab" href="#venta">Si se hizo viral</a>
+      <a class="tab" href="#numeros">Números</a>
+      <a class="tab hidden" href="#admin" id="tabAdmin">✳ Panel</a>
+    </nav>
+  </div>
+
+  <div class="wrap">
+    <div id="aiWarn" class="banner warn hidden" style="margin-top:14px"></div>
+
+    <!-- ADMIN -->
+    <section class="view" data-view="admin">
+      <span class="eyebrow">✳ Panel de administradora</span>
+      <h2>¿Quién entra a CREATIVE.LAB?</h2>
+      <p class="sub">Cuando alguien te compre el cupo, agrega aquí su correo. Después dile que entre a la página y toque <b>"¿Compraste y no la tienes?"</b>.</p>
+      <div class="card">
+        <div class="grid2">
+          <div class="field"><label class="f" for="ad_email">Correo de la compra</label><input class="in" id="ad_email" type="email" placeholder="cliente@gmail.com"></div>
+          <div class="field"><label class="f" for="ad_nombre">Nombre</label><input class="in" id="ad_nombre" placeholder="Ej: Laura Gómez"></div>
+        </div>
+        <div class="field"><label class="f" for="ad_nota">Nota <small>(opcional: fecha de pago, plan, etc.)</small></label><input class="in" id="ad_nota" placeholder="Ej: pagó por Wompi el 4 nov"></div>
+        <div class="actions"><button class="btn btn-primary" id="ad_add">Dar acceso</button><button class="btn btn-soft" id="ad_msg">Copiar mensaje de bienvenida</button></div>
+      </div>
+      <p class="note" id="ad_stats" style="margin:16px 4px 8px"></p>
+      <div class="list" id="adList"></div>
+    </section>
+
+    <!-- HOY -->
+    <section class="view" data-view="hoy">
+      <span class="eyebrow">✳ Radar · <span id="hoyFecha">hoy</span></span>
+      <h2>Encontré esto para ti.</h2>
+      <p class="sub">Videos de <b id="rubroTxt">tu rubro</b> que están pegando en otros idiomas. Toca <b>Adaptar esta idea</b> y te saco el guion.</p>
+      <div id="rubroWarn" class="banner hidden">Elige tu rubro en <a href="#perfil">Mi perfil</a> para que te lleguen videos de lo que haces.</div>
+      <div class="pills" id="feedLang" style="margin-bottom:14px">
+        <button type="button" class="pill on" data-l="">Todos</button><button type="button" class="pill" data-l="en">Inglés</button><button type="button" class="pill" data-l="pt">Portugués</button><button type="button" class="pill" data-l="de">Alemán</button><button type="button" class="pill" data-l="ru">Ruso</button><button type="button" class="pill" data-l="es">España</button><button type="button" class="pill" data-l="otro">Otros</button>
+        <button type="button" class="pill" id="allRubros" style="border-style:dashed">Ver todos los rubros</button>
+      </div>
+      <div class="list" id="feed"><div class="card"><div class="loading"><span class="dot"></span><span class="dot"></span><span class="dot"></span> Cargando tu radar…</div></div></div>
+    </section>
+
+    <!-- PERFIL -->
+    <section class="view" data-view="perfil">
+      <span class="eyebrow">✳ Paso 1</span>
+      <h2>Cuéntame quién eres.</h2>
+      <p class="sub">Todos los agentes usan esto para hablar como tú y pensar en tu público. Lo llenas una vez.</p>
+      <div class="banner">Lo más importante: elige tu <b>rubro</b> (de ahí salen tus videos diarios) y pega 2 o 3 guiones tuyos en <b>"Así hablo yo"</b>.</div>
+      <div id="profileSaved" class="banner hidden">Perfil guardado. Ya puedes usar los agentes.</div>
+      <div class="card">
+        <div class="grid2">
+          <div class="field"><label class="f" for="p_nombre">Tu nombre o marca</label><input class="in" id="p_nombre" placeholder="Ej: Laura · Dulce Hogar"></div>
+          <div class="field"><label class="f" for="p_pais">País y ciudad</label><input class="in" id="p_pais" placeholder="Ej: Medellín, Colombia"></div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label class="f" for="p_rubro">Tu rubro <small>(para tus videos diarios)</small></label>
+            <select class="in" id="p_rubro"><option value="">Elige tu rubro</option><option value="marca-marketing">Marca personal y marketing</option><option value="belleza">Belleza, uñas y estética</option><option value="moda">Moda y accesorios</option><option value="comida">Comida y repostería</option><option value="fitness">Fitness, salud y bienestar</option><option value="educacion">Cursos, coaching y educación</option><option value="hogar">Hogar, decoración y manualidades</option><option value="mascotas">Mascotas</option><option value="ventas">Emprendimiento y ventas</option><option value="otro">Otro</option></select></div>
+          <div class="field"><label class="f" for="p_rubroOtro">Si es otro, ¿cuál? <small>(opcional)</small></label><input class="in" id="p_rubroOtro" placeholder="Ej: fotografía de bodas"></div>
+        </div>
+        <div class="field"><label class="f" for="p_enfoque">Cómo es tu contenido <small>(qué sí y qué no quieres mostrar)</small></label><input class="in" id="p_enfoque" placeholder="Ej: hablo a cámara, no muestro mi proceso de trabajo"></div>
+        <div class="field"><label class="f" for="p_nicho">Tu nicho</label><input class="in" id="p_nicho" placeholder="Ej: repostería casera para emprender"></div>
+        <div class="field"><label class="f" for="p_publico">Tu público ideal</label><input class="in" id="p_publico" placeholder="Ej: mamás de 28 a 45 que quieren vender tortas desde casa"></div>
+        <div class="field"><label class="f" for="p_oferta">Qué vendes <small>(producto, servicio, precio)</small></label><input class="in" id="p_oferta" placeholder="Ej: curso de tortas en frío, $120.000"></div>
+        <div class="field"><label class="f">Tu tono</label>
+          <div class="pills" id="p_tono">
+            <button type="button" class="pill">Cercano</button><button type="button" class="pill">Divertido</button><button type="button" class="pill">Directo</button><button type="button" class="pill">Inspirador</button><button type="button" class="pill">Experto</button><button type="button" class="pill">Paisa / regional</button>
+          </div>
+        </div>
+        <div class="field"><label class="f" for="p_hago">Qué haces y tu historia <small>(cómo empezaste, qué te hace diferente)</small></label><textarea class="in" id="p_hago" style="min-height:80px" placeholder="Ej: Empecé haciendo tortas en mi cocina en 2021, sin estudiar repostería…"></textarea></div>
+        <div class="field"><label class="f" for="p_prueba">Tus pruebas <small>(resultados, antes y después, testimonios reales)</small></label><textarea class="in" id="p_prueba" style="min-height:80px" placeholder="Ej: Una alumna vendió 40 tortas en su primer mes"></textarea></div>
+        <div class="field"><label class="f" for="p_voz">Así hablo yo <small>(pega 2 o 3 guiones o transcripciones de tus videos; esto es lo que hace que suene a ti)</small></label><textarea class="in" id="p_voz" style="min-height:160px" placeholder="Ej: Bueno mis amores, hoy les traigo la torta que más me piden…"></textarea></div>
+        <div class="actions"><button class="btn btn-primary" id="saveProfile">Guardar perfil</button><span class="note" id="storeNote"></span></div>
+      </div>
+    </section>
+
+    <!-- RADAR -->
+    <section class="view" data-view="radar">
+      <span class="eyebrow">✳ Radar · Segundo internet</span>
+      <h2>¿Viste un video que pegó afuera?</h2>
+      <p class="sub"><b>Solo sube la grabación de pantalla del reel.</b> Radar lee las escenas, los subtítulos y los números que se ven (me gusta, comentarios), te dice qué funcionó y te entrega el guion. Todo lo demás es opcional.</p>
+      <div class="card">
+        <div class="field">
+          <label class="f" for="a_file">Grabación de pantalla del reel <small>(lo único obligatorio)</small></label>
+          <input class="in" id="a_file" type="file" accept="video/*,image/*" multiple>
+          <div id="a_prev" class="note" style="margin-top:6px"></div>
+        </div>
+        <details style="margin-bottom:12px"><summary class="note" style="cursor:pointer;font-weight:700">+ Datos opcionales (enlace, subtítulos, cifras)</summary><div style="margin-top:12px">
+        <div class="field"><label class="f" for="a_link">Enlace del video <small>(para tu referencia)</small></label><input class="in" id="a_link" placeholder="https://www.instagram.com/reel/…"></div>
+        <div class="field"><label class="f" for="a_txt">¿Qué dice el video? <small>(subtítulos, lo que habla o el caption; opcional pero mejora mucho)</small></label><textarea class="in" id="a_txt" placeholder="Copia los subtítulos o escribe lo que dice, en el idioma original"></textarea></div>
+        <div class="grid2">
+          <div class="field"><label class="f" for="a_views">Vistas <small>(opcional)</small></label><input class="in" id="a_views" placeholder="Ej: 2,3 M"></div>
+          <div class="field"><label class="f" for="a_com">Comentarios <small>(opcional)</small></label><input class="in" id="a_com" placeholder="Ej: 4.800"></div>
+          <div class="field"><label class="f" for="a_seg">Seguidores de esa cuenta <small>(opcional)</small></label><input class="in" id="a_seg" placeholder="Ej: 85 mil"></div>
+          <div class="field"><label class="f" for="a_pais">País o idioma <small>(opcional)</small></label><input class="in" id="a_pais" placeholder="Ej: Brasil, portugués"></div>
+        </div>
+        </div></details>
+        <div id="a_gate" class="banner warn hidden">Primero llena <a href="#perfil">tu perfil</a>: así el guion sale con tu voz y tu nicho, no genérico.</div>
+        <div class="actions"><button class="btn btn-accent" id="runAnalyze">Analizar y reestrenar</button></div>
+        <p class="note" style="margin-top:10px">Tip: abre el reel, activa los subtítulos si los tiene y graba la pantalla de principio a fin, con los me gusta y comentarios visibles. Radar no escucha el audio: si el video habla sin subtítulos, pega lo que dice en los datos opcionales.</p>
+      </div>
+      <div class="out" id="analyzeOut"></div>
+
+      <div style="height:34px"></div>
+      <span class="eyebrow">✳ Radar · Encuentra</span>
+      <h2 style="font-size:clamp(26px,5vw,36px)">¿No tienes video? Pide ideas.</h2>
+      <p class="sub">Elige de dónde quieres traer ideas. Radar te propone formatos que ya funcionan en esos mercados y te explica por qué encajan contigo.</p>
+      <div class="card">
+        <div class="field"><label class="f">Mercados</label>
+          <div class="pills" id="r_mk">
+            <button type="button" class="pill on">Brasil</button><button type="button" class="pill on">Estados Unidos</button><button type="button" class="pill">España</button><button type="button" class="pill">Alemania</button><button type="button" class="pill">Canadá</button><button type="button" class="pill">Rusia</button>
+          </div>
+        </div>
+        <div class="grid2">
+          <div class="field"><label class="f" for="r_fmt">Formato</label>
+            <select class="in" id="r_fmt"><option>Reel</option><option>Carrusel</option><option>Historias</option><option>Cualquiera</option></select></div>
+          <div class="field"><label class="f" for="r_obj">Objetivo</label>
+            <select class="in" id="r_obj"><option>Comentarios y conversación</option><option>Alcance y seguidores nuevos</option><option>Guardados</option><option>Ventas</option></select></div>
+        </div>
+        <div class="field"><label class="f" for="r_tema">Tema específico <small>(opcional)</small></label><input class="in" id="r_tema" placeholder="Ej: errores de principiante"></div>
+        <div class="actions"><button class="btn btn-accent" id="runRadar">Buscar 5 ideas</button></div>
+        <p class="note" style="margin-top:10px">Radar usa IA para proponer formatos y ganchos inspirados en tendencias conocidas de cada mercado. No muestra vistas en vivo de publicaciones reales: valida la idea antes de grabar.</p>
+      </div>
+      <div class="out list" id="radarOut"></div>
+    </section>
+
+    <!-- VOZ -->
+    <section class="view" data-view="voz">
+      <span class="eyebrow">✳ Voz · Reestrena</span>
+      <h2>Tu versión, en tu voz.</h2>
+      <p class="sub">Pega un guion, transcripción o idea (en cualquier idioma). Voz lo adapta a tu nicho y tu forma de hablar, y lo revisa antes de grabar.</p>
+      <div class="card">
+        <div class="field"><label class="f" for="v_src">Contenido original o idea</label><textarea class="in" id="v_src" style="min-height:140px" placeholder="Pega aquí el texto, la transcripción del video o la idea de Radar"></textarea></div>
+        <div class="grid2">
+          <div class="field"><label class="f" for="v_fmt">Convertir en</label>
+            <select class="in" id="v_fmt"><option>Guion de reel (para teleprompter)</option><option>Guion de reel corto (sin teleprompter)</option><option>Carrusel de 6 slides</option><option>Historias</option><option>Caption para post</option></select></div>
+          <div class="field"><label class="f" for="v_dur">Duración aprox.</label>
+            <select class="in" id="v_dur"><option>30 segundos</option><option>45 segundos</option><option>60 segundos</option><option>90 segundos</option></select></div>
+        </div>
+        <div class="actions"><button class="btn btn-accent" id="runVoz">Reestrenar</button></div>
+      </div>
+      <div class="out" id="vozOut"></div>
+    </section>
+
+    <!-- VENTA -->
+    <section class="view" data-view="venta">
+      <span class="eyebrow">✳ Solo si un reestreno se hizo viral</span>
+      <h2>Convierte el viral en ventas.</h2>
+      <p class="sub">Úsalo cuando un video esté trayendo gente nueva: tienes 3 o 4 días antes de que se enfríe. Una secuencia de 72 horas: despertar interés, generar deseo y cerrar. Textos cortos, para decirlos a cámara sin leer.</p>
+      <div class="card">
+        <div class="field"><label class="f" for="s_prod">¿Qué vas a vender?</label><input class="in" id="s_prod" placeholder="Se llena con tu oferta del perfil"></div>
+        <div class="grid2">
+          <div class="field"><label class="f" for="s_precio">Precio y promo</label><input class="in" id="s_precio" placeholder="Ej: $90.000, 20% hasta el domingo"></div>
+          <div class="field"><label class="f" for="s_cta">Cómo te compran</label><input class="in" id="s_cta" placeholder="Ej: escribir 'QUIERO' por DM / link en bio"></div>
+        </div>
+        <div class="field"><label class="f" for="s_prueba">Tu prueba para el día 2 <small>(resultado, antes y después, testimonio)</small></label><input class="in" id="s_prueba" placeholder="Se llena con tus pruebas del perfil"></div>
+        <div class="field"><label class="f" for="s_obj">Objeción más común <small>(opcional)</small></label><input class="in" id="s_obj" placeholder="Ej: 'no tengo tiempo', 'es caro'"></div>
+        <div class="actions"><button class="btn btn-accent" id="runVenta">Crear secuencia de 3 días</button></div>
+      </div>
+      <div class="out" id="ventaOut"></div>
+    </section>
+
+    <!-- NÚMEROS -->
+    <section class="view" data-view="numeros">
+      <span class="eyebrow">✳ Números · Mide</span>
+      <h2>¿Dónde se cae tu embudo?</h2>
+      <p class="sub">Pon los números de tu última campaña o semana. Te muestro en qué paso pierdes más gente y qué cambiar primero.</p>
+      <div class="card">
+        <div class="field"><label class="f" for="n_oferta">Oferta</label><input class="in" id="n_oferta" placeholder="Se llena con tu oferta del perfil"></div>
+        <div class="grid2">
+          <div class="field"><label class="f" for="n_alc">Cuentas alcanzadas</label><input class="in" id="n_alc" inputmode="numeric" placeholder="Ej: 12000"></div>
+          <div class="field"><label class="f" for="n_vis">Visitas al perfil</label><input class="in" id="n_vis" inputmode="numeric" placeholder="Ej: 600"></div>
+          <div class="field"><label class="f" for="n_cli">Clics en enlace o DMs</label><input class="in" id="n_cli" inputmode="numeric" placeholder="Ej: 80"></div>
+          <div class="field"><label class="f" for="n_ven">Ventas</label><input class="in" id="n_ven" inputmode="numeric" placeholder="Ej: 6"></div>
+        </div>
+        <div id="funnel" class="funnel"></div>
+        <div class="actions"><button class="btn btn-accent" id="runNum">Analizar</button></div>
+      </div>
+      <div class="out" id="numOut"></div>
+    </section>
+
+    <!-- MENTORA -->
+    <section class="view" data-view="mentora">
+      <span class="eyebrow">✳ Mentora</span>
+      <h2>Tu asesora de marca personal.</h2>
+      <p class="sub">Pregúntale lo que quieras sobre tu contenido, tu marca o tu oferta.</p>
+      <div class="suggest" id="sugg">
+        <button class="pill" type="button">¿Qué publico esta semana?</button>
+        <button class="pill" type="button">¿Cómo subo mis precios sin perder clientes?</button>
+        <button class="pill" type="button">Revisa mi bio de Instagram</button>
+      </div>
+      <div class="chat" id="chat"></div>
+      <div class="chatbar">
+        <textarea class="in" id="chatIn" placeholder="Escribe tu pregunta…" rows="1"></textarea>
+        <button class="btn btn-accent" id="chatSend" aria-label="Enviar">Enviar</button>
+      </div>
+      <div class="actions"><button class="btn btn-sm btn-ghost" id="chatClear">Nueva conversación</button></div>
+    </section>
+
+    <!-- GUARDADOS -->
+    <section class="view" data-view="guardados">
+      <span class="eyebrow">✳ Tu biblioteca</span>
+      <h2>Mis guiones.</h2>
+      <p class="sub">Cada video que analices y guardes queda aquí, con su análisis y su guion, listo para grabar.</p>
+      <div class="list" id="savedList"></div>
+    </section>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+const VIEWS=["hoy","perfil","radar","voz","venta","numeros","mentora","guardados","admin"];
+const AUTHV=["entrar","acceso","clave"];
+const SB_URL="https://qqwlgbcrdiyklvyjebbx.supabase.co", SB_KEY="sb_publishable_eX6R0RwPbuPkkW-7Tjk04Q_i87Pe6fH";
+const WA="https://wa.me/573011706253";
+const sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{flowType:"implicit",detectSessionInUrl:true,persistSession:true,autoRefreshToken:true}});
+let session=null, me=null, isAdmin=false, ready=false, descartados=new Set();
+let profile={nombre:"",pais:"",rubro:"",rubroOtro:"",enfoque:"",nicho:"",publico:"",oferta:"",hago:"",prueba:"",tono:[],voz:""};
+let saved=[]; let chat=[];
+
+/* ---------- utils ---------- */
+function toast(t){const el=$("#toast");el.textContent=t;el.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove("show"),2200)}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function md(src){
+  const lines=esc(src).split(/\n/); let html="", inList=false;
+  const inline=t=>t.replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/(^|[^*])\*(?!\s)(.+?)\*(?!\*)/g,"$1<em>$2</em>");
+  for(const raw of lines){
+    const l=raw.trimEnd();
+    if(/^\s*[-•*]\s+/.test(l)){ if(!inList){html+="<ul>";inList=true} html+="<li>"+inline(l.replace(/^\s*[-•*]\s+/,""))+"</li>"; continue }
+    if(inList){html+="</ul>";inList=false}
+    if(/^####\s+/.test(l)) html+="<h4>"+inline(l.replace(/^####\s+/,""))+"</h4>";
+    else if(/^#{1,3}\s+/.test(l)) html+="<h3>"+inline(l.replace(/^#{1,3}\s+/,""))+"</h3>";
+    else if(l.trim()==="") html+="";
+    else html+="<p>"+inline(l)+"</p>";
+  }
+  if(inList) html+="</ul>"; return html;
+}
+const lsGet=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}};
+const lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+async function copy(text){try{await navigator.clipboard.writeText(text);toast("Copiado ✳")}catch(e){toast("No se pudo copiar; mantén presionado el texto")}}
+function loadingHTML(t){return `<div class="card"><div class="loading"><span class="dot"></span><span class="dot"></span><span class="dot"></span> ${esc(t)}</div></div>`}
+
+/* ---------- routing ---------- */
+function route(){
+  let h=(location.hash||"").slice(1)||"inicio";
+  if(/access_token|error=|type=/.test(h)) return;
+  if(!ready && (VIEWS.includes(h)||h==="clave")) return;
+  if(VIEWS.includes(h) && !session){ location.hash="entrar"; return }
+  if(h==="admin" && !isAdmin){ location.hash="hoy"; return }
+  if(h==="clave" && !session){ location.hash="acceso"; return }
+  if((h==="entrar"||h==="acceso") && session){ location.hash=profile.rubro?"hoy":"perfil"; return }
+  const inApp=VIEWS.includes(h), inAuth=AUTHV.includes(h);
+  $("#landing").classList.toggle("hidden",inApp||inAuth);
+  $("#auth").classList.toggle("hidden",!inAuth);
+  $("#app").classList.toggle("hidden",!inApp);
+  if(inAuth){ $$(".av").forEach(v=>v.classList.toggle("hidden",v.dataset.av!==h)); window.scrollTo(0,0); return }
+  if(inApp){
+    $$(".view").forEach(v=>v.classList.toggle("hidden",v.dataset.view!==h));
+    $$("#tabs .tab").forEach(t=>t.classList.toggle("on",t.getAttribute("href")==="#"+h));
+    const on=$("#tabs .tab.on"); if(on) on.scrollIntoView({inline:"center",block:"nearest"});
+    if(h==="venta"&&!$("#s_prod").value) $("#s_prod").value=profile.oferta||"";
+    if(h==="venta"&&!$("#s_prueba").value) $("#s_prueba").value=profile.prueba||"";
+    if(h==="numeros"&&!$("#n_oferta").value) $("#n_oferta").value=profile.oferta||"";
+    if(h==="guardados") renderSaved();
+    if(h==="admin") loadAdmin();
+    window.scrollTo(0,0);
+  } else if(h && h!=="inicio"){
+    const el=document.getElementById(h); if(el) el.scrollIntoView();
+  } else window.scrollTo(0,0);
+}
+window.addEventListener("hashchange",route);
+
+/* ---------- pills ---------- */
+$$(".pills").forEach(g=>g.addEventListener("click",e=>{const b=e.target.closest(".pill");if(b)b.classList.toggle("on")}));
+const picked=id=>$$("#"+id+" .pill.on").map(b=>b.textContent);
+
+/* ---------- profile ---------- */
+function fillProfile(){
+  ["nombre","pais","rubro","rubroOtro","enfoque","nicho","publico","oferta","hago","prueba","voz"].forEach(k=>{$("#p_"+k).value=profile[k]||""});
+  $$("#p_tono .pill").forEach(b=>b.classList.toggle("on",(profile.tono||[]).includes(b.textContent)));
+  updateRubroUI();
+}
+function readProfile(){
+  const p={}; ["nombre","pais","rubro","rubroOtro","enfoque","nicho","publico","oferta","hago","prueba","voz"].forEach(k=>p[k]=$("#p_"+k).value.trim());
+  p.tono=picked("p_tono"); return p;
+}
+function ctx(){
+  const p=profile;
+  if(!p.nicho&&!p.voz&&!p.publico) return "La creadora todavía no llenó su perfil. Asume una creadora de contenido hispanohablante de Latinoamérica y, al final, recomiéndale llenar su perfil para mejores resultados.";
+  return `PERFIL DE LA CREADORA
+- Nombre/marca: ${p.nombre||"-"}
+- País/ciudad: ${p.pais||"-"}
+- Rubro: ${RUBROS[p.rubro]||p.rubroOtro||"-"}
+- Cómo es su contenido (respétalo siempre): ${p.enfoque||"-"}
+- Nicho: ${p.nicho||"-"}
+- Público ideal: ${p.publico||"-"}
+- Qué vende: ${p.oferta||"-"}
+- Qué hace / su historia: ${p.hago||"-"}
+- Pruebas y resultados reales: ${p.prueba||"-"}
+- Tono: ${(p.tono||[]).join(", ")||"cercano"}
+- Muestra de cómo habla (imita su vocabulario, ritmo y muletillas, sin exagerar):
+"""${(p.voz||"").slice(0,4000)}"""`;
+}
+const RUBROS={"marca-marketing":"Marca personal y marketing","belleza":"Belleza, uñas y estética","moda":"Moda y accesorios","comida":"Comida y repostería","fitness":"Fitness, salud y bienestar","educacion":"Cursos, coaching y educación","hogar":"Hogar, decoración y manualidades","mascotas":"Mascotas","ventas":"Emprendimiento y ventas","otro":"Otro"};
+const BASE=`Eres un agente de CREATIVE.LAB, una plataforma para creadoras de contenido y emprendedoras hispanohablantes. Respeta siempre cómo es el contenido de la creadora según su perfil. Escribe SIEMPRE en español latino natural, humano y cercano, nada que suene a IA: sin frases de relleno, sin "¡Claro!", sin emojis en exceso. Nunca copies contenido ajeno palabra por palabra: adapta la idea. Usa markdown simple (### títulos, **negritas**, listas con -).`;
+
+async function saveProfile(){
+  profile=readProfile();
+  const btn=$("#saveProfile"); btn.disabled=true;
+  const {error}=await sb.from("perfiles").upsert({user_id:me.id,email:(me.email||"").toLowerCase(),datos:profile,rubro:profile.rubro||null,rubro_otro:profile.rubroOtro||null,actualizado:new Date().toISOString()});
+  btn.disabled=false;
+  if(error){toast("No se pudo guardar. Intenta otra vez.");return}
+  updateRubroUI(); renderFeed();
+  $("#profileSaved").classList.remove("hidden"); toast("Perfil guardado ✳");
+}
+$("#saveProfile").addEventListener("click",saveProfile);
+
+/* ---------- saved library ---------- */
+async function saveItem(kind,title,content){
+  const {data,error}=await sb.from("guardados").insert({tipo:kind,titulo:String(title).slice(0,120),contenido:content}).select().single();
+  if(error){toast("No se pudo guardar. Intenta otra vez.");return}
+  saved.unshift({id:data.id,kind:data.tipo,title:data.titulo,content:data.contenido,ts:Date.parse(data.creado)});
+  toast("Guardado en Mis guiones ✳");
+}
+async function delItem(id){
+  saved=saved.filter(s=>s.id!==id);
+  await sb.from("guardados").delete().eq("id",id);
+  renderSaved();
+}
+function renderSaved(){
+  const el=$("#savedList");
+  if(!saved.length){el.innerHTML=`<div class="card"><p style="margin:0">Todavía no has guardado nada. Cuando un agente te dé algo que te guste, toca <b>Guardar</b>.</p></div>`;return}
+  el.innerHTML=saved.map(s=>`<div class="card"><div class="saved-item"><div><span class="chip hot">${esc(s.kind)}</span><h4 style="margin-top:8px">${esc(s.title)}</h4><span class="note">${new Date(s.ts).toLocaleDateString("es-CO",{day:"numeric",month:"short"})}</span></div>
+  <div class="actions" style="margin:0;flex:none"><button class="btn btn-sm btn-soft" data-open="${esc(s.id)}">Ver</button></div></div></div>`).join("");
+}
+$("#savedList").addEventListener("click",e=>{
+  const b=e.target.closest("[data-open]"); if(!b) return;
+  const s=saved.find(x=>x.id===b.dataset.open); if(!s) return;
+  const ov=document.createElement("div"); ov.className="overlay";
+  ov.innerHTML=`<div class="sheet"><span class="chip hot">${esc(s.kind)}</span><h3 class="display" style="font-size:28px;margin:10px 0;color:#6B1237">${esc(s.title)}</h3><div class="md">${md(s.content)}</div>
+  <div class="actions" style="margin-top:16px"><button class="btn btn-primary btn-sm" data-a="copy">Copiar</button><button class="btn btn-ghost btn-sm" data-a="close">Cerrar</button><button class="btn btn-sm" style="color:var(--accent-ink)" data-a="del">Eliminar</button></div></div>`;
+  ov.addEventListener("click",ev=>{
+    const a=ev.target.dataset.a;
+    if(ev.target===ov||a==="close") ov.remove();
+    if(a==="copy") copy(s.content);
+    if(a==="del"){ov.remove();delItem(s.id)}
+  });
+  document.body.appendChild(ov);
+});
+
+/* ---------- AI runner ---------- */
+function needAI(out){
+  if(session) return true;
+  out.innerHTML=`<div class="banner warn">Tu sesión se cerró. <a href="#entrar">Vuelve a entrar</a>.</div>`;
+  return false;
+}
+function aiErr(e){
+  const c=e&&e.code;
+  if(c==="limite") return "Llegaste al límite de análisis de hoy. Mañana se renueva.";
+  if(c==="sin_acceso") return "Tu acceso no está activo. Escríbele a María José por WhatsApp.";
+  if(c==="no_sesion") return "Tu sesión se cerró. Vuelve a entrar.";
+  if(c==="muy_grande") return "El video es muy pesado. Prueba con uno más corto o con capturas.";
+  return "Algo salió mal generando la respuesta. Intenta otra vez en un momento.";
+}
+async function shrink(blob,max=1100){
+  try{
+    const bmp=await createImageBitmap(blob); const sc=Math.min(1,max/Math.max(bmp.width,bmp.height));
+    if(sc===1&&blob.size<900000&&/jpeg|png|webp/.test(blob.type)) return blob;
+    const c=document.createElement("canvas"); c.width=Math.round(bmp.width*sc); c.height=Math.round(bmp.height*sc);
+    c.getContext("2d").drawImage(bmp,0,0,c.width,c.height);
+    return await new Promise(r=>c.toBlob(r,"image/jpeg",.78));
+  }catch(e){return blob}
+}
+async function b64(blob){const u=new Uint8Array(await blob.arrayBuffer());let s="";for(let i=0;i<u.length;i+=0x8000)s+=String.fromCharCode.apply(null,u.subarray(i,i+0x8000));return btoa(s)}
+async function callIA(input,opts={}){
+  if(!session) throw {code:"no_sesion"};
+  const body=typeof input==="string"?{prompt:input}:{messages:input};
+  if(opts.images&&opts.images.length){
+    body.images=[];
+    for(const im of Array.from(opts.images).slice(0,12)){const sm=await shrink(im);body.images.push({type:sm.type||"image/jpeg",data:await b64(sm)})}
+  }
+  const {data,error}=await sb.functions.invoke("ia",{body});
+  if(error){let code="ia";try{const j=await error.context.json();code=j.error||code}catch(x){}throw {code}}
+  if(!data||data.error) throw {code:(data&&data.error)||"ia"};
+  if(opts.onText) opts.onText({text:data.text,delta:data.text});
+  return {text:data.text};
+}
+const sample=Object.assign(callIA,{
+  json:async(i,o)=>{const r=await callIA(i,o);const m=r.text.match(/[\{\[][\s\S]*[\}\]]/);return JSON.parse(m?m[0]:r.text)},
+  limits:async()=>({images:{maxCount:12}})
+});
+async function streamTo(out,prompt,kind,title,btn){
+  if(!needAI(out)) return;
+  btn.disabled=true; out.innerHTML=loadingHTML("Pensando…");
+  let text="";
+  try{
+    const r=await sample(prompt,{modelTier:"default",onText:({text:t})=>{text=t; out.innerHTML=`<div class="card md">${md(t)}</div>`}});
+    text=r.text||text;
+    out.innerHTML=`<div class="card"><div class="md">${md(text)}</div><div class="actions" style="margin-top:12px"><button class="btn btn-sm btn-primary" data-c>Copiar</button><button class="btn btn-sm btn-soft" data-s>Guardar</button><button class="btn btn-sm btn-ghost" data-r>Otra versión</button></div></div>`;
+    out.querySelector("[data-c]").onclick=()=>copy(text);
+    out.querySelector("[data-s]").onclick=e=>{saveItem(kind,title,text);e.target.disabled=true;e.target.textContent="Guardado"};
+    out.querySelector("[data-r]").onclick=()=>streamTo(out,prompt+"\n\nDame una versión distinta a la anterior, con otro gancho.",kind,title,btn);
+  }catch(e){ out.innerHTML=`<div class="banner warn">${esc(aiErr(e))}</div>` }
+  finally{btn.disabled=false}
+}
+
+/* ---------- RADAR ---------- */
+$("#runRadar").addEventListener("click",async()=>{
+  const out=$("#radarOut"), btn=$("#runRadar"); if(!needAI(out)) return;
+  const mk=picked("r_mk"); if(!mk.length){toast("Elige al menos un mercado");return}
+  btn.disabled=true; out.innerHTML=loadingHTML("Radar está buscando en "+mk.join(", ")+"…");
+  const prompt=`${BASE}
+
+${ctx()}
+
+TAREA (agente Radar): Propón 5 ideas de contenido que adapten formatos y ganchos que suelen funcionar muy bien en estos mercados: ${mk.join(", ")}. Formato preferido: ${$("#r_fmt").value}. Objetivo: ${$("#r_obj").value}. ${$("#r_tema").value?"Tema: "+$("#r_tema").value+".":""}
+Pueden venir de nichos distintos al suyo si el formato se puede trasladar. No inventes cifras de vistas ni atribuyas ideas a creadores reales.
+Responde SOLO con JSON válido, sin texto extra, con esta forma exacta:
+{"ideas":[{"mercado":"Brasil","idioma":"PT","formato":"Reel","tipo":"nombre corto del formato, ej. antes/después","gancho_original":"cómo sonaría el gancho en el idioma de ese mercado","por_que_funciona":"1-2 frases","por_que_para_ti":"1-2 frases conectadas con su nicho y público","gancho_adaptado":"el gancho reescrito en su voz, en español"}]}`;
+  try{
+    let data;
+    try{ data=await sample.json(prompt,{modelTier:"default"}) }
+    catch(e){ if(e&&(e.code==="not_granted"||e.code==="rate_limited")) throw e;
+      const r=await sample(prompt,{modelTier:"default"}); const m=(r.text||"").match(/\{[\s\S]*\}/); data=JSON.parse(m?m[0]:"{}") }
+    const ideas=(data&&data.ideas)||[];
+    if(!ideas.length) throw {};
+    out.innerHTML=`<p class="note" style="margin:6px 2px">Radar · hoy · ${ideas.length} ideas</p>`+ideas.map((it,i)=>`
+      <article class="card idea">
+        <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip hot">${esc(it.mercado)} · ${esc(it.idioma)}</span><span class="chip">${esc(it.formato)}</span><span class="chip">${esc(it.tipo)}</span></div>
+        <p class="orig">“${esc(it.gancho_original)}”</p>
+        <div class="why"><div><b>Por qué funciona</b>${esc(it.por_que_funciona)}</div><div><b>Por qué es para ti</b>${esc(it.por_que_para_ti)}</div></div>
+        <div class="hook"><b>Tu gancho</b>${esc(it.gancho_adaptado)}</div>
+        <div class="actions"><button class="btn btn-sm btn-accent" data-adapt="${i}">Adaptar esta idea</button><button class="btn btn-sm btn-soft" data-save="${i}">Guardar</button></div>
+      </article>`).join("");
+    out.onclick=e=>{
+      const a=e.target.closest("[data-adapt]"), s=e.target.closest("[data-save]");
+      if(a){const it=ideas[+a.dataset.adapt]; $("#v_src").value=`Idea de Radar (${it.mercado}, ${it.formato} – ${it.tipo}).\nGancho original: ${it.gancho_original}\nPor qué funciona: ${it.por_que_funciona}\nGancho adaptado sugerido: ${it.gancho_adaptado}`; location.hash="voz"}
+      if(s){const it=ideas[+s.dataset.save]; saveItem("Radar",it.gancho_adaptado,`### ${it.gancho_adaptado}\n- **Origen:** ${it.mercado} · ${it.formato} · ${it.tipo}\n- **Gancho original:** ${it.gancho_original}\n- **Por qué funciona:** ${it.por_que_funciona}\n- **Por qué es para ti:** ${it.por_que_para_ti}`); s.disabled=true; s.textContent="Guardado"}
+    };
+  }catch(e){ out.innerHTML=`<div class="banner warn">${esc(aiErr(e))}</div>` }
+  finally{btn.disabled=false}
+});
+
+/* ---------- FEED HOY ---------- */
+let feed=[], feedLang="", allR=false;
+function updateRubroUI(){const r=profile.rubro;const t=$("#rubroTxt");if(t)t.textContent=r?(r==="otro"?(profile.rubroOtro||"tu rubro"):RUBROS[r]):"tu rubro";const w=$("#rubroWarn");if(w)w.classList.toggle("hidden",!!r)}
+const nf=n=>{n=+n||0;return n>=1e6?(n/1e6).toFixed(1).replace(".",",")+" M":n>=1e3?(n/1e3).toFixed(n>=1e4?0:1).replace(".",",")+" K":String(n)};
+const LANG={en:"EN",pt:"PT",de:"DE",es:"ES",ru:"RU",vi:"VI",fr:"FR",it:"IT",ur:"UR"};
+const fi=v=>v==="si"?"✅":v==="no"?"❌":"⚠️";
+function renderFeed(){
+  const el=$("#feed");
+  let items=feed.filter(x=>!descartados.has(x.id));
+  if(profile.rubro&&!allR){const mine=profile.rubro==="otro"?("otro:"+(profile.rubroOtro||"").toLowerCase().trim()):profile.rubro;items=items.filter(x=>(x.rubro||"marca-marketing")===mine)}
+  if(feedLang==="otro") items=items.filter(x=>!["en","pt","de","ru","es"].includes(x.idioma)); else if(feedLang) items=items.filter(x=>x.idioma===feedLang);
+  if(!items.length){el.innerHTML=`<div class="card"><p style="margin:0">${feed.length?"No hay videos en este idioma todavía.":"Todavía no hay videos de tu rubro. La búsqueda diaria los irá trayendo desde mañana."}</p></div>`;return}
+  el.innerHTML=items.map(x=>{const ratio=x.seguidores?Math.round(x.vistas/x.seguidores):0;const f=x.filtros||{};return `
+  <article class="card idea" data-id="${esc(x.id)}">
+    <div style="display:flex;gap:12px">
+      <a class="thumb" href="${esc(x.url)}" target="_blank" rel="noopener"><span class="pl">▶</span><span>${esc(x.plataforma||"TikTok")}</span><span style="opacity:.75">${x.duracion?Math.floor(x.duracion/60)+":"+String(x.duracion%60).padStart(2,"0"):""}</span></a>
+      <div style="min-width:0">
+        <div style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip hot">${esc(x.plataforma||"TikTok")} · ${esc(LANG[x.idioma]||String(x.idioma||"").toUpperCase())}</span>${x.formato?`<span class="chip">${esc(x.formato)}</span>`:""}</div>
+        <p class="orig" style="margin:8px 0">“${esc(x.titulo)}”</p>
+        <div class="stats-line"><span>👁 ${nf(x.vistas)} vistas</span><span>💬 ${nf(x.comentarios)} comentarios</span>${x.seguidores?`<span>👤 ${nf(x.seguidores)} seguidores</span>`:""}${ratio>=2?`<span class="x">×${ratio} sus seguidores</span>`:""}</div>
+      </div>
+    </div>
+    <div class="why"><div><b>Por qué funciona</b>${esc(x.por_que_funciona)}</div><div><b>Por qué es para ti</b>${esc(x.por_que_para_ti)}</div></div>
+    <div class="filt"><span>${fi(f.ya_funciono)} Ya funcionó</span><span>${fi(f.repetible)} Repetible</span><span>${fi(f.tu_tema)} Tu tema</span><span>${fi(f.espanol)} ¿Ya en español?</span></div>
+    ${x.gancho_adaptado?`<div class="hook"><b>Tu gancho</b>${esc(x.gancho_adaptado)}</div>`:""}
+    <div class="actions"><button class="btn btn-sm btn-accent" data-adapt>Adaptar esta idea →</button><a class="btn btn-sm btn-ghost" href="${esc(x.url)}" target="_blank" rel="noopener">Ver original</a><button class="btn btn-sm" style="color:var(--ink3)" data-hide>Descartar</button></div>
+    <div class="out" data-out></div>
+  </article>`}).join("");
+}
+$("#feedLang").addEventListener("click",e=>{const b=e.target.closest(".pill");if(!b)return;if(b.id==="allRubros"){allR=!allR;b.classList.toggle("on",allR);renderFeed();return}$$("#feedLang .pill[data-l]").forEach(p=>p.classList.toggle("on",p===b));feedLang=b.dataset.l;renderFeed()});
+$("#feed").addEventListener("click",async e=>{
+  const card=e.target.closest("[data-id]"); if(!card) return; const x=feed.find(i=>i.id===card.dataset.id); if(!x) return;
+  if(e.target.closest("[data-hide]")){descartados.add(x.id);renderFeed();await sb.from("descartes").insert({video_id:x.id});return}
+  const btn=e.target.closest("[data-adapt]"); if(!btn) return;
+  const out=card.querySelector("[data-out]"); if(!needAI(out)) return;
+  btn.disabled=true; out.innerHTML=loadingHTML("Leyendo el esqueleto y poniéndole tu piel…");
+  const prompt=`${BASE}
+
+${ctx()}
+
+TAREA (Radar · Segundo internet · Adaptar esta idea): Este video está funcionando en otro idioma. Reestrénalo en español para esta creadora.
+Método: Instagram premia la retención. Todo viral tiene ESQUELETO (gancho, promesa, orden, ritmo, giro, cierre: lo que hace que la gente se quede) y PIEL (persona, tema, fondo, idioma, ejemplos). Se conserva el esqueleto y se le pone SU piel. Traducir tal cual lo daña.
+No tienes el video, solo estos datos; si algo visual es incierto, dilo y dile qué mirar en el original.
+- Plataforma/idioma: ${x.plataforma} · ${x.idioma} · ${x.duracion||"?"} s
+- Vistas ${x.vistas}, comentarios ${x.comentarios}, seguidores de la cuenta ${x.seguidores||"?"}
+- Texto/caption original: """${String(x.caption||x.titulo).slice(0,3000)}"""
+- Lo que dice (si se tiene): """${String(x.transcripcion||"").slice(0,4000)}"""
+- Análisis previo: funciona porque ${x.por_que_funciona}. Para ella: ${x.por_que_para_ti}. Formato: ${x.formato||"-"}.
+
+Entrega:
+### El esqueleto (lo que retuvo)
+- **Segundo 0-3 · Gancho**
+- **Promesa**
+- **Orden y ritmo**
+- **Giro o sorpresa**
+- **Cierre y por qué comentan**
+### La piel que vas a cambiar
+### Qué no copiar
+### Tu reestreno · guion para teleprompter
+(mismo esqueleto, su voz y su nicho; [GANCHO 0-3 s], [PROMESA], [DESARROLLO], [GIRO], [CIERRE + CTA]; entre paréntesis qué se ve)
+### Versión corta para decir sin leer
+### Texto en pantalla y caption
+### Cómo grabarlo
+### Antes de grabar
+(2 búsquedas exactas en español para confirmar que todavía no llegó)`;
+  let text="";
+  try{
+    const r=await sample(prompt,{modelTier:"default",onText:({text:t})=>{text=t;out.innerHTML=`<div class="md" style="margin-top:8px">${md(t)}</div>`}});
+    text=r.text||text;
+    out.innerHTML=`<div class="md" style="margin-top:8px">${md(text)}</div><div class="actions"><button class="btn btn-sm btn-primary" data-c>Copiar</button><button class="btn btn-sm btn-soft" data-s>Guardar en Mis guiones</button></div>`;
+    out.querySelector("[data-c]").onclick=()=>copy(text);
+    out.querySelector("[data-s]").onclick=ev=>{saveItem("Reestreno",x.gancho_adaptado||x.titulo,text+"\n\n- **Original:** "+x.url);ev.target.disabled=true;ev.target.textContent="Guardado"};
+  }catch(err){out.innerHTML=`<div class="banner warn">${esc(aiErr(err))}</div>`}
+  finally{btn.disabled=false}
+});
+async function startFeed(){
+  const {data,error}=await sb.from("radar").select("id,rubro,datos,encontrado").order("encontrado",{ascending:false}).limit(400);
+  if(error){$("#feed").innerHTML=`<div class="banner warn">No pude cargar el radar. Revisa tu conexión y recarga.</div>`;return}
+  feed=(data||[]).map(r=>Object.assign({},r.datos,{id:r.id,rubro:r.rubro,encontrado:Date.parse(r.encontrado)}));
+  if(feed[0]) $("#hoyFecha").textContent=new Date(feed[0].encontrado).toLocaleDateString("es-CO",{day:"numeric",month:"long"});
+  renderFeed();
+}
+
+/* ---------- ANALIZAR VIDEO ---------- */
+function grabFrames(file,n){
+  return new Promise(resolve=>{
+    const v=document.createElement("video"); v.muted=true; v.playsInline=true; v.preload="auto";
+    const url=URL.createObjectURL(file); v.src=url; const out=[]; let done=false;
+    const finish=()=>{if(done)return;done=true;URL.revokeObjectURL(url);resolve(out)};
+    const kill=setTimeout(finish,25000);
+    v.addEventListener("error",()=>{clearTimeout(kill);finish()});
+    v.addEventListener("loadedmetadata",async()=>{
+      const d=v.duration&&isFinite(v.duration)?v.duration:10;
+      const times=Array.from({length:n},(_,i)=>i===0?Math.min(.4,d/10):d*(i/(n-1))*0.95);
+      const c=document.createElement("canvas"); const sc=Math.min(1,720/Math.max(v.videoWidth||720,v.videoHeight||720));
+      c.width=Math.round((v.videoWidth||720)*sc); c.height=Math.round((v.videoHeight||1280)*sc); const g=c.getContext("2d");
+      for(const t of times){
+        await new Promise(r=>{const on=()=>{v.removeEventListener("seeked",on);r()};v.addEventListener("seeked",on);v.currentTime=t;setTimeout(r,3000)});
+        try{g.drawImage(v,0,0,c.width,c.height); const b=await new Promise(r=>c.toBlob(r,"image/jpeg",.75)); if(b) out.push(b)}catch(e){}
+      }
+      out.duration=d; clearTimeout(kill); finish();
+    });
+    v.load();
+  });
+}
+$("#a_file").addEventListener("change",()=>{
+  const fs=Array.from($("#a_file").files||[]);
+  $("#a_prev").textContent=fs.length?fs.map(f=>(f.type.startsWith("video")?"🎬 ":"🖼️ ")+f.name).join(" · "):"";
+});
+$("#runAnalyze").addEventListener("click",async()=>{
+  const out=$("#analyzeOut"), btn=$("#runAnalyze"); if(!needAI(out)) return;
+  const files=Array.from($("#a_file").files||[]), txt=$("#a_txt").value.trim(), link=$("#a_link").value.trim();
+  if(!files.length&&!txt){toast("Sube el video (o capturas) o pega lo que dice");return}
+  if(!profile.nicho&&!profile.voz){$("#a_gate").classList.remove("hidden");toast("Primero llena tu perfil");return}
+  if(!profile.voz) toast("Tip: pega tus guiones en Mi perfil para que suene más a ti");
+  btn.disabled=true; out.innerHTML=loadingHTML("Mirando el video…");
+  let imgs=[], dur=null;
+  try{
+    const lim=await sample.limits().catch(()=>null); const max=(lim&&lim.images&&lim.images.maxCount)||0;
+    if(files.length&&!max) out.innerHTML=`<div class="banner warn">Esta vista no puede enviar imágenes; analizo solo con el texto.</div>`+loadingHTML("Analizando…");
+    if(max){
+      for(const f of files){
+        if(imgs.length>=max) break;
+        if(f.type.startsWith("video")){const fr=await grabFrames(f,Math.min(12,max-imgs.length)); dur=fr.duration||dur; imgs.push(...fr)}
+        else if(/image\/(jpeg|png|webp|gif)/.test(f.type)) imgs.push(f);
+      }
+      if(files.some(f=>f.type.startsWith("video"))&&!imgs.length) toast("No pude leer el video; prueba con capturas");
+    }
+    out.innerHTML=loadingHTML("Analizando qué funcionó y adaptándolo a tu marca…");
+    const prompt=`${BASE}
+
+${ctx()}
+
+TAREA (agente Radar · Segundo internet): La creadora encontró un video que funcionó muy bien en otro idioma (el "segundo internet") y quiere REESTRENARLO en español: ser la primera en traer esa idea a su audiencia hispanohablante.
+Método que sigue:
+- Instagram premia la RETENCIÓN: gana el video que la gente ve más completo, no el más creativo.
+- Todo video viral tiene ESQUELETO (lo que no se ve y hace que la gente se quede: gancho, promesa, orden, ritmo, giros, cierre) y PIEL (lo que se ve: persona, tema, fondo, idioma, ejemplos, estilo).
+- Reestrenar = conservar el esqueleto y ponerle SU piel (su voz, su nicho, su estilo, su fondo). Traducir tal cual lo daña; copiar no sirve.
+- 4 filtros para elegir: 1) ya funcionó allá (muchas más vistas que seguidores de la cuenta), 2) se puede repetir, 3) se puede llevar a su tema, 4) todavía no llegó al español.
+${link?"Enlace (solo referencia, no puedes abrirlo): "+link:""}
+${imgs.length?`Te adjunto ${imgs.length} fotogramas del video en orden${dur?` (dura unos ${Math.round(dur)} s)`:""}; el primero es el inicio. Fíjate en el gancho visual, el texto en pantalla, los subtítulos, la edición, el encuadre y el ritmo. Es una grabación de pantalla: lee también las cifras visibles en la interfaz (me gusta, comentarios, vistas, nombre de la cuenta) y úsalas en el análisis.`:"No hay imágenes, solo texto."}
+Datos: vistas ${$("#a_views").value||"no indicadas"}, comentarios ${$("#a_com").value||"no indicados"}, seguidores de la cuenta ${$("#a_seg").value||"no indicados"}, país/idioma ${$("#a_pais").value||"no indicado"}.
+Lo que dice el video / caption:
+"""${txt.slice(0,6000)||"(no lo pegó; dedúcelo de los fotogramas y el texto en pantalla)"}"""
+
+Entrega exactamente esto, en español:
+### Qué dice el video
+(2-3 frases; tradúcelo si viene en otro idioma)
+### Los 4 filtros
+- ✅/⚠️/❌ **Ya funcionó allá:** compara vistas contra seguidores si los tienes
+- ✅/⚠️/❌ **Se puede repetir:** ¿lo puede grabar ella con lo que tiene?
+- ✅/⚠️/❌ **Se lleva a tu tema:** cómo encaja con su nicho
+- ⚠️ **¿Ya llegó al español?:** no lo puedes verificar; dile qué buscar en Instagram/TikTok en español (2-3 búsquedas exactas) para confirmarlo
+**Veredicto:** Reestrénalo / Reestrénalo con cambios / Busca otro, en una frase.
+### El esqueleto (lo que retuvo a millones)
+- **Segundo 0-3 · Gancho:** qué pasa y por qué detiene el scroll
+- **Promesa:** qué se queda esperando ver la gente
+- **Orden y ritmo:** los pasos del video y cada cuánto cambia algo
+- **Giro o sorpresa:** dónde está
+- **Cierre:** cómo termina y por qué la gente lo ve completo, lo repite o comenta
+### La piel (lo que vas a cambiar)
+(qué es superficial del original y no se debe copiar: persona, idioma, ejemplos, fondo, chistes locales)
+### Qué no copiar
+(lo que no va a funcionar en Latinoamérica o con su audiencia, y por qué)
+### Por qué va a funcionar con tu audiencia
+(2-3 frases conectadas con su público y su oferta)
+### Tu reestreno · guion para teleprompter
+(MISMO esqueleto, SU piel: su voz, sus palabras y muletillas, su nicho, sus ejemplos reales. Marca [GANCHO 0-3 s], [PROMESA], [DESARROLLO], [GIRO], [CIERRE + CTA]. Indica entre paréntesis qué se ve en pantalla. Que suene a ella hablando, no a IA.)
+### Versión corta para decir sin leer
+(3 a 5 frases cortas, fáciles de memorizar)
+### Texto en pantalla y caption
+- Texto del gancho en pantalla (máximo 8 palabras)
+- Caption con una pregunta que invite a comentar
+### Cómo grabarlo
+(3 puntos concretos: plano, ritmo de cortes, qué mostrar)
+`;
+    let text="";
+    const r=await sample(prompt,{modelTier:"default",images:imgs.length?imgs:undefined,onText:({text:t})=>{text=t;out.innerHTML=`<div class="card md">${md(t)}</div>`}});
+    text=r.text||text;
+    out.innerHTML=`<div class="card"><div class="md">${md(text)}</div><div class="actions" style="margin-top:12px"><button class="btn btn-sm btn-primary" data-c>Copiar</button><button class="btn btn-sm btn-soft" data-s>Guardar</button><button class="btn btn-sm btn-ghost" data-v>Pulir en Voz</button></div></div>`;
+    out.querySelector("[data-c]").onclick=()=>copy(text);
+    out.querySelector("[data-s]").onclick=e=>{saveItem("Reestreno",((text.match(/### Qué dice el video\s*\n+([^\n]+)/)||[])[1]||link||"Video").slice(0,90),text);e.target.disabled=true;e.target.textContent="Guardado"};
+    out.querySelector("[data-v]").onclick=()=>{$("#v_src").value=text.slice(0,6000);location.hash="voz"};
+  }catch(e){
+    const m=e&&e.code==="image_rejected"?"No pude usar ese archivo. Prueba con capturas de pantalla.":aiErr(e);
+    out.innerHTML=`<div class="banner warn">${esc(m)}</div>`;
+  }finally{btn.disabled=false}
+});
+
+/* ---------- VOZ ---------- */
+$("#runVoz").addEventListener("click",()=>{
+  const src=$("#v_src").value.trim(); if(!src){toast("Pega primero el contenido o idea");return}
+  const fmt=$("#v_fmt").value, dur=$("#v_dur").value;
+  const prompt=`${BASE}
+
+${ctx()}
+
+TAREA (agente Voz): Reestrena este contenido en la voz de la creadora, adaptado a su nicho y público, en formato "${fmt}" de unos ${dur}. Si viene en otro idioma, tradúcelo y adáptalo culturalmente a Latinoamérica.
+${/sin teleprompter|Historias/.test(fmt)?"Frases muy cortas y fáciles de memorizar, para decirlas sin leer.":"Puede ser algo más largo porque lo leerá en teleprompter, pero que suene hablado, no leído."}
+
+CONTENIDO ORIGINAL:
+"""${src.slice(0,6000)}"""
+
+Entrega:
+### Tu versión
+(el guion completo listo para grabar; si es carrusel, slide por slide; si es reel, marca [GANCHO], [DESARROLLO], [CIERRE + CTA])
+### Revisión antes de grabar
+- 4 a 6 puntos concretos: fuerza del gancho en los primeros 3 segundos, claridad, CTA, si suena a ella, qué mostrar en pantalla.
+### Caption sugerido
+(corto, con una pregunta que invite a comentar)`;
+  streamTo($("#vozOut"),prompt,"Voz",src.split("\n")[0].slice(0,80),$("#runVoz"));
+});
+
+/* ---------- VENTA ---------- */
+$("#runVenta").addEventListener("click",()=>{
+  const prod=$("#s_prod").value.trim()||profile.oferta; if(!prod){toast("Escribe qué vas a vender");return}
+  const prompt=`${BASE}
+
+${ctx()}
+
+TAREA (agente Venta): El reestreno trae gente nueva, pero la curiosidad se enfría en 3-4 días. Crea las historias de Instagram que convierten esa gente en ventas en 3 días.
+Producto: ${prod}. Precio/promo: ${$("#s_precio").value||"no especificado"}. Cómo compran: ${$("#s_cta").value||"por mensaje directo"}. Prueba disponible: ${$("#s_prueba").value||profile.prueba||"no especificada (sugiere qué prueba mostrar)"}. Objeción común: ${$("#s_obj").value||"no especificada"}.
+Reglas: los textos a cámara deben ser MUY cortos (1 a 2 frases), naturales y fáciles de memorizar, para que no se vea leyendo. 3 a 5 historias por día. Nada de inventar resultados: usa solo la prueba que ella dio.
+Estructura:
+### Día 1 · Te presentas
+(quién es, cómo ayuda, por qué la gente nueva debería quedarse)
+### Día 2 · Muestras la prueba
+(un resultado real, antes y después o testimonio)
+### Día 3 · Invitas
+(qué tiene que hacer la persona exactamente: el CTA claro, con urgencia real si existe)
+En cada historia indica: **Historia N** – qué se ve (cámara, pantalla, sticker) y **Dice:** "texto a cámara". Usa encuestas, cajas de preguntas o stickers donde ayuden.
+Al final: ### Consejos (3 puntos) y una línea con la meta: cuántas ventas necesita a su precio para llegar a una cifra redonda.`;
+  streamTo($("#ventaOut"),prompt,"Venta","Secuencia 3 días · "+prod.slice(0,60),$("#runVenta"));
+});
+
+/* ---------- NÚMEROS ---------- */
+const nums=()=>["n_alc","n_vis","n_cli","n_ven"].map(id=>parseFloat(($("#"+id).value||"").replace(/[^\d.]/g,""))||0);
+function drawFunnel(){
+  const [a,v,c,s]=nums(); const el=$("#funnel");
+  if(!a){el.innerHTML="";return}
+  const rows=[["Alcance",a,null],["Visitas perfil",v,a],["Clics / DMs",c,v],["Ventas",s,c]];
+  el.innerHTML=rows.map(([l,n,prev])=>{const w=Math.max(2,Math.min(100,n/a*100));const pct=prev?(n/prev*100):100;
+    return `<div class="frow"><span>${l}<br><b>${n.toLocaleString("es-CO")}</b></span><div class="fbar"><i style="width:${w}%"></i></div><span class="fpct">${prev?pct.toFixed(1)+"%":""}</span></div>`}).join("")+
+    `<p class="note">El % es cuántos pasaron del paso anterior.</p>`;
+}
+["n_alc","n_vis","n_cli","n_ven"].forEach(id=>$("#"+id).addEventListener("input",drawFunnel));
+$("#runNum").addEventListener("click",()=>{
+  const [a,v,c,s]=nums(); if(!a){toast("Pon al menos el alcance");return}
+  const r=(x,y)=>y?(x/y*100).toFixed(2)+"%":"n/d";
+  const prompt=`${BASE}
+
+${ctx()}
+
+TAREA (agente Números): Analiza la oferta y el embudo de esta creadora.
+Oferta: ${$("#n_oferta").value||profile.oferta||"no especificada"}
+Embudo: alcance ${a}; visitas al perfil ${v} (${r(v,a)} del alcance); clics/DMs ${c} (${r(c,v)} de las visitas); ventas ${s} (${r(s,c)} de los clics). Conversión total: ${r(s,a)}.
+Entrega:
+### Diagnóstico
+(en 2-3 frases, cuál es el paso donde más se pierde y por qué probablemente pasa)
+### Qué cambiar primero
+(3 acciones concretas, ordenadas por impacto, con ejemplo de qué publicar o decir)
+### Tu oferta
+(2-3 ideas para hacerla más irresistible: garantía, bono, urgencia real, precio)
+### Meta para la próxima semana
+(un número realista por paso)
+Sé honesta: si los números son buenos, dilo.`;
+  streamTo($("#numOut"),prompt,"Números","Análisis de embudo · "+new Date().toLocaleDateString("es-CO"),$("#runNum"));
+});
+
+/* ---------- MENTORA ---------- */
+function renderChat(streamText){
+  const el=$("#chat");
+  el.innerHTML=chat.map(m=>m.role==="user"?`<div class="msg u">${esc(m.content)}</div>`:`<div class="msg a md">${md(m.content)}</div>`).join("")+
+    (streamText!==undefined?`<div class="msg a md">${streamText?md(streamText):'<div class="loading"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>'}</div>`:"");
+  $("#sugg").classList.toggle("hidden",chat.length>0);
+}
+async function sendChat(text){
+  text=(text||"").trim(); if(!text) return;
+  if(!session){location.hash="entrar";return}
+  chat.push({role:"user",content:text}); $("#chatIn").value=""; renderChat(""); $("#chatSend").disabled=true;
+  window.scrollTo(0,document.body.scrollHeight);
+  const sys=`${BASE}\n\n${ctx()}\n\nERES "Mentora", su asesora de marca personal en Instagram. Respuestas concretas y prácticas, máximo 200 palabras salvo que pida más. Haz una pregunta de vuelta solo si de verdad la necesitas.`;
+  const msgs=chat.slice(-12).map((m,i)=>i===0&&m.role==="user"?{role:"user",content:sys+"\n\nPREGUNTA: "+m.content}:m);
+  if(msgs[0].role!=="user") msgs.unshift({role:"user",content:sys});
+  try{
+    const r=await sample(msgs,{modelTier:"default",cache:false,onText:({text:t})=>renderChat(t)});
+    chat.push({role:"assistant",content:r.text});
+  }catch(e){ chat.push({role:"assistant",content:aiErr(e)}) }
+  renderChat(); $("#chatSend").disabled=false; lsSet("rx_chat",chat.slice(-30));
+}
+$("#chatSend").addEventListener("click",()=>sendChat($("#chatIn").value));
+$("#chatIn").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey&&window.innerWidth>700){e.preventDefault();sendChat($("#chatIn").value)}});
+$("#sugg").addEventListener("click",e=>{const b=e.target.closest(".pill");if(b)sendChat(b.textContent)});
+$("#chatClear").addEventListener("click",()=>{chat=[];lsSet("rx_chat",[]);renderChat()});
+
+/* ---------- ADMIN ---------- */
+async function loadAdmin(){
+  if(!isAdmin) return;
+  const el=$("#adList"); el.innerHTML=loadingHTML("Cargando accesos…");
+  const [{data:acc},{data:us}]=await Promise.all([sb.from("accesos").select("*").order("creado",{ascending:false}),sb.rpc("admin_usuarias")]);
+  const cuentas=new Map((us||[]).map(u=>[u.email,u]));
+  const act=(acc||[]).filter(a=>a.activo).length;
+  $("#ad_stats").textContent=`${act} con acceso activo · ${(us||[]).length} ya crearon su cuenta`;
+  if(!acc||!acc.length){el.innerHTML=`<div class="card">Todavía no has dado accesos.</div>`;return}
+  el.innerHTML=acc.map(a=>{const u=cuentas.get(a.email);const st=!a.activo?'<span class="st off">Acceso pausado</span>':u?`<span class="st ok">Cuenta creada${u.ultimo_ingreso?" · último ingreso "+new Date(u.ultimo_ingreso).toLocaleDateString("es-CO",{day:"numeric",month:"short"}):""}</span>`:'<span class="st wait">Aún no crea su cuenta</span>';
+    return `<div class="card adrow" data-em="${esc(a.email)}"><div style="min-width:0"><h4>${esc(a.nombre||a.email)}</h4><div class="note">${esc(a.email)}${a.nota?" · "+esc(a.nota):""}</div>${st}</div>
+    <div class="actions" style="margin:0">${a.email===(me.email||"").toLowerCase()?'<span class="note">Tú</span>':`<button class="btn btn-sm btn-soft" data-tog="${a.activo?0:1}">${a.activo?"Pausar":"Reactivar"}</button><button class="btn btn-sm btn-ghost" data-del>Quitar</button>`}</div></div>`}).join("");
+}
+$("#ad_add").addEventListener("click",async()=>{
+  const email=$("#ad_email").value.trim().toLowerCase();
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){toast("Escribe un correo válido");return}
+  const {error}=await sb.from("accesos").upsert({email,nombre:$("#ad_nombre").value.trim()||null,nota:$("#ad_nota").value.trim()||null,activo:true});
+  if(error){toast("No se pudo dar acceso");return}
+  toast("Acceso activado ✳"); $("#ad_email").value=$("#ad_nombre").value=$("#ad_nota").value=""; loadAdmin();
+});
+$("#ad_msg").addEventListener("click",()=>{
+  const link=location.origin+location.pathname+"#acceso";
+  copy(`¡Hola! Bienvenida a CREATIVE.LAB ✳\n\nYa activé tu acceso. Para entrar:\n1. Abre ${link}\n2. Escribe el correo con el que compraste y toca "Mandarme el enlace".\n3. Abre el correo que te llega (revisa también spam), crea tu contraseña y listo.\n\nCualquier cosa me escribes por aquí.`);
+});
+$("#adList").addEventListener("click",async e=>{
+  const row=e.target.closest("[data-em]"); if(!row) return; const email=row.dataset.em;
+  const t=e.target.closest("[data-tog]"); const d=e.target.closest("[data-del]");
+  if(t){await sb.from("accesos").update({activo:t.dataset.tog==="1"}).eq("email",email);loadAdmin()}
+  if(d){if(d.dataset.ok){await sb.from("accesos").delete().eq("email",email);loadAdmin()}else{d.dataset.ok="1";d.textContent="¿Seguro? Toca otra vez"}}
+});
+
+/* ---------- AUTH ---------- */
+const msgT=(el,t)=>{$(el).textContent=t};
+$("#f_entrar").addEventListener("submit",async e=>{
+  e.preventDefault(); msgT("#l_msg","Entrando…");
+  const {data,error}=await sb.auth.signInWithPassword({email:$("#l_email").value.trim().toLowerCase(),password:$("#l_pass").value});
+  if(error){msgT("#l_msg",/confirm/i.test(error.message)?"Primero abre el enlace que te llegó al correo.":"Correo o contraseña incorrectos.");return}
+  session=data.session; msgT("#l_msg",""); await afterLogin(); location.hash=profile.rubro?"hoy":"perfil";
+});
+$("#f_acceso").addEventListener("submit",async e=>{
+  e.preventDefault(); const email=$("#k_email").value.trim().toLowerCase(); msgT("#k_msg","Revisando…");
+  const {data:ok,error:er}=await sb.rpc("puede_entrar",{correo:email});
+  if(er){msgT("#k_msg","Algo falló. Intenta de nuevo en un momento.");return}
+  if(!ok){$("#k_msg").innerHTML=`Ese correo todavía no tiene acceso. Si ya compraste, <a href="${WA}" target="_blank" rel="noopener">escríbeme por WhatsApp</a> y lo activo.`;return}
+  const {error}=await sb.auth.signInWithOtp({email,options:{shouldCreateUser:true,emailRedirectTo:location.origin+location.pathname+"?crear=1"}});
+  if(error){msgT("#k_msg",/rate|seconds|limit/i.test(error.message)?"Ya te mandé un enlace hace poco. Espera un minuto y vuelve a intentar.":"No pude mandar el correo. Escríbeme por WhatsApp.");return}
+  msgT("#k_msg","¡Listo! Revisa tu correo (y la carpeta de spam) y abre el enlace para crear tu contraseña.");
+});
+$("#f_clave").addEventListener("submit",async e=>{
+  e.preventDefault(); const p1=$("#c_pass").value, p2=$("#c_pass2").value;
+  if(p1.length<8){msgT("#c_msg","Debe tener mínimo 8 caracteres.");return}
+  if(p1!==p2){msgT("#c_msg","Las dos contraseñas no coinciden.");return}
+  msgT("#c_msg","Guardando…");
+  const {error}=await sb.auth.updateUser({password:p1});
+  if(error){msgT("#c_msg",/same|different/i.test(error.message)?"Esa ya es tu contraseña. Puedes entrar.":"No se pudo guardar. Intenta otra vez.");return}
+  history.replaceState(null,"",location.pathname); await afterLogin(); location.hash=profile.rubro?"hoy":"perfil"; route();
+});
+$("#logout").addEventListener("click",async()=>{await sb.auth.signOut();session=null;me=null;isAdmin=false;location.hash="inicio";location.reload()});
+
+/* ---------- init ---------- */
+const DEFAULT_PROFILE={nombre:"María José · Logos by Majo",pais:"Medellín, Colombia",rubro:"marca-marketing",enfoque:"hablo a cámara en charla o conversación; no muestro procesos de diseño, logos ni muestras de mi trabajo",nicho:"asesorías de marca 1:1 y marketing para emprendedoras",publico:"emprendedoras y dueñas de pequeños negocios que quieren que su marca venda en Instagram",oferta:"asesorías de marca 1:1 y de contenido para Instagram, a precios económicos",hago:"Empecé Logos by Majo el 4 de octubre de 2021. Aprendí diseño sola, de forma empírica, empezando con Canva. Mi marca está registrada.",prueba:"",tono:["Cercano","Paisa / regional"],voz:""};
+chat=lsGet("rx_chat")||[];
+async function afterLogin(){
+  if(!session) return;
+  me=session.user;
+  const [{data:adm},{data:per},{data:gs},{data:ds}]=await Promise.all([
+    sb.rpc("es_admin"),
+    sb.from("perfiles").select("datos").eq("user_id",me.id).maybeSingle(),
+    sb.from("guardados").select("*").order("creado",{ascending:false}).limit(300),
+    sb.from("descartes").select("video_id")
+  ]);
+  isAdmin=!!adm; $("#tabAdmin").classList.toggle("hidden",!isAdmin);
+  profile=Object.assign({nombre:"",pais:"",rubro:"",rubroOtro:"",enfoque:"",nicho:"",publico:"",oferta:"",hago:"",prueba:"",tono:[],voz:""},per&&per.datos?per.datos:(isAdmin?DEFAULT_PROFILE:{}));
+  saved=(gs||[]).map(g=>({id:g.id,kind:g.tipo,title:g.titulo,content:g.contenido,ts:Date.parse(g.creado)}));
+  descartados=new Set((ds||[]).map(d=>d.video_id));
+  $("#who").textContent="Hola, "+((profile.nombre||me.email||"").split(/[ ·@]/)[0]);
+  $("#storeNote").textContent="Se guarda en tu cuenta.";
+  fillProfile(); renderSaved(); renderChat(); startFeed();
+}
+sb.auth.onAuthStateChange((ev,s)=>{
+  session=s;
+  if(ev==="PASSWORD_RECOVERY"){ready=true;location.hash="clave";route()}
+  if(ev==="SIGNED_OUT"){me=null}
+});
+(async()=>{
+  const crear=new URLSearchParams(location.search).get("crear")==="1";
+  const {data}=await sb.auth.getSession(); session=data.session;
+  if(session){ try{await afterLogin()}catch(e){} }
+  ready=true;
+  if(session&&crear){ history.replaceState(null,"",location.pathname+"#clave") }
+  else if(/access_token|error=/.test(location.hash)){ history.replaceState(null,"",location.pathname+(session?"#hoy":"#acceso")) }
+  route();
+})();
+})();
+</script>
+</body>
+</html>
