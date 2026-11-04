@@ -14,10 +14,24 @@ jobs:
       - uses: actions/checkout@v4
       - uses: supabase/setup-cli@v1
         with: { version: latest }
+      - name: Revisar claves
+        run: |
+          for v in SUPABASE_ACCESS_TOKEN ANTHROPIC_API_KEY APIFY_TOKEN; do
+            if [ -z "${!v}" ]; then echo "::error::Falta el secreto $v"; else echo "::notice::$v está (${#v} ok, empieza con ${!v:0:6})"; fi
+          done
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
       - name: Guardar las claves en Supabase
-        run: supabase secrets set ANTHROPIC_API_KEY="${{ secrets.ANTHROPIC_API_KEY }}" APIFY_TOKEN="${{ secrets.APIFY_TOKEN }}" --project-ref $PROJECT
+        run: |
+          out=$(supabase secrets set ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY" APIFY_TOKEN="$APIFY_TOKEN" --project-ref $PROJECT 2>&1) || { echo "::error::$(echo "$out" | tr '\n' ' ' | sed 's/sk-ant[^ ]*/***/g' | tail -c 600)"; exit 1; }
+          echo "$out"
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
       - name: Publicar las funciones
         run: |
-          supabase functions deploy ia --project-ref $PROJECT --no-verify-jwt
-          supabase functions deploy video --project-ref $PROJECT --no-verify-jwt
-# Wed Nov  4 19:03:53 UTC 2026
+          for f in ia video; do
+            out=$(supabase functions deploy $f --project-ref $PROJECT --no-verify-jwt 2>&1) || { echo "::error::$f: $(echo "$out" | tr '\n' ' ' | tail -c 600)"; exit 1; }
+            echo "$out"
+          done
