@@ -285,6 +285,11 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
 .chatbar{position:sticky;bottom:0;padding:10px 0 14px;display:flex;gap:8px}
 .chatbar textarea{min-height:52px;max-height:160px}
 .suggest{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.convbar{display:flex;gap:8px;align-items:center;margin-bottom:14px;overflow:hidden}
+.convlist{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:1}
+.convlist::-webkit-scrollbar{display:none}
+.convlist button{flex:none;max-width:210px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border:1.5px solid #E8B9C8;background:#fff;color:#4F0C28;border-radius:999px;padding:8px 14px;font-size:13.5px;font-weight:600;cursor:pointer}
+.convlist button.on{background:#6B1237;color:#fff;border-color:#6B1237}
 .saved-item{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
 .saved-item h4{margin:0 0 2px;font-size:17px;color:#4F0C28}
 .thumb{flex:none;width:86px;height:124px;border-radius:16px;background:#6B1237;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-decoration:none;font-weight:700;font-size:12px;border:2.5px solid #fff;box-shadow:0 8px 16px rgba(79,12,40,.25);transform:rotate(-2deg)}
@@ -627,12 +632,13 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
         <button class="pill" type="button">¿Cómo subo mis precios sin perder clientes?</button>
         <button class="pill" type="button">Revisa mi bio de Instagram</button>
       </div>
+      <div class="convbar"><button class="btn btn-sm btn-primary" id="convNew" type="button">+ Nueva conversación</button><div class="convlist" id="convList"></div></div>
       <div class="chat" id="chat"></div>
       <div class="chatbar">
         <textarea class="in" id="chatIn" placeholder="Escribe tu pregunta…" rows="1"></textarea>
         <button class="btn btn-accent" id="chatSend" aria-label="Enviar">Enviar</button>
       </div>
-      <div class="actions"><button class="btn btn-sm btn-ghost" id="chatClear">Nueva conversación</button></div>
+      <p class="note" style="margin:4px 2px 0">Tus conversaciones se guardan en tu cuenta y solo tú las ves.</p>
     </section>
 
     <!-- GUARDADOS -->
@@ -657,7 +663,7 @@ const WA="https://wa.me/573011706253";
 const sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{flowType:"implicit",detectSessionInUrl:true,persistSession:true,autoRefreshToken:true}});
 let session=null, me=null, isAdmin=false, ready=false, descartados=new Set();
 let profile={nombre:"",pais:"",rubro:"",rubroOtro:"",enfoque:"",nicho:"",publico:"",oferta:"",hago:"",prueba:"",tono:[],voz:""};
-let saved=[]; let chat=[];
+let saved=[]; let chat=[]; let convs=[]; let convId=null;
 
 /* ---------- utils ---------- */
 function toast(t){const el=$("#toast");el.textContent=t;el.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove("show"),2200)}
@@ -1183,24 +1189,46 @@ function renderChat(streamText){
     (streamText!==undefined?`<div class="msg a md">${streamText?md(streamText):'<div class="loading"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>'}</div>`:"");
   $("#sugg").classList.toggle("hidden",chat.length>0);
 }
+function renderConvs(){
+  $("#convList").innerHTML=convs.map(c=>`<button type="button" data-cv="${esc(c.id)}" class="${c.id===convId?"on":""}" title="${esc(c.titulo||"Conversación")}">${esc(c.titulo||"Conversación")}</button>`).join("");
+}
+async function loadConvs(){
+  const {data}=await sb.from("conversaciones").select("id,titulo,mensajes,actualizado").order("actualizado",{ascending:false}).limit(30);
+  convs=data||[]; renderConvs();
+}
+async function saveConv(){
+  if(!me||!chat.length) return;
+  const mensajes=chat.slice(-60);
+  if(convId){
+    await sb.from("conversaciones").update({mensajes,actualizado:new Date().toISOString()}).eq("id",convId);
+    const c=convs.find(x=>x.id===convId); if(c){c.mensajes=mensajes; convs=[c,...convs.filter(x=>x!==c)]}
+  }else{
+    const titulo=(chat.find(m=>m.role==="user")||{}).content?.slice(0,60)||"Conversación";
+    const {data}=await sb.from("conversaciones").insert({titulo,mensajes}).select("id,titulo,mensajes,actualizado").single();
+    if(data){convId=data.id; convs=[data,...convs]}
+  }
+  renderConvs();
+}
+$("#convNew").addEventListener("click",()=>{convId=null;chat=[];renderChat();renderConvs();$("#chatIn").focus()});
+$("#convList").addEventListener("click",e=>{const b=e.target.closest("[data-cv]");if(!b)return;const c=convs.find(x=>x.id===b.dataset.cv);if(!c)return;convId=c.id;chat=Array.isArray(c.mensajes)?c.mensajes.slice():[];renderChat();renderConvs();window.scrollTo(0,document.body.scrollHeight)});
 async function sendChat(text){
   text=(text||"").trim(); if(!text) return;
   if(!session){location.hash="entrar";return}
   chat.push({role:"user",content:text}); $("#chatIn").value=""; renderChat(""); $("#chatSend").disabled=true;
   window.scrollTo(0,document.body.scrollHeight);
   const sys=`${BASE}\n\n${ctx()}\n\nERES "Mentora", la guía de CREATIVE.LAB, una IA creada por María José (Logos by Majo, Medellín). Hablas con SU personalidad: paisa, cálida y cercana, como una amiga que sabe mucho de marca y marketing; le hablas de tú; eres directa y honesta ("mira, esto no te sirve por esto; haz esto otro"), con buen humor y sin regaños. Das respuestas concretas: qué hacer, en qué orden y un ejemplo aplicado a su negocio. Máximo 180 palabras salvo que pida más, frases cortas, nada que suene a robot ni a texto de IA, sin listas eternas. Si necesitas un dato para ayudarla, pregúntalo al final en una sola pregunta. Si te preguntan quién eres, di que eres la Mentora de CREATIVE.LAB, creada por María José.`;
-  const msgs=chat.slice(-12).map((m,i)=>i===0&&m.role==="user"?{role:"user",content:sys+"\n\nPREGUNTA: "+m.content}:m);
+  const msgs=chat.slice(-20).map((m,i)=>i===0&&m.role==="user"?{role:"user",content:sys+"\n\nPREGUNTA: "+m.content}:m);
   if(msgs[0].role!=="user") msgs.unshift({role:"user",content:sys});
   try{
     const r=await sample(msgs,{modelTier:"default",cache:false,onText:({text:t})=>renderChat(t)});
     chat.push({role:"assistant",content:r.text});
   }catch(e){ chat.push({role:"assistant",content:aiErr(e)}) }
-  renderChat(); $("#chatSend").disabled=false; lsSet("rx_chat",chat.slice(-30));
+  renderChat(); $("#chatSend").disabled=false; saveConv();
 }
 $("#chatSend").addEventListener("click",()=>sendChat($("#chatIn").value));
 $("#chatIn").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey&&window.innerWidth>700){e.preventDefault();sendChat($("#chatIn").value)}});
 $("#sugg").addEventListener("click",e=>{const b=e.target.closest(".pill");if(b)sendChat(b.textContent)});
-$("#chatClear").addEventListener("click",()=>{chat=[];lsSet("rx_chat",[]);renderChat()});
+
 
 /* ---------- demo portada ---------- */
 const DEMOS=[
@@ -1290,7 +1318,7 @@ $("#logout").addEventListener("click",async()=>{await sb.auth.signOut();session=
 
 /* ---------- init ---------- */
 const DEFAULT_PROFILE={nombre:"María José · Logos by Majo",pais:"Medellín, Colombia",rubro:"marca-marketing",enfoque:"hablo a cámara en charla o conversación; doy consejos de logo y branding hablando, no muestro procesos de diseño ni muestras de mi trabajo",nicho:"marketing, crecimiento personal, crecer en redes, estrategia de marca, consejos de logo y branding, y asesorías de marca 1:1 para emprendedoras",publico:"emprendedoras y dueñas de pequeños negocios que quieren que su marca venda en Instagram",oferta:"asesorías de marca 1:1 y de contenido para Instagram, a precios económicos",hago:"Empecé Logos by Majo el 4 de octubre de 2021. Aprendí diseño sola, de forma empírica, empezando con Canva. Mi marca está registrada.",prueba:"",tono:["Cercano","Paisa / regional"],voz:""};
-chat=lsGet("rx_chat")||[];
+chat=[];
 async function afterLogin(){
   if(!session) return;
   me=session.user;
@@ -1306,7 +1334,7 @@ async function afterLogin(){
   descartados=new Set((ds||[]).map(d=>d.video_id));
   $("#who").textContent="Hola, "+((profile.nombre||me.email||"").split(/[ ·@]/)[0]);
   $("#storeNote").textContent="Se guarda en tu cuenta.";
-  fillProfile(); renderSaved(); renderChat(); startFeed();
+  fillProfile(); renderSaved(); renderChat(); startFeed(); loadConvs();
 }
 sb.auth.onAuthStateChange((ev,s)=>{
   session=s;
