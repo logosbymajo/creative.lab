@@ -14,7 +14,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: supabase/setup-cli@v1
         with: { version: latest }
-      - name: Guardar la clave de Claude en Supabase
-        run: supabase secrets set ANTHROPIC_API_KEY="${{ secrets.ANTHROPIC_API_KEY }}" --project-ref $PROJECT
-      - name: Publicar la función
-        run: supabase functions deploy ia --project-ref $PROJECT --no-verify-jwt
+      - name: Guardar las claves en Supabase
+        run: supabase secrets set ANTHROPIC_API_KEY="${{ secrets.ANTHROPIC_API_KEY }}" APIFY_TOKEN="${{ secrets.APIFY_TOKEN }}" --project-ref $PROJECT
+      - name: Publicar las funciones
+        run: |
+          supabase functions deploy ia --project-ref $PROJECT --no-verify-jwt
+          supabase functions deploy video --project-ref $PROJECT --no-verify-jwt

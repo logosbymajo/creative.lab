@@ -2,3 +2,6 @@ project_id = "qqwlgbcrdiyklvyjebbx"
 
 [functions.ia]
 verify_jwt = false
+
+[functions.video]
+verify_jwt = false

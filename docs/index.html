@@ -402,26 +402,25 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
     <section class="view" data-view="radar">
       <span class="eyebrow">✳ Radar · Segundo internet</span>
       <h2>¿Viste un video que pegó afuera?</h2>
-      <p class="sub"><b>Solo sube la grabación de pantalla del reel.</b> Radar lee las escenas, los subtítulos y los números que se ven (me gusta, comentarios), te dice qué funcionó y te entrega el guion. Todo lo demás es opcional.</p>
+      <p class="sub"><b>Pega el enlace del video</b> de TikTok o Instagram. CREATIVE.LAB lo abre, lee lo que dice, sus cifras y sus comentarios, te dice qué funcionó y te entrega el guion adaptado a tu marca.</p>
       <div class="card">
+        <div class="field"><label class="f" for="a_link">Enlace del video</label><input class="in" id="a_link" inputmode="url" placeholder="https://www.tiktok.com/@… o https://www.instagram.com/reel/…"></div>
+        <div id="a_gate" class="banner warn hidden">Primero llena <a href="#perfil">tu perfil</a>: así el guion sale con tu voz y tu nicho, no genérico.</div>
+        <div class="actions"><button class="btn btn-accent" id="runAnalyze">Analizar y reestrenar</button></div>
+        <details style="margin-top:16px"><summary class="note" style="cursor:pointer;font-weight:700">+ Opcional: si el enlace no abre (cuenta privada o YouTube)</summary><div style="margin-top:12px">
         <div class="field">
-          <label class="f" for="a_file">Grabación de pantalla del reel <small>(lo único obligatorio)</small></label>
+          <label class="f" for="a_file">Grabación de pantalla o capturas</label>
           <input class="in" id="a_file" type="file" accept="video/*,image/*" multiple>
           <div id="a_prev" class="note" style="margin-top:6px"></div>
         </div>
-        <details style="margin-bottom:12px"><summary class="note" style="cursor:pointer;font-weight:700">+ Datos opcionales (enlace, subtítulos, cifras)</summary><div style="margin-top:12px">
-        <div class="field"><label class="f" for="a_link">Enlace del video <small>(para tu referencia)</small></label><input class="in" id="a_link" placeholder="https://www.instagram.com/reel/…"></div>
-        <div class="field"><label class="f" for="a_txt">¿Qué dice el video? <small>(subtítulos, lo que habla o el caption; opcional pero mejora mucho)</small></label><textarea class="in" id="a_txt" placeholder="Copia los subtítulos o escribe lo que dice, en el idioma original"></textarea></div>
+        <div class="field"><label class="f" for="a_txt">¿Qué dice el video? <small>(si lo sabes)</small></label><textarea class="in" id="a_txt" placeholder="Lo que habla o los subtítulos, en el idioma original"></textarea></div>
         <div class="grid2">
-          <div class="field"><label class="f" for="a_views">Vistas <small>(opcional)</small></label><input class="in" id="a_views" placeholder="Ej: 2,3 M"></div>
-          <div class="field"><label class="f" for="a_com">Comentarios <small>(opcional)</small></label><input class="in" id="a_com" placeholder="Ej: 4.800"></div>
-          <div class="field"><label class="f" for="a_seg">Seguidores de esa cuenta <small>(opcional)</small></label><input class="in" id="a_seg" placeholder="Ej: 85 mil"></div>
-          <div class="field"><label class="f" for="a_pais">País o idioma <small>(opcional)</small></label><input class="in" id="a_pais" placeholder="Ej: Brasil, portugués"></div>
+          <div class="field"><label class="f" for="a_views">Vistas</label><input class="in" id="a_views" placeholder="Ej: 2,3 M"></div>
+          <div class="field"><label class="f" for="a_com">Comentarios</label><input class="in" id="a_com" placeholder="Ej: 4.800"></div>
+          <div class="field"><label class="f" for="a_seg">Seguidores de esa cuenta</label><input class="in" id="a_seg" placeholder="Ej: 85 mil"></div>
+          <div class="field"><label class="f" for="a_pais">País o idioma</label><input class="in" id="a_pais" placeholder="Ej: Brasil, portugués"></div>
         </div>
         </div></details>
-        <div id="a_gate" class="banner warn hidden">Primero llena <a href="#perfil">tu perfil</a>: así el guion sale con tu voz y tu nicho, no genérico.</div>
-        <div class="actions"><button class="btn btn-accent" id="runAnalyze">Analizar y reestrenar</button></div>
-        <p class="note" style="margin-top:10px">Tip: abre el reel, activa los subtítulos si los tiene y graba la pantalla de principio a fin, con los me gusta y comentarios visibles. Radar no escucha el audio: si el video habla sin subtítulos, pega lo que dice en los datos opcionales.</p>
       </div>
       <div class="out" id="analyzeOut"></div>
 
@@ -803,7 +802,10 @@ $("#feed").addEventListener("click",async e=>{
   if(e.target.closest("[data-hide]")){descartados.add(x.id);renderFeed();await sb.from("descartes").insert({video_id:x.id});return}
   const btn=e.target.closest("[data-adapt]"); if(!btn) return;
   const out=card.querySelector("[data-out]"); if(!needAI(out)) return;
-  btn.disabled=true; out.innerHTML=loadingHTML("Leyendo el esqueleto y poniéndole tu piel…");
+  btn.disabled=true; out.innerHTML=loadingHTML("Abriendo el video para escuchar lo que dice…");
+  let extra={dice:"",comentarios:[]}, portada=[];
+  try{const {data}=await sb.functions.invoke("video",{body:{url:x.url}}); if(data&&!data.error){extra=data; if(data.portada){const bin=atob(data.portada.data);const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);portada=[new Blob([u],{type:data.portada.type})]}}}catch(err){}
+  out.innerHTML=loadingHTML("Leyendo el esqueleto y poniéndole tu piel…");
   const prompt=`${BASE}
 
 ${ctx()}
@@ -814,7 +816,9 @@ No tienes el video, solo estos datos; si algo visual es incierto, dilo y dile qu
 - Plataforma/idioma: ${x.plataforma} · ${x.idioma} · ${x.duracion||"?"} s
 - Vistas ${x.vistas}, comentarios ${x.comentarios}, seguidores de la cuenta ${x.seguidores||"?"}
 - Texto/caption original: """${String(x.caption||x.titulo).slice(0,3000)}"""
-- Lo que dice (si se tiene): """${String(x.transcripcion||"").slice(0,4000)}"""
+- Lo que dice (transcripción, si se tiene): """${String(extra.dice||x.transcripcion||"").slice(0,8000)}"""
+- Comentarios destacados: ${(extra.comentarios||[]).slice(0,10).join(" | ")||"-"}
+${portada.length?"- Te adjunto la portada del video.":""}
 - Análisis previo: funciona porque ${x.por_que_funciona}. Para ella: ${x.por_que_para_ti}. Formato: ${x.formato||"-"}.
 
 Entrega:
@@ -835,7 +839,7 @@ Entrega:
 (2 búsquedas exactas en español para confirmar que todavía no llegó)`;
   let text="";
   try{
-    const r=await sample(prompt,{modelTier:"default",onText:({text:t})=>{text=t;out.innerHTML=`<div class="md" style="margin-top:8px">${md(t)}</div>`}});
+    const r=await sample(prompt,{modelTier:"default",images:portada.length?portada:undefined,onText:({text:t})=>{text=t;out.innerHTML=`<div class="md" style="margin-top:8px">${md(t)}</div>`}});
     text=r.text||text;
     out.innerHTML=`<div class="md" style="margin-top:8px">${md(text)}</div><div class="actions"><button class="btn btn-sm btn-primary" data-c>Copiar</button><button class="btn btn-sm btn-soft" data-s>Guardar en Mis guiones</button></div>`;
     out.querySelector("[data-c]").onclick=()=>copy(text);
@@ -879,22 +883,39 @@ $("#a_file").addEventListener("change",()=>{
 });
 $("#runAnalyze").addEventListener("click",async()=>{
   const out=$("#analyzeOut"), btn=$("#runAnalyze"); if(!needAI(out)) return;
-  const files=Array.from($("#a_file").files||[]), txt=$("#a_txt").value.trim(), link=$("#a_link").value.trim();
-  if(!files.length&&!txt){toast("Sube el video (o capturas) o pega lo que dice");return}
+  const files=Array.from($("#a_file").files||[]), link=$("#a_link").value.trim();
+  let txt=$("#a_txt").value.trim();
+  if(!link&&!files.length&&!txt){toast("Pega el enlace del video");return}
   if(!profile.nicho&&!profile.voz){$("#a_gate").classList.remove("hidden");toast("Primero llena tu perfil");return}
   if(!profile.voz) toast("Tip: pega tus guiones en Mi perfil para que suene más a ti");
-  btn.disabled=true; out.innerHTML=loadingHTML("Mirando el video…");
-  let imgs=[], dur=null;
+  btn.disabled=true;
+  let imgs=[], dur=null, vd=null;
   try{
-    const lim=await sample.limits().catch(()=>null); const max=(lim&&lim.images&&lim.images.maxCount)||0;
-    if(files.length&&!max) out.innerHTML=`<div class="banner warn">Esta vista no puede enviar imágenes; analizo solo con el texto.</div>`+loadingHTML("Analizando…");
-    if(max){
+    if(link){
+      out.innerHTML=loadingHTML("Abriendo el video y leyendo lo que dice… (puede tardar hasta 1 minuto)");
+      const {data,error}=await sb.functions.invoke("video",{body:{url:link}});
+      let code=null; if(error){try{code=(await error.context.json()).error}catch(x){code="no_abre"}} else if(data&&data.error) code=data.error;
+      if(code){
+        if(code==="limite"||code==="sin_acceso"||code==="no_sesion") throw {code};
+        if(!files.length&&!txt){out.innerHTML=`<div class="banner warn">${code==="no_soportado"?"Por ahora puedo abrir enlaces de TikTok e Instagram.":"No pude abrir ese enlace (puede ser de una cuenta privada)."} Abre <b>"+ Opcional"</b> y sube la grabación de pantalla.</div>`;return}
+      } else vd=data;
+    }
+    if(vd&&vd.portada){const bin=atob(vd.portada.data);const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);imgs.push(new Blob([u],{type:vd.portada.type}))}
+    if(files.length){
+      out.innerHTML=loadingHTML("Mirando tu grabación…");
       for(const f of files){
-        if(imgs.length>=max) break;
-        if(f.type.startsWith("video")){const fr=await grabFrames(f,Math.min(12,max-imgs.length)); dur=fr.duration||dur; imgs.push(...fr)}
+        if(imgs.length>=12) break;
+        if(f.type.startsWith("video")){const fr=await grabFrames(f,Math.min(11,12-imgs.length)); dur=fr.duration||dur; imgs.push(...fr)}
         else if(/image\/(jpeg|png|webp|gif)/.test(f.type)) imgs.push(f);
       }
-      if(files.some(f=>f.type.startsWith("video"))&&!imgs.length) toast("No pude leer el video; prueba con capturas");
+    }
+    if(vd){
+      dur=vd.duracion||dur;
+      txt=[txt, vd.dice?"LO QUE DICE (transcripción): "+vd.dice:"", vd.caption?"CAPTION: "+vd.caption:"", vd.comentarios&&vd.comentarios.length?"COMENTARIOS DESTACADOS:\n- "+vd.comentarios.join("\n- "):""].filter(Boolean).join("\n\n");
+      if(!$("#a_views").value) $("#a_views").value=vd.vistas||"";
+      if(!$("#a_com").value) $("#a_com").value=vd.comentarios_n||"";
+      if(!$("#a_seg").value&&vd.seguidores) $("#a_seg").value=vd.seguidores;
+      if(!$("#a_pais").value&&vd.idioma) $("#a_pais").value=vd.idioma;
     }
     out.innerHTML=loadingHTML("Analizando qué funcionó y adaptándolo a tu marca…");
     const prompt=`${BASE}
@@ -907,11 +928,12 @@ Método que sigue:
 - Todo video viral tiene ESQUELETO (lo que no se ve y hace que la gente se quede: gancho, promesa, orden, ritmo, giros, cierre) y PIEL (lo que se ve: persona, tema, fondo, idioma, ejemplos, estilo).
 - Reestrenar = conservar el esqueleto y ponerle SU piel (su voz, su nicho, su estilo, su fondo). Traducir tal cual lo daña; copiar no sirve.
 - 4 filtros para elegir: 1) ya funcionó allá (muchas más vistas que seguidores de la cuenta), 2) se puede repetir, 3) se puede llevar a su tema, 4) todavía no llegó al español.
-${link?"Enlace (solo referencia, no puedes abrirlo): "+link:""}
-${imgs.length?`Te adjunto ${imgs.length} fotogramas del video en orden${dur?` (dura unos ${Math.round(dur)} s)`:""}; el primero es el inicio. Fíjate en el gancho visual, el texto en pantalla, los subtítulos, la edición, el encuadre y el ritmo. Es una grabación de pantalla: lee también las cifras visibles en la interfaz (me gusta, comentarios, vistas, nombre de la cuenta) y úsalas en el análisis.`:"No hay imágenes, solo texto."}
+${link?"Enlace: "+link:""}
+${vd?`Video de ${vd.plataforma} de la cuenta @${vd.cuenta||"?"}, dura ${dur||"?"} s. Me gusta: ${vd.likes||0}. Guardados: ${vd.guardados||0}. Compartidos: ${vd.compartidos||0}.`:""}
+${imgs.length?`Te adjunto ${imgs.length} imagen(es): ${vd&&vd.portada?"la primera es la portada del video":""}${files.length?" y fotogramas de una grabación de pantalla en orden":""}. Fíjate en el gancho visual, el texto en pantalla, el encuadre y el ritmo.`:"No hay imágenes, solo texto."}
 Datos: vistas ${$("#a_views").value||"no indicadas"}, comentarios ${$("#a_com").value||"no indicados"}, seguidores de la cuenta ${$("#a_seg").value||"no indicados"}, país/idioma ${$("#a_pais").value||"no indicado"}.
 Lo que dice el video / caption:
-"""${txt.slice(0,6000)||"(no lo pegó; dedúcelo de los fotogramas y el texto en pantalla)"}"""
+"""${txt.slice(0,12000)||"(no se tiene; dedúcelo de las imágenes y el texto en pantalla)"}"""
 
 Entrega exactamente esto, en español:
 ### Qué dice el video
