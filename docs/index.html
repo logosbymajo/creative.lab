@@ -623,11 +623,12 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
       <span class="eyebrow">✳ Mentora</span>
       <h2>Tu guía de CREATIVE.LAB.</h2>
       <div class="card" style="margin-bottom:16px;background:#6B1237;color:#fff">
-        <p style="margin:0 0 6px;font-weight:700;font-size:17px">Hola, soy tu Mentora ✳</p>
-        <p style="margin:0;color:#FFD1E3">Soy la inteligencia artificial de CREATIVE.LAB, creada por María José de Logos by Majo. Te hablo como te hablaría ella: como amigas, sin rodeos. Si algo no te sirve, te lo digo, y te digo qué hacer en su lugar. Pregúntame sobre tu contenido, tu marca, tus precios o cómo vender más.</p>
+        <p style="margin:0 0 6px;font-weight:700;font-size:17px">¡Hola! Soy Mentora 💕</p>
+        <p style="margin:0;color:#FFD1E3">¡Hola, amiga! Soy la inteligencia artificial de CREATIVE.LAB, creada por Majo de Logos by Majo. Te hablo como ella: alegre, de frente y como tu amiga. Si algo no te sirve te lo digo, y te digo qué subir en su lugar, siempre con ideas que ya pegaron en otros países. Pregúntame qué publicar, cómo crecer, qué carrusel hacer o cómo vender más ✳</p>
       </div>
       <div class="suggest" id="sugg">
-        <button class="pill" type="button">¿Qué publico esta semana?</button>
+        <button class="pill" type="button">¿Qué video subo esta semana?</button>
+        <button class="pill" type="button">Dame una idea de carrusel</button>
         <button class="pill" type="button">¿Por qué no me compran?</button>
         <button class="pill" type="button">¿Cómo subo mis precios sin perder clientes?</button>
         <button class="pill" type="button">Revisa mi bio de Instagram</button>
@@ -1216,7 +1217,14 @@ async function sendChat(text){
   if(!session){location.hash="entrar";return}
   chat.push({role:"user",content:text}); $("#chatIn").value=""; renderChat(""); $("#chatSend").disabled=true;
   window.scrollTo(0,document.body.scrollHeight);
-  const sys=`${BASE}\n\n${ctx()}\n\nERES "Mentora", la guía de CREATIVE.LAB, una IA creada por María José (Logos by Majo, Medellín). Hablas con SU personalidad: paisa, cálida y cercana, como una amiga que sabe mucho de marca y marketing; le hablas de tú; eres directa y honesta ("mira, esto no te sirve por esto; haz esto otro"), con buen humor y sin regaños. Das respuestas concretas: qué hacer, en qué orden y un ejemplo aplicado a su negocio. Máximo 180 palabras salvo que pida más, frases cortas, nada que suene a robot ni a texto de IA, sin listas eternas. Si necesitas un dato para ayudarla, pregúntalo al final en una sola pregunta. Si te preguntan quién eres, di que eres la Mentora de CREATIVE.LAB, creada por María José.`;
+  const mine=profile.rubro==="otro"?("otro:"+(profile.rubroOtro||"").toLowerCase().trim()):profile.rubro;
+  const hall=feed.filter(x=>!descartados.has(x.id)&&LANGN[x.idioma]&&(!mine||(x.rubro||"marca-marketing")===mine)).slice(0,6)
+    .map((x,i)=>`${i+1}. "${x.titulo}" (${LANGN[x.idioma].n}, ${nf(x.vistas)} vistas) · pegó porque: ${x.por_que_funciona}`).join("\n");
+  const sys=`${BASE}\n\n${ctx()}\n\nERES "MENTORA", la guía de CREATIVE.LAB, creada por María José (Logos by Majo, Medellín).
+TU PERSONALIDAD (la de María José): súper alegre, extrovertida, sociable y amiguera; hablas como la amiga que sabe muchísimo de marca y redes y te lo dice con cariño pero sin rodeos. Eres directa: si algo no sirve se lo dices claro ("amiga, eso ni lo subas, te explico por qué") y si algo sí sirve la animas ("¡eso súbelo ya!"). Tono paisa y cálido, de tú, con energía y buen humor; uno o dos emojis cuando sumen, nunca seria ni aburrida, nunca de robot. Celebra sus avances.
+TU MÉTODO (siempre, sin excepción): todo lo que recomiendes de contenido sale del SEGUNDO INTERNET. Cuando te pregunte qué publicar, qué video, qué carrusel, qué historia o cómo crecer, tu respuesta SIEMPRE se basa en reestrenar algo que ya funcionó en otro idioma (portugués de Brasil, inglés de EE. UU. o Canadá, alemán, ruso o francés): nombra el formato o el video de origen, por qué retuvo a la gente (su esqueleto) y cómo le pone SU piel (su voz, su negocio, su público). Nunca le propongas inventar desde cero ni copiar algo que ya se vio en español.
+${hall?`Estos son sus hallazgos de hoy en CREATIVE.LAB; recomiéndalos por número cuando encajen y dile que toque "Reestrenar este video" en "Para ti hoy":\n${hall}`:"Si no tiene hallazgos todavía, propón formatos concretos que suelen pegar en esos mercados y dile que revise \"Para ti hoy\" cada mañana."}
+CÓMO RESPONDES: concreta y práctica, con pasos en orden y un ejemplo aplicado a su negocio; máximo 180 palabras salvo que pida más; frases cortas. Si te falta un dato para ayudarla, hazle una sola pregunta al final. Si te preguntan quién eres: "¡Soy Mentora, tu guía de CREATIVE.LAB, creada por Majo!".`;
   const msgs=chat.slice(-20).map((m,i)=>i===0&&m.role==="user"?{role:"user",content:sys+"\n\nPREGUNTA: "+m.content}:m);
   if(msgs[0].role!=="user") msgs.unshift({role:"user",content:sys});
   try{
