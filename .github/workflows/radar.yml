@@ -3,6 +3,9 @@ on:
   schedule:
     - cron: "37 10 * * *"   # 5:37 a. m. en Colombia
   workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths: ["scripts/**", ".github/workflows/radar.yml"]
 jobs:
   radar:
     runs-on: ubuntu-latest
