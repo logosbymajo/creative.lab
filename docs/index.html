@@ -292,6 +292,16 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
 #feedTema::-webkit-scrollbar,#feedLang::-webkit-scrollbar{display:none}
 #feedTema .pill,#feedLang .pill{flex:none;font-size:14px;padding:8px 14px}
 #feedTema .pill{border-width:1.5px}
+.kpis{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
+@media(min-width:900px){.kpis{grid-template-columns:repeat(4,1fr)}}
+.kpi{background:#fff;border:1.5px solid #F6D3E1;border-radius:18px;padding:14px 16px}
+.kpi small{display:block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9B5574}
+.kpi b{display:block;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:24px;color:#6B1237;margin-top:4px}
+.kpi span{font-size:12.5px;color:#9B5574}
+.payrow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #F6D3E1}
+.payrow:last-child{border-bottom:0}.payrow b{display:block;color:#4F0C28;font-size:14px;overflow:hidden;text-overflow:ellipsis}.payrow small{display:block;color:#9B5574;font-size:12.5px}.payrow>span{font-weight:800;color:#6B1237;white-space:nowrap}
+.memenu .ni.warn{background:#FFF4E5}.ni.warn .nic{background:#E8833A}
+.nbtn{display:inline-block;color:#F4579F;font-weight:700;font-size:13px;margin:2px 0 4px}
 .plans{display:grid;gap:14px}
 @media(min-width:900px){.plans{grid-template-columns:repeat(3,1fr)}}
 .pcard{position:relative;background:#fff;border:1.5px solid #F6D3E1;border-radius:24px;padding:22px;display:flex;flex-direction:column}
@@ -746,6 +756,18 @@ textarea.in{min-height:110px;resize:vertical;line-height:1.5}
         </div>
         <div class="field"><label class="f" for="ad_nota">Nota <small>(opcional: fecha de pago, plan, etc.)</small></label><input class="in" id="ad_nota" placeholder="Ej: pagó por Wompi el 4 nov"></div>
         <div class="actions"><button class="btn btn-primary" id="ad_add">Dar acceso</button><button class="btn btn-soft" id="ad_msg">Copiar mensaje de bienvenida</button></div>
+      </div>
+      <h3 class="rh">Pagos e ingresos</h3>
+      <div id="adPay"></div>
+      <h3 class="rh">Mensaje a todas</h3>
+      <div class="card">
+        <p class="note" style="margin:0 0 10px">Les llega a la campanita de todas las personas con acceso. Usa una plantilla o escribe el tuyo.</p>
+        <div class="pills" id="avTpl" style="margin-bottom:12px"><button type="button" class="pill" data-tp="promo">🎁 Promo de renovación</button><button type="button" class="pill" data-tp="nuevo">✨ Nueva función</button><button type="button" class="pill" data-tp="radar">🔥 Videos nuevos</button><button type="button" class="pill" data-tp="clase">📅 Clase o en vivo</button></div>
+        <div class="field"><label class="f" for="av_tit">Título</label><input class="in" id="av_tit" maxlength="80" placeholder="Ej: 20% de descuento si renuevas esta semana"></div>
+        <div class="field"><label class="f" for="av_txt">Mensaje</label><textarea class="in" id="av_txt" maxlength="500" placeholder="Escribe el mensaje"></textarea></div>
+        <div class="field"><label class="f" for="av_link">Botón que lleva a… <small>(opcional)</small></label><select class="in" id="av_link"><option value="">Sin botón</option><option value="plan">Mi plan (renovar)</option><option value="hoy">Radar</option><option value="mentora">Mentora</option><option value="clientes">Buscar clientes</option><option value="soporte">Soporte</option></select></div>
+        <button class="btn btn-primary" id="av_send">Enviar a todas</button>
+        <div id="avList" style="margin-top:14px"></div>
       </div>
       <h3 class="rh">Solicitudes de soporte</h3>
       <div class="list" id="adSup"></div>
@@ -1523,24 +1545,26 @@ pro:{n:"Pro",p:149900,v:50,top:1,inc:["Todo lo del Básico","Ventas: historias d
 premium:{n:"Premium",p:349900,v:100,inc:["Todo lo del Pro","1 asesoría 1:1 al mes con María José","Prioridad en soporte"]}};
 const BLOQ={venta:"Ventas",numeros:"Números",clientes:"Buscar clientes"};
 let plan=null;
+const hoyL=()=>new Date().toLocaleDateString("en-CA");
+const diasA=f=>Math.round((Date.parse(f)-Date.parse(hoyL()))/864e5);
 const cop=n=>"$"+Number(n).toLocaleString("es-CO");
 const fd=d=>d?new Date(d+"T12:00:00").toLocaleDateString("es-CO",{day:"numeric",month:"short",year:"numeric"}):"";
 function planEstado(){
   if(!plan) return "cargando";
   if(plan.admin) return "admin";
   if(!plan.plan) return "cortesia";
-  const hoy=new Date().toISOString().slice(0,10);
+  const hoy=hoyL();
   return (!plan.fin||plan.fin<hoy)?"vencido":"activo";
 }
 const bloqueada=h=>{const e=planEstado();return BLOQ[h]&&e==="activo"&&plan.plan==="basico"};
 async function loadPlan(){
   if(!me) return;
-  const {data}=await sb.rpc("mi_plan"); plan=(data&&data[0])||{plan:null}; paintPlan();
+  const {data}=await sb.rpc("mi_plan"); plan=(data&&data[0])||{plan:null}; paintPlan(); loadNotis();
 }
 function paintPlan(){
   const e=planEstado(), P=plan&&PLANES[plan.plan];
   const used=+(plan&&plan.usados)||0, lim=P?P.v:0;
-  const dias=plan&&plan.fin?Math.max(0,Math.ceil((new Date(plan.fin+"T23:59:59")-new Date())/864e5)):0;
+  const dias=plan&&plan.fin?Math.max(0,diasA(plan.fin)):0;
   const tot=plan&&plan.inicio&&plan.fin?Math.max(1,Math.round((new Date(plan.fin)-new Date(plan.inicio))/864e5)):30;
   const sp=$("#sidePlan");
   if(e==="activo"){sp.classList.remove("hidden");sp.innerHTML=`<b>Plan ${P.n}</b><span>${used} de ${lim} videos</span><i><u style="width:${Math.min(100,used/lim*100)}%"></u></i>`}
@@ -1549,7 +1573,7 @@ function paintPlan(){
   $("#labPlan").innerHTML=e==="vencido"?`<div class="banner warn">Tu mensualidad venció el ${fd(plan.fin)}. <a class="btn btn-sm btn-primary" href="#plan">Renovar</a></div>`:(e==="activo"&&used>=lim?`<div class="banner warn">Usaste los ${lim} videos de tu plan este mes. <a class="btn btn-sm btn-primary" href="#plan">Subir de plan</a></div>`:"");
   let now="";
   if(e==="activo") now=`<div class="card planbox"><div class="pbh"><div><small>Tu plan</small><b>${P.n}</b></div><span class="st ok">Activo</span></div>
-    <div class="pbar"><div class="pbl"><span>Videos reestrenados</span><b>${used} de ${lim}</b></div><i><u style="width:${Math.min(100,used/lim*100)}%"></u></i><small>${Math.max(0,lim-used)} disponibles este mes</small></div>
+    <div class="pbar"><div class="pbl"><span>Videos reestrenados</span><b>${used} de ${lim}</b></div><i><u style="width:${Math.min(100,used/lim*100)}%"></u></i><small>${used>=lim?`Ya usaste todos tus videos de este mes. Se renuevan el ${fd(plan.fin)} con tu nueva mensualidad, o puedes subir de plan hoy.`:Math.max(0,lim-used)+" disponibles este mes"}</small></div>
     <div class="pbar"><div class="pbl"><span>Tu mes</span><b>${dias} día${dias===1?"":"s"} restantes</b></div><i class="t"><u style="width:${Math.min(100,(tot-dias)/tot*100)}%"></u></i><small>Empezó el ${fd(plan.inicio)} · termina el ${fd(plan.fin)}</small></div></div>`;
   else if(e==="vencido") now=`<div class="card planbox"><div class="pbh"><div><small>Tu plan</small><b>${P?P.n:"—"}</b></div><span class="st off">Vencido el ${fd(plan.fin)}</span></div><p style="margin:10px 0 0;color:#4F0C28">Renueva para seguir reestrenando videos y hablando con Mentora.</p></div>`;
   else if(e==="admin") now=`<div class="card planbox"><b>Eres la administradora</b><p class="note" style="margin:6px 0 0">Tú no tienes límites. Así ven esta pantalla las demás:</p></div>`;
@@ -1765,6 +1789,7 @@ $("#nudgeNo").addEventListener("click",()=>{sessionStorage.setItem("nudgeOff","1
 /* ---------- ADMIN ---------- */
 async function loadAdmin(){
   if(!isAdmin) return;
+  loadPagosAdmin(); loadAvisosAdmin();
   sb.from("soporte").select("*").order("creado",{ascending:false}).limit(50).then(({data})=>{
     const open=(data||[]).filter(t=>t.estado!=="resuelta");
     $("#adSup").innerHTML=open.length?open.map(t=>`<div class="card adrow"><div style="min-width:0"><h4>${esc(t.tipo||"Solicitud")}</h4><div class="note">${esc(t.email||"")} · ${new Date(t.creado).toLocaleString("es-CO",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"})}</div><p style="margin:6px 0 0;color:#4F0C28">${esc(t.mensaje)}</p><textarea class="in" data-r="${esc(t.id)}" placeholder="Escribe tu respuesta… le llega a su campanita en la página" style="margin-top:10px;min-height:80px"></textarea><div class="actions" style="margin-top:8px"><button class="btn btn-sm btn-primary" data-send="${esc(t.id)}">Enviar respuesta</button><button class="btn btn-sm btn-ghost" data-ok="${esc(t.id)}">Marcar resuelta sin responder</button></div></div></div>`).join(""):`<div class="card note">No hay solicitudes abiertas 🎉</div>`;
@@ -1779,6 +1804,30 @@ async function loadAdmin(){
     return `<div class="card adrow" data-em="${esc(a.email)}"><div style="min-width:0"><h4>${esc(a.nombre||a.email)}</h4><div class="note">${esc(a.email)}${a.nota?" · "+esc(a.nota):""}</div>${st}<div class="note" style="margin-top:4px">${a.plan?`★ ${esc((PLANES[a.plan]||{}).n||a.plan)} · hasta ${fd(a.fin)}${a.fin<new Date().toISOString().slice(0,10)?" (vencido)":""}`:"★ Cortesía (sin mensualidad)"}</div></div>
     <div class="actions" style="margin:0">${a.email===(me.email||"").toLowerCase()?'<span class="note">Tú</span>':`<select class="in" data-pl style="width:auto;padding:6px 10px;font-size:13px"><option value="">Plan…</option><option value="basico">Básico +1 mes</option><option value="pro">Pro +1 mes</option><option value="premium">Premium +1 mes</option><option value="cortesia">Cortesía</option></select><button class="btn btn-sm btn-soft" data-tog="${a.activo?0:1}">${a.activo?"Pausar":"Reactivar"}</button><button class="btn btn-sm btn-ghost" data-del>Quitar</button>`}</div></div>`}).join("");
 }
+async function loadPagosAdmin(){
+  const {data}=await sb.from("pagos").select("*").eq("estado","aprobado").order("creado",{ascending:false}).limit(300);
+  const ps=data||[], now=new Date(), ym=d=>d.slice(0,7), esteMes=now.toISOString().slice(0,7);
+  const pm=new Date(now.getFullYear(),now.getMonth()-1,15).toISOString().slice(0,7);
+  const sum=f=>ps.filter(f).reduce((a,p)=>a+p.monto,0);
+  const mes=ps.filter(p=>ym(p.creado)===esteMes);
+  const por=k=>mes.filter(p=>p.plan===k).length;
+  $("#adPay").innerHTML=`<div class="kpis"><div class="kpi"><small>Este mes</small><b>${cop(sum(p=>ym(p.creado)===esteMes))}</b><span>${mes.length} pago${mes.length===1?"":"s"}</span></div><div class="kpi"><small>Mes pasado</small><b>${cop(sum(p=>ym(p.creado)===pm))}</b></div><div class="kpi"><small>Total</small><b>${cop(sum(()=>true))}</b><span>${ps.length} pagos</span></div><div class="kpi"><small>Planes este mes</small><b style="font-size:17px">Básico ${por("basico")} · Pro ${por("pro")} · Premium ${por("premium")}</b></div></div>
+  <div class="card" style="margin-top:12px;padding:6px 16px">${ps.length?ps.slice(0,40).map(p=>`<div class="payrow"><div style="min-width:0"><b>${esc(p.email)}</b><small>${new Date(p.creado).toLocaleString("es-CO",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"})} · Plan ${esc((PLANES[p.plan]||{}).n||p.plan)}</small></div><span>${cop(p.monto)}</span></div>`).join(""):`<p class="note" style="margin:10px 0">Todavía no hay pagos por Wompi. Aquí te van a salir apenas alguien pague.</p>`}</div>`;
+}
+const AVT={promo:["🎁 Renueva con descuento","Si renuevas tu plan esta semana te regalo un descuento especial. Escríbeme o renueva desde Mi plan.","plan"],nuevo:["✨ Nueva función en CREATIVE.LAB","Ya puedes usar algo nuevo dentro de la página. Entra y pruébalo, y me cuentas qué tal te parece.",""],radar:["🔥 Llegaron videos nuevos a tu radar","Hoy el radar encontró videos que están pegando duro afuera y todavía no llegan al español. ¡Corre a reestrenarlos primero!","hoy"],clase:["📅 Te espero en vivo","Hoy tenemos clase en vivo. Trae tus preguntas sobre tu contenido y tus ventas.",""]};
+$("#avTpl").addEventListener("click",e=>{const b=e.target.closest("[data-tp]");if(!b)return;const t=AVT[b.dataset.tp];$("#av_tit").value=t[0];$("#av_txt").value=t[1];$("#av_link").value=t[2]});
+$("#av_send").addEventListener("click",async e=>{
+  const t=$("#av_tit").value.trim(),x=$("#av_txt").value.trim(); if(!t||!x){toast("Escribe el título y el mensaje");return}
+  const link=$("#av_link").value||null; e.target.disabled=true;
+  const {error}=await sb.from("avisos").insert({titulo:t,texto:x,link,boton:link?({plan:"Renovar",hoy:"Ir al radar",mentora:"Hablar con Mentora",clientes:"Buscar clientes",soporte:"Ir a soporte"})[link]:null});
+  e.target.disabled=false; if(error){toast("No se pudo enviar");return}
+  $("#av_tit").value=$("#av_txt").value="";$("#av_link").value=""; toast("Mensaje enviado a todas ✳"); loadAvisosAdmin();
+});
+async function loadAvisosAdmin(){
+  const {data}=await sb.from("avisos").select("*").order("creado",{ascending:false}).limit(10);
+  $("#avList").innerHTML=(data&&data.length)?`<p class="note" style="margin:0 0 6px">Enviados</p>`+data.map(a=>`<div class="payrow"><div style="min-width:0"><b>${esc(a.titulo)}</b><small>${new Date(a.creado).toLocaleDateString("es-CO",{day:"numeric",month:"short"})} · ${esc(a.texto).slice(0,80)}</small></div><button class="btn btn-sm btn-ghost" data-avdel="${esc(a.id)}">Borrar</button></div>`).join(""):"";
+}
+$("#avList").addEventListener("click",async e=>{const b=e.target.closest("[data-avdel]");if(!b)return;await sb.from("avisos").delete().eq("id",b.dataset.avdel);loadAvisosAdmin()});
 $("#ad_add").addEventListener("click",async()=>{
   const email=$("#ad_email").value.trim().toLowerCase();
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){toast("Escribe un correo válido");return}
@@ -1846,13 +1895,32 @@ $("#f_clave").addEventListener("submit",async e=>{
 let notis=[];
 async function loadNotis(){
   if(!me) return;
-  const {data}=await sb.from("soporte").select("id,tipo,mensaje,respuesta,respondida,vista").eq("user_id",me.id).not("respuesta","is",null).order("respondida",{ascending:false}).limit(15);
-  notis=data||[]; const n=notis.filter(x=>x.vista===false).length;
+  const [{data:sp},{data:av},{data:vs}]=await Promise.all([
+    sb.from("soporte").select("id,tipo,respuesta,respondida,vista").eq("user_id",me.id).not("respuesta","is",null).order("respondida",{ascending:false}).limit(15),
+    sb.from("avisos").select("*").order("creado",{ascending:false}).limit(15),
+    sb.from("avisos_vistos").select("aviso_id")]);
+  const vistos=new Set((vs||[]).map(v=>v.aviso_id));
+  const L=[];
+  (sp||[]).forEach(x=>L.push({k:"s",id:x.id,t:"Soporte respondió: "+(x.tipo||"tu solicitud"),x:x.respuesta,d:x.respondida,nuevo:x.vista===false,href:"#soporte"}));
+  (av||[]).forEach(x=>L.push({k:"a",id:x.id,t:x.titulo,x:x.texto,d:x.creado,nuevo:!vistos.has(x.id),href:x.link?"#"+x.link:"",btn:x.boton}));
+  // Aviso de vencimiento: desde 7 días antes de la fecha de corte
+  if(planEstado()==="activo"||planEstado()==="vencido"){
+    const dias=diasA(plan.fin), key="venc_"+plan.fin+"_"+(dias<0?"x":dias<=0?"0":dias<=2?"2":"7");
+    let leido=false; try{leido=!!localStorage.getItem(key)}catch(_){}
+    if(dias<=7){const P=PLANES[plan.plan]||{};L.push({k:"v",id:key,t:dias<0?"Tu mensualidad venció":dias===0?"Tu plan "+(P.n||"")+" vence hoy":"Tu plan "+(P.n||"")+" vence en "+dias+" día"+(dias===1?"":"s"),x:dias<0?"Tu acceso a los videos y a Mentora quedó en pausa. Renueva tu plan para seguir creando.":"Tu fecha de corte es el "+fd(plan.fin)+". Si renuevas antes, no se te corta nada y tu mes nuevo arranca justo cuando termina este.",d:new Date().toISOString(),nuevo:!leido,href:"#plan",btn:"Renovar ahora",top:1})}
+  }
+  L.sort((p,q)=>(q.top||0)-(p.top||0)||new Date(q.d)-new Date(p.d));
+  notis=L; const n=L.filter(x=>x.nuevo).length;
   $("#bellN").textContent=n>9?"9+":n; $("#bellN").classList.toggle("hidden",!n);
-  $("#bellList").innerHTML=notis.length?notis.map(x=>`<a href="#soporte" class="ni ${x.vista===false?"new":""}"><span class="nic">✳</span><span style="min-width:0"><b>Soporte respondió: ${esc(x.tipo||"tu solicitud")}</b><span class="nt">${esc(x.respuesta)}</span><small>${new Date(x.respondida).toLocaleString("es-CO",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"})}</small></span></a>`).join(""):`<p class="note" style="padding:14px 12px;margin:0">No tienes notificaciones todavía.</p>`;
+  $("#bellList").innerHTML=L.length?L.slice(0,20).map(x=>`<a ${x.href?`href="${x.href}"`:""} class="ni ${x.nuevo?"new":""} ${x.k==="v"?"warn":""}"><span class="nic">${x.k==="v"?"⏰":x.k==="a"?"💌":"✳"}</span><span style="min-width:0"><b>${esc(x.t)}</b><span class="nt">${esc(x.x)}</span>${x.btn?`<span class="nbtn">${esc(x.btn)} →</span>`:""}<small>${x.k==="v"?"":new Date(x.d).toLocaleString("es-CO",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"})}</small></span></a>`).join(""):`<p class="note" style="padding:14px 12px;margin:0">No tienes notificaciones todavía.</p>`;
 }
 function bellMenu(open){$("#bellMenu").classList.toggle("hidden",!open);$("#bell").setAttribute("aria-expanded",open?"true":"false");
-  if(open&&notis.some(x=>x.vista===false)){sb.rpc("marcar_vistas").then(()=>{notis.forEach(x=>x.vista=true);$("#bellN").classList.add("hidden")})}}
+  if(open&&notis.some(x=>x.nuevo)){
+    if(notis.some(x=>x.k==="s"&&x.nuevo)) sb.rpc("marcar_vistas");
+    const nv=notis.filter(x=>x.k==="a"&&x.nuevo).map(x=>({aviso_id:x.id})); if(nv.length) sb.from("avisos_vistos").upsert(nv);
+    notis.filter(x=>x.k==="v").forEach(x=>{try{localStorage.setItem(x.id,"1")}catch(_){}});
+    notis.forEach(x=>x.nuevo=false); $("#bellN").classList.add("hidden");
+  }}
 $("#bell").addEventListener("click",e=>{e.stopPropagation();meMenu(false);bellMenu($("#bellMenu").classList.contains("hidden"))});
 document.addEventListener("click",e=>{if(!e.target.closest(".bellw"))bellMenu(false)});
 $("#bellMenu").addEventListener("click",e=>{if(e.target.closest("a"))bellMenu(false)});
@@ -1912,7 +1980,7 @@ async function afterLogin(){
   profile=Object.assign({nombre:"",pais:"",rubro:"",rubroOtro:"",enfoque:"",nicho:"",publico:"",oferta:"",hago:"",prueba:"",tono:[],voz:""},per&&per.datos?per.datos:(isAdmin?DEFAULT_PROFILE:{}));
   saved=(gs||[]).map(g=>({id:g.id,kind:g.tipo,title:g.titulo,content:g.contenido,ts:Date.parse(g.creado)}));
   descartados=new Set((ds||[]).map(d=>d.video_id)); favs=new Set((fv||[]).map(d=>d.video_id));
-  const nm=((profile.nombre||me.email||"").split(/[ ·@]/)[0]); paintAvatar(); loadNotis(); loadPlan().then(volverDePago); $("#helloName").textContent=nm||"creadora";
+  const nm=((profile.nombre||me.email||"").split(/[ ·@]/)[0]); paintAvatar(); loadPlan().then(volverDePago); $("#helloName").textContent=nm||"creadora";
   $("#storeNote").textContent="Se guarda en tu cuenta.";
   fillProfile(); renderSaved(); renderChat(); startFeed(); loadConvs();
 }
