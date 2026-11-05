@@ -3,7 +3,7 @@
 // - accion "verificar": consulta una transacción en Wompi al volver del pago y activa el plan.
 // - sin accion (POST de Wompi): evento de transacción; valida la firma y activa el plan.
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { PLANES } from "../_planes.ts";
+import { PLANES, EXTRA } from "../_planes.ts";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -22,7 +22,7 @@ async function sha256(t: string) {
   const h = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t));
   return [...new Uint8Array(h)].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
-const masMes = (d: string) => { const x = new Date(d + "T12:00:00Z"); x.setUTCMonth(x.getUTCMonth() + 1); return x.toISOString().slice(0, 10); };
+const hoyCO = () => new Date(Date.now() - 5 * 3600e3).toISOString().slice(0, 10);
 
 async function aplicar(admin: any, tx: any) {
   if (!tx?.reference) return { ok: false, motivo: "sin_referencia" };
@@ -32,13 +32,21 @@ async function aplicar(admin: any, tx: any) {
   const estado = String(tx.status || "").toLowerCase();
   if (tx.status !== "APPROVED") { await admin.from("pagos").update({ estado, wompi_id: tx.id }).eq("referencia", p.referencia); return { ok: false, motivo: estado }; }
   if (Number(tx.amount_in_cents) !== p.monto * 100 || tx.currency !== "COP") { await admin.from("pagos").update({ estado: "monto_raro", wompi_id: tx.id }).eq("referencia", p.referencia); return { ok: false, motivo: "monto" }; }
-  const hoy = new Date().toISOString().slice(0, 10);
-  const { data: a } = await admin.from("accesos").select("plan,inicio,fin").eq("email", p.email).maybeSingle();
-  let inicio = hoy, fin = masMes(hoy);
-  // Renovación del mismo plan antes de vencer: el nuevo mes empieza cuando termina el actual
-  if (a?.fin && a.fin >= hoy && a.plan === p.plan) { inicio = a.fin; fin = masMes(a.fin); }
-  // Si renueva antes de vencer, mantiene el periodo actual hasta que termine
-  const upd = a?.fin && a.fin >= hoy && a.plan === p.plan ? { fin, activo: true } : { plan: p.plan, inicio, fin, activo: true };
+  const hoy = hoyCO();
+  const masMes = async (d: string) => (await admin.rpc("mas_mes", { d })).data as string;
+  const { data: a } = await admin.from("accesos").select("plan,inicio,fin,extra,extra_periodo").eq("email", p.email).maybeSingle();
+  let upd: Record<string, unknown>;
+  if (p.plan === "extra") {
+    // Paquete extra: suma videos al mes en curso
+    const { data: per } = await admin.rpc("periodo_de", { i: a?.inicio ?? null });
+    const mismo = a?.extra_periodo && a.extra_periodo === per;
+    upd = { extra: (mismo ? a?.extra ?? 0 : 0) + EXTRA.videos, extra_periodo: per };
+  } else if (a?.fin && a.fin >= hoy && a.plan === p.plan) {
+    // Renueva el mismo plan antes de vencer: el mes nuevo empieza cuando termina el actual
+    upd = { fin: await masMes(a.fin), activo: true };
+  } else {
+    upd = { plan: p.plan, inicio: hoy, fin: await masMes(hoy), extra: 0, extra_periodo: null, activo: true };
+  }
   await admin.from("accesos").update(upd).eq("email", p.email);
   await admin.from("pagos").update({ estado: "aprobado", wompi_id: tx.id, aplicado: new Date().toISOString() }).eq("referencia", p.referencia);
   return { ok: true, plan: p.plan };
@@ -69,7 +77,13 @@ Deno.serve(async (req) => {
     if (!PUB || !INTEG) return json({ error: "sin_wompi" }, 503);
 
     if (body.accion === "crear") {
-      const plan = PLANES[body.plan]; if (!plan) return json({ error: "plan" }, 400);
+      let plan = PLANES[body.plan];
+      if (body.plan === "extra") {
+        const { data: a } = await admin.from("accesos").select("plan,fin").eq("email", email).maybeSingle();
+        if (!a?.plan || !a.fin || a.fin < hoyCO()) return json({ error: "sin_plan" }, 400);
+        plan = { nombre: EXTRA.nombre, precio: EXTRA.precio, videos: EXTRA.videos };
+      }
+      if (!plan) return json({ error: "plan" }, 400);
       const referencia = "CL-" + body.plan + "-" + Date.now().toString(36) + "-" + crypto.randomUUID().slice(0, 6);
       const cents = plan.precio * 100;
       await admin.from("pagos").insert({ referencia, email, plan: body.plan, monto: plan.precio });

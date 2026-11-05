@@ -292,6 +292,9 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
 #feedTema::-webkit-scrollbar,#feedLang::-webkit-scrollbar{display:none}
 #feedTema .pill,#feedLang .pill{flex:none;font-size:14px;padding:8px 14px}
 #feedTema .pill{border-width:1.5px}
+.xbox{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:12px;background:#FFF1F6;border:2px dashed #FF8CC3}
+.xbox b{color:#4F0C28}.xbox p{margin:4px 0 0;color:#6B1237;font-size:14.5px}.xbox small{display:block;margin-top:4px;color:#F4579F;font-weight:700}
+.xtag{font-style:normal;font-size:12px;font-weight:700;color:#fff;background:#F4579F;border-radius:999px;padding:2px 8px;margin-left:4px}
 .kpis{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
 @media(min-width:900px){.kpis{grid-template-columns:repeat(4,1fr)}}
 .kpi{background:#fff;border:1.5px solid #F6D3E1;border-radius:18px;padding:14px 16px}
@@ -1130,7 +1133,7 @@ function needAI(out){
 }
 function aiErr(e){
   const c=e&&e.code;
-  if(c==="sin_videos") return "Ya usaste todos los videos de tu plan este mes. Pásate a un plan más grande en Mi plan o espera a tu próxima mensualidad.";
+  if(c==="sin_videos") return "Ya usaste todos los videos de tu plan este mes. En Mi plan puedes comprar un paquete de +10 videos o subir de plan.";
   if(c==="vencido") return "Tu mensualidad venció. Renuévala en Mi plan para seguir creando.";
   if(c==="limite") return "Llegaste al límite de análisis de hoy. Mañana se renueva.";
   if(c==="sin_acceso") return "Tu acceso no está activo. Escríbele a María José por WhatsApp.";
@@ -1543,6 +1546,7 @@ Al final: ### Consejos (3 puntos) y una línea con la meta: cuántas ventas nece
 const PLANES={basico:{n:"Básico",p:119900,v:20,inc:["Radar diario de tu rubro","Reestrenar: original, traducción y tu versión","Mentora","Pegar un enlace y pulir guiones"],no:["Ventas, Números y Buscar clientes","Revisión de tu video grabado"]},
 pro:{n:"Pro",p:149900,v:50,top:1,inc:["Todo lo del Básico","Ventas: historias de 72 horas","Números: dónde se cae tu contenido","Buscar clientes","Grábalo y lo reviso"]},
 premium:{n:"Premium",p:349900,v:100,inc:["Todo lo del Pro","1 asesoría 1:1 al mes con María José","Prioridad en soporte"]}};
+const EXTRA={n:"Paquete +10 videos",p:49900,v:10};
 const BLOQ={venta:"Ventas",numeros:"Números",clientes:"Buscar clientes"};
 let plan=null;
 const hoyL=()=>new Date().toLocaleDateString("en-CA");
@@ -1563,18 +1567,20 @@ async function loadPlan(){
 }
 function paintPlan(){
   const e=planEstado(), P=plan&&PLANES[plan.plan];
-  const used=+(plan&&plan.usados)||0, lim=P?P.v:0;
-  const dias=plan&&plan.fin?Math.max(0,diasA(plan.fin)):0;
-  const tot=plan&&plan.inicio&&plan.fin?Math.max(1,Math.round((new Date(plan.fin)-new Date(plan.inicio))/864e5)):30;
+  const used=+(plan&&plan.usados)||0, ext=+(plan&&plan.extra)||0, lim=P?P.v+ext:0;
+  const pi=plan&&(plan.periodo||plan.inicio), pf=plan&&(plan.periodo_fin||plan.fin);
+  const dias=pf?Math.max(0,diasA(pf)):0;
+  const tot=pi&&pf?Math.max(1,Math.round((Date.parse(pf)-Date.parse(pi))/864e5)):30;
   const sp=$("#sidePlan");
   if(e==="activo"){sp.classList.remove("hidden");sp.innerHTML=`<b>Plan ${P.n}</b><span>${used} de ${lim} videos</span><i><u style="width:${Math.min(100,used/lim*100)}%"></u></i>`}
   else if(e==="vencido"){sp.classList.remove("hidden");sp.innerHTML=`<b>Mensualidad vencida</b><span>Renueva para seguir →</span>`}
   else sp.classList.add("hidden");
-  $("#labPlan").innerHTML=e==="vencido"?`<div class="banner warn">Tu mensualidad venció el ${fd(plan.fin)}. <a class="btn btn-sm btn-primary" href="#plan">Renovar</a></div>`:(e==="activo"&&used>=lim?`<div class="banner warn">Usaste los ${lim} videos de tu plan este mes. <a class="btn btn-sm btn-primary" href="#plan">Subir de plan</a></div>`:"");
+  $("#labPlan").innerHTML=e==="vencido"?`<div class="banner warn">Tu mensualidad venció el ${fd(plan.fin)}. <a class="btn btn-sm btn-primary" href="#plan">Renovar</a></div>`:(e==="activo"&&used>=lim?`<div class="banner warn">Usaste los ${lim} videos de tu plan este mes. <a class="btn btn-sm btn-primary" href="#plan">Más videos</a></div>`:"");
   let now="";
   if(e==="activo") now=`<div class="card planbox"><div class="pbh"><div><small>Tu plan</small><b>${P.n}</b></div><span class="st ok">Activo</span></div>
-    <div class="pbar"><div class="pbl"><span>Videos reestrenados</span><b>${used} de ${lim}</b></div><i><u style="width:${Math.min(100,used/lim*100)}%"></u></i><small>${used>=lim?`Ya usaste todos tus videos de este mes. Se renuevan el ${fd(plan.fin)} con tu nueva mensualidad, o puedes subir de plan hoy.`:Math.max(0,lim-used)+" disponibles este mes"}</small></div>
-    <div class="pbar"><div class="pbl"><span>Tu mes</span><b>${dias} día${dias===1?"":"s"} restantes</b></div><i class="t"><u style="width:${Math.min(100,(tot-dias)/tot*100)}%"></u></i><small>Empezó el ${fd(plan.inicio)} · termina el ${fd(plan.fin)}</small></div></div>`;
+    <div class="pbar"><div class="pbl"><span>Videos reestrenados${ext?` <em class="xtag">+${ext} extra</em>`:""}</span><b>${used} de ${lim}</b></div><i><u style="width:${Math.min(100,used/lim*100)}%"></u></i><small>${used>=lim?`Ya usaste todos tus videos de este mes. Se renuevan el ${fd(pf)}; si no quieres esperar, compra un paquete extra o sube de plan.`:Math.max(0,lim-used)+" disponibles este mes"}</small></div>
+    <div class="pbar"><div class="pbl"><span>Tu mes</span><b>${dias} día${dias===1?"":"s"} restantes</b></div><i class="t"><u style="width:${Math.min(100,(tot-dias)/tot*100)}%"></u></i><small>Empezó el ${fd(pi)} · termina el ${fd(pf)}${plan.fin&&pf&&plan.fin>pf?` · tienes pagado hasta el ${fd(plan.fin)}`:""}</small></div></div>
+    <div class="card xbox"><div><b>¿Necesitas más videos este mes?</b><p>${EXTRA.n} por ${cop(EXTRA.p)}. Se suman a tu mes actual, sin cambiar de plan.</p>${ext?`<small>Ya tienes +${ext} videos extra este mes.</small>`:""}</div><button class="btn btn-primary" data-pay="extra">Comprar +${EXTRA.v} videos</button></div>`;
   else if(e==="vencido") now=`<div class="card planbox"><div class="pbh"><div><small>Tu plan</small><b>${P?P.n:"—"}</b></div><span class="st off">Vencido el ${fd(plan.fin)}</span></div><p style="margin:10px 0 0;color:#4F0C28">Renueva para seguir reestrenando videos y hablando con Mentora.</p></div>`;
   else if(e==="admin") now=`<div class="card planbox"><b>Eres la administradora</b><p class="note" style="margin:6px 0 0">Tú no tienes límites. Así ven esta pantalla las demás:</p></div>`;
   else if(e==="cortesia") now=`<div class="card planbox"><div class="pbh"><div><small>Tu plan</small><b>Acceso de cortesía</b></div><span class="st ok">Activo</span></div><p class="note" style="margin:8px 0 0">María José te dio acceso sin mensualidad. Si quieres, puedes elegir un plan.</p></div>`;
@@ -1582,15 +1588,16 @@ function paintPlan(){
   $("#planH").textContent=e==="activo"?"Cambiar o renovar":"Elige tu plan";
   $("#planCards").innerHTML=Object.entries(PLANES).map(([k,x])=>{const mine=e==="activo"&&plan.plan===k;return `<div class="pcard ${x.top?"top":""} ${mine?"mine":""}">${x.top?'<span class="ptag">La favorita</span>':""}<small>${x.n}</small><div class="pp"><b>${cop(x.p)}</b><span>/ mes</span></div><p class="pv">${x.v} videos al mes</p><ul>${x.inc.map(i=>`<li>${esc(i)}</li>`).join("")}${(x.no||[]).map(i=>`<li class="nn">${esc(i)}</li>`).join("")}</ul><button class="btn ${x.top?"btn-primary":"btn-soft"}" data-pay="${k}" style="width:100%">${mine?"Renovar un mes más":e==="activo"&&PLANES[plan.plan]&&PLANES[plan.plan].p<x.p?"Subir a "+x.n:"Elegir "+x.n}</button></div>`}).join("");
 }
-$("#planCards").addEventListener("click",async e=>{
-  const b=e.target.closest("[data-pay]"); if(!b) return;
-  if(planEstado()==="activo"&&plan.plan!==b.dataset.pay&&!b.dataset.ok){b.dataset.ok="1";b.textContent="Tu mes nuevo empieza hoy. Toca otra vez";return}
+$("#planNow").addEventListener("click",e=>{const b=e.target.closest("[data-pay]");if(b)pagar(b)});
+$("#planCards").addEventListener("click",e=>{const b=e.target.closest("[data-pay]");if(b)pagar(b)});
+async function pagar(b){
+  if(planEstado()==="activo"&&b.dataset.pay!=="extra"&&plan.plan!==b.dataset.pay&&!b.dataset.ok){b.dataset.ok="1";b.textContent="Tu mes nuevo empieza hoy. Toca otra vez";return}
   b.disabled=true; const t=b.textContent; b.textContent="Abriendo el pago…";
   const {data,error}=await sb.functions.invoke("pago",{body:{accion:"crear",plan:b.dataset.pay}});
   let c=data&&data.error; if(error){try{c=(await error.context.json()).error}catch(_){c="x"}}
-  if(c||!data||!data.url){b.disabled=false;b.textContent=t;toast(c==="sin_wompi"?"Los pagos se están configurando. Escríbenos por WhatsApp.":"No se pudo abrir el pago. Intenta otra vez.");return}
+  if(c||!data||!data.url){b.disabled=false;b.textContent=t;toast(c==="sin_plan"?"El paquete extra es para quien tiene un plan activo.":c==="sin_wompi"?"Los pagos se están configurando. Escríbenos por WhatsApp.":"No se pudo abrir el pago. Intenta otra vez.");return}
   location.href=data.url;
-});
+}
 async function volverDePago(){
   const q=new URLSearchParams(location.search), id=q.get("id"); if(!id) return;
   history.replaceState(null,"",location.pathname+"#plan"); route();
@@ -1598,7 +1605,7 @@ async function volverDePago(){
   for(let i=0;i<6;i++){
     const {data,error}=await sb.functions.invoke("pago",{body:{accion:"verificar",id}});
     let r=data; if(error){try{r=await error.context.json()}catch(_){r={}}}
-    if(r&&r.ok){$("#planMsg").innerHTML=`<div class="banner ok">¡Pago aprobado! Tu plan ${esc((PLANES[r.plan]||{}).n||"")} ya está activo ✳</div>`;await loadPlan();return}
+    if(r&&r.ok){$("#planMsg").innerHTML=`<div class="banner ok">${r.plan==="extra"?`¡Pago aprobado! Ya tienes +${EXTRA.v} videos más este mes ✳`:`¡Pago aprobado! Tu plan ${esc((PLANES[r.plan]||{}).n||"")} ya está activo ✳`}</div>`;await loadPlan();return}
     if(r&&r.motivo&&["declined","voided","error"].includes(r.motivo)){$("#planMsg").innerHTML=`<div class="banner warn">El pago no se aprobó. Puedes intentarlo otra vez.</div>`;return}
     await new Promise(z=>setTimeout(z,4000));
   }
@@ -1811,8 +1818,8 @@ async function loadPagosAdmin(){
   const sum=f=>ps.filter(f).reduce((a,p)=>a+p.monto,0);
   const mes=ps.filter(p=>ym(p.creado)===esteMes);
   const por=k=>mes.filter(p=>p.plan===k).length;
-  $("#adPay").innerHTML=`<div class="kpis"><div class="kpi"><small>Este mes</small><b>${cop(sum(p=>ym(p.creado)===esteMes))}</b><span>${mes.length} pago${mes.length===1?"":"s"}</span></div><div class="kpi"><small>Mes pasado</small><b>${cop(sum(p=>ym(p.creado)===pm))}</b></div><div class="kpi"><small>Total</small><b>${cop(sum(()=>true))}</b><span>${ps.length} pagos</span></div><div class="kpi"><small>Planes este mes</small><b style="font-size:17px">Básico ${por("basico")} · Pro ${por("pro")} · Premium ${por("premium")}</b></div></div>
-  <div class="card" style="margin-top:12px;padding:6px 16px">${ps.length?ps.slice(0,40).map(p=>`<div class="payrow"><div style="min-width:0"><b>${esc(p.email)}</b><small>${new Date(p.creado).toLocaleString("es-CO",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"})} · Plan ${esc((PLANES[p.plan]||{}).n||p.plan)}</small></div><span>${cop(p.monto)}</span></div>`).join(""):`<p class="note" style="margin:10px 0">Todavía no hay pagos por Wompi. Aquí te van a salir apenas alguien pague.</p>`}</div>`;
+  $("#adPay").innerHTML=`<div class="kpis"><div class="kpi"><small>Este mes</small><b>${cop(sum(p=>ym(p.creado)===esteMes))}</b><span>${mes.length} pago${mes.length===1?"":"s"}</span></div><div class="kpi"><small>Mes pasado</small><b>${cop(sum(p=>ym(p.creado)===pm))}</b></div><div class="kpi"><small>Total</small><b>${cop(sum(()=>true))}</b><span>${ps.length} pagos</span></div><div class="kpi"><small>Planes este mes</small><b style="font-size:17px">Básico ${por("basico")} · Pro ${por("pro")} · Premium ${por("premium")} · Extra ${por("extra")}</b></div></div>
+  <div class="card" style="margin-top:12px;padding:6px 16px">${ps.length?ps.slice(0,40).map(p=>`<div class="payrow"><div style="min-width:0"><b>${esc(p.email)}</b><small>${new Date(p.creado).toLocaleString("es-CO",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"})} · ${p.plan==="extra"?EXTRA.n:"Plan "+esc((PLANES[p.plan]||{}).n||p.plan)}</small></div><span>${cop(p.monto)}</span></div>`).join(""):`<p class="note" style="margin:10px 0">Todavía no hay pagos por Wompi. Aquí te van a salir apenas alguien pague.</p>`}</div>`;
 }
 const AVT={promo:["🎁 Renueva con descuento","Si renuevas tu plan esta semana te regalo un descuento especial. Escríbeme o renueva desde Mi plan.","plan"],nuevo:["✨ Nueva función en CREATIVE.LAB","Ya puedes usar algo nuevo dentro de la página. Entra y pruébalo, y me cuentas qué tal te parece.",""],radar:["🔥 Llegaron videos nuevos a tu radar","Hoy el radar encontró videos que están pegando duro afuera y todavía no llegan al español. ¡Corre a reestrenarlos primero!","hoy"],clase:["📅 Te espero en vivo","Hoy tenemos clase en vivo. Trae tus preguntas sobre tu contenido y tus ventas.",""]};
 $("#avTpl").addEventListener("click",e=>{const b=e.target.closest("[data-tp]");if(!b)return;const t=AVT[b.dataset.tp];$("#av_tit").value=t[0];$("#av_txt").value=t[1];$("#av_link").value=t[2]});

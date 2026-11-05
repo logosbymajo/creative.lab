@@ -52,7 +52,7 @@ Deno.serve(async (req) => {
     const { data: u } = await admin.auth.getUser(token);
     if (!u?.user) return json({ error: "no_sesion" }, 401);
     const email = (u.user.email ?? "").toLowerCase();
-    const { data: acc } = await admin.from("accesos").select("activo,plan,inicio,fin").eq("email", email).maybeSingle();
+    const { data: acc } = await admin.from("accesos").select("activo,plan,inicio,fin,extra,extra_periodo").eq("email", email).maybeSingle();
     if (!acc?.activo) return json({ error: "sin_acceso" }, 403);
     const { data: adm } = await admin.from("admins").select("email").eq("email", email).maybeSingle();
     const hoy = new Date().toISOString().slice(0, 10);
@@ -61,12 +61,15 @@ Deno.serve(async (req) => {
     if (!adm && acc.plan && PLANES[acc.plan]) {
       if (!acc.fin || acc.fin < hoy) return json({ error: "vencido" }, 402);
       const link0 = String(cuerpo?.url ?? "").trim().split("?")[0];
+      const { data: per } = await admin.rpc("periodo_de", { i: acc.inicio });
+      const periodo = per ?? acc.inicio;
+      const tope = PLANES[acc.plan].videos + (acc.extra_periodo === periodo ? (acc.extra ?? 0) : 0);
       if (link0) {
-        const { data: ya } = await admin.from("reestrenos").select("url").eq("user_id", u.user.id).eq("periodo", acc.inicio).eq("url", link0).maybeSingle();
+        const { data: ya } = await admin.from("reestrenos").select("url").eq("user_id", u.user.id).eq("periodo", periodo).eq("url", link0).maybeSingle();
         if (!ya) {
-          const { count } = await admin.from("reestrenos").select("url", { count: "exact", head: true }).eq("user_id", u.user.id).eq("periodo", acc.inicio);
-          if ((count ?? 0) >= PLANES[acc.plan].videos) return json({ error: "sin_videos" }, 402);
-          await admin.from("reestrenos").insert({ user_id: u.user.id, url: link0, periodo: acc.inicio });
+          const { count } = await admin.from("reestrenos").select("url", { count: "exact", head: true }).eq("user_id", u.user.id).eq("periodo", periodo);
+          if ((count ?? 0) >= tope) return json({ error: "sin_videos" }, 402);
+          await admin.from("reestrenos").insert({ user_id: u.user.id, url: link0, periodo });
         }
       }
     }
