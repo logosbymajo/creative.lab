@@ -95,3 +95,4 @@ Deno.serve(async (req) => {
     return json({ error: "fallo", detalle: String(e).slice(0, 200) }, 500);
   }
 });
+
