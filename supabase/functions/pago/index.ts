@@ -1,4 +1,4 @@
-// CREATIVE.LAB · Función "pago"
+// CREATIVE.LAB · Función "pago" (Wompi)
 // - accion "crear": arma el enlace de pago de Wompi para un plan (firma de integridad).
 // - accion "verificar": consulta una transacción en Wompi al volver del pago y activa el plan.
 // - sin accion (POST de Wompi): evento de transacción; valida la firma y activa el plan.
