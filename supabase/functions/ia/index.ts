@@ -30,9 +30,10 @@ Deno.serve(async (req) => {
     const email = (user.email ?? "").toLowerCase();
 
     // 2) ¿Tiene acceso activo?
-    const { data: acc } = await admin.from("accesos").select("activo").eq("email", email).maybeSingle();
+    const { data: acc } = await admin.from("accesos").select("activo,plan,fin").eq("email", email).maybeSingle();
     if (!acc?.activo) return json({ error: "sin_acceso" }, 403);
     const { data: adm } = await admin.from("admins").select("email").eq("email", email).maybeSingle();
+    if (!adm && acc.plan && (!acc.fin || acc.fin < new Date().toISOString().slice(0, 10))) return json({ error: "vencido" }, 402);
 
     // 3) Límite diario (para cuidar los costos)
     const hoy = new Date().toISOString().slice(0, 10);

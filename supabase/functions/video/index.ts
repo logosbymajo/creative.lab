@@ -2,6 +2,7 @@
 // Recibe el enlace de un video de TikTok o Instagram, lo baja con Apify y devuelve
 // lo que dice, sus cifras, sus comentarios y la portada, para que la IA lo analice.
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { PLANES } from "../_planes.ts";
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -51,10 +52,24 @@ Deno.serve(async (req) => {
     const { data: u } = await admin.auth.getUser(token);
     if (!u?.user) return json({ error: "no_sesion" }, 401);
     const email = (u.user.email ?? "").toLowerCase();
-    const { data: acc } = await admin.from("accesos").select("activo").eq("email", email).maybeSingle();
+    const { data: acc } = await admin.from("accesos").select("activo,plan,inicio,fin").eq("email", email).maybeSingle();
     if (!acc?.activo) return json({ error: "sin_acceso" }, 403);
     const { data: adm } = await admin.from("admins").select("email").eq("email", email).maybeSingle();
     const hoy = new Date().toISOString().slice(0, 10);
+    const cuerpo = await req.clone().json().catch(() => ({}));
+    // Plan del mes: cada video reestrenado cuenta una vez por periodo
+    if (!adm && acc.plan && PLANES[acc.plan]) {
+      if (!acc.fin || acc.fin < hoy) return json({ error: "vencido" }, 402);
+      const link0 = String(cuerpo?.url ?? "").trim().split("?")[0];
+      if (link0) {
+        const { data: ya } = await admin.from("reestrenos").select("url").eq("user_id", u.user.id).eq("periodo", acc.inicio).eq("url", link0).maybeSingle();
+        if (!ya) {
+          const { count } = await admin.from("reestrenos").select("url", { count: "exact", head: true }).eq("user_id", u.user.id).eq("periodo", acc.inicio);
+          if ((count ?? 0) >= PLANES[acc.plan].videos) return json({ error: "sin_videos" }, 402);
+          await admin.from("reestrenos").insert({ user_id: u.user.id, url: link0, periodo: acc.inicio });
+        }
+      }
+    }
     const { data: uso } = await admin.from("uso_ia").select("llamadas").eq("user_id", u.user.id).eq("dia", hoy).maybeSingle();
     const n = uso?.llamadas ?? 0;
     if (!adm && n >= LIMITE) return json({ error: "limite" }, 429);

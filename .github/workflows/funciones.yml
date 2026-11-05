@@ -16,22 +16,30 @@ jobs:
         with: { version: latest }
       - name: Revisar claves
         run: |
-          for v in SUPABASE_ACCESS_TOKEN ANTHROPIC_API_KEY APIFY_TOKEN; do
+          for v in SUPABASE_ACCESS_TOKEN ANTHROPIC_API_KEY APIFY_TOKEN WOMPI_PUBLIC_KEY WOMPI_INTEGRITY WOMPI_EVENTS; do
             if [ -z "${!v}" ]; then echo "::error::Falta el secreto $v"; else echo "::notice::$v está"; fi
           done
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+          WOMPI_PUBLIC_KEY: ${{ secrets.WOMPI_PUBLIC_KEY }}
+          WOMPI_INTEGRITY: ${{ secrets.WOMPI_INTEGRITY }}
+          WOMPI_EVENTS: ${{ secrets.WOMPI_EVENTS }}
       - name: Guardar las claves en Supabase
         run: |
-          out=$(supabase secrets set ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY" APIFY_TOKEN="$APIFY_TOKEN" --project-ref $PROJECT --yes 2>&1) || { echo "::error::$(echo "$out" | tr '\n' ' ' | sed 's/sk-ant[^ ]*/***/g' | tail -c 600)"; exit 1; }
+          extra=""
+          for v in WOMPI_PUBLIC_KEY WOMPI_INTEGRITY WOMPI_EVENTS; do if [ -n "${!v}" ]; then extra="$extra $v=${!v}"; fi; done
+          out=$(supabase secrets set ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY" APIFY_TOKEN="$APIFY_TOKEN" $extra --project-ref $PROJECT --yes 2>&1) || { echo "::error::$(echo "$out" | tr '\n' ' ' | sed -e 's/sk-ant[^ ]*/***/g' -e 's/prod_[a-z]*_[^ ]*/***/g' -e 's/test_[a-z]*_[^ ]*/***/g' | tail -c 600)"; exit 1; }
           echo "$out"
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           APIFY_TOKEN: ${{ secrets.APIFY_TOKEN }}
+          WOMPI_PUBLIC_KEY: ${{ secrets.WOMPI_PUBLIC_KEY }}
+          WOMPI_INTEGRITY: ${{ secrets.WOMPI_INTEGRITY }}
+          WOMPI_EVENTS: ${{ secrets.WOMPI_EVENTS }}
       - name: Publicar las funciones
         run: |
-          for f in ia video; do
+          for f in ia video pago; do
             out=$(supabase functions deploy $f --project-ref $PROJECT --no-verify-jwt --yes 2>&1) || { echo "::error::$f: $(echo "$out" | tr '\n' ' ' | tail -c 600)"; exit 1; }
             echo "$out"
           done
